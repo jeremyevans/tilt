@@ -543,7 +543,7 @@ specifically want to use RDiscount, it's recommended to use `#prefer`:
 
     Tilt.prefer Tilt::RDiscountTemplate
 
-__NOTE:__ It's suggested that your program `require 'erubis'` at load time when
+__NOTE:__ It's suggested that your program `require 'rdiscount'` at load time when
 using this template engine within a threaded environment.
 
 ### See also

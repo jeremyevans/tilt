@@ -14,9 +14,10 @@ which are guaranteed to work across all the implementations. If you wish to be
 compatible with all of these template classes, you should only depend on the
 cross-implementation features.
 
- * [ERB](#erb) - Generic ERB implementation (backed by erb.rb or Erubis)
+ * [ERB](#erb) - Generic ERB implementation (backed by erb.rb, Erubis, or Erubi)
  * [erb.rb](#erbrb) - `Tilt::ERBTemplate`
  * [Erubis](#erubis) - `Tilt::ErubisTemplate`
+ * [Erubi](#erubi) - `Tilt::ErubiTemplate`
  * [Haml](#haml) - `Tilt::HamlTemplate`
  * [Liquid](#liquid) - `Tilt::LiquidTemplate`
  * Nokogiri - `Tilt::NokogiriTemplate`
@@ -24,10 +25,9 @@ cross-implementation features.
  * Markaby - `Tilt::MarkabyTemplate`
  * [Radius](#radius) - `Tilt::RadiusTemplate`
 
-Tilt also includes support for CSS processors like [LessCSS][lesscss] and
-[Sass][sass], [CoffeeScript][coffee-script] and some simple text formats.
+Tilt also includes support for CSS processors like [Sass][sass],
+[CoffeeScript][coffee-script] and some simple text formats.
 
- * Less - `Tilt::LessTemplate`
  * Sass - `Tilt::SassTemplate`
  * Scss - `Tilt::ScssTemplate`
  * CoffeeScript - `Tilt::CoffeeScriptTemplate`
@@ -44,7 +44,6 @@ implementations (depending on which are available on your system):
  * [Markdown](#markdown) - Generic Markdown implementation
  * [RDiscount](#rdiscount) - `Tilt::RDiscountTemplate`
  * Redcarpet - `Tilt::RedcarpetTemplate`
- * BlueCloth - `Tilt::BlueClothTemplate`
  * Kramdown - `Tilt::KramdownTemplate`
  * Pandoc - `Tilt::PandocTemplate`
  * CommonMarker - `Tilt::CommonMarkerTemplate`
@@ -55,8 +54,9 @@ ERB (`erb`, `rhtml`)
 --------------------
 
 ERB is a simple but powerful template languge for Ruby. In Tilt it's backed by
+[Erubi](#erubi) (if installed on your system) or by
 [Erubis](#erubis) (if installed on your system) or by [erb.rb](#erbrb) (which
-is included in Ruby's standard library). This documentation applies to both
+is included in Ruby's standard library). This documentation applies to all three
 implementations.
 
 ### Example
@@ -84,7 +84,7 @@ Or, use `Tilt['erb']` directly to process strings:
 Omits newlines and spaces around certain lines (usually those that starts with
 `<%` and ends with `%>`). There isn't a specification for how trimming in ERB
 should work, so if you need more control over the whitespace, you should use
-[erb.rb](#erbrb) or [Erubis](#erubis) directly.
+[erb.rb](#erbrb), [Erubis](#erubis), or [Erubi](#erubi) directly.
 
 
 #### `:outvar => '_erbout'`
@@ -92,6 +92,11 @@ should work, so if you need more control over the whitespace, you should use
 The name of the variable used to accumulate template output. This can be
 any valid Ruby expression but must be assignable. By default a local
 variable named `_erbout` is used.
+
+#### `:freeze => false`
+
+If set to true, will set the `frozen_string_literal` flag in the compiled
+template code, so that string literals inside the templates will be frozen.
 
 <a name='erbrb'></a>
 erb.rb (`erb`, `rhtml`)
@@ -104,8 +109,9 @@ All the documentation of [ERB](#erb) applies in addition to the following:
 ### Usage
 
 The `Tilt::ERBTemplate` class is registered for all files ending in `.erb` or
-`.rhtml` by default, but with a *lower* priority than ErubisTemplate. If you
-specifically want to use ERB, it's recommended to use `#prefer`:
+`.rhtml` by default, but with a *lower* priority than ErubiTemplate and
+ErubisTemplate. If you specifically want to use ERB, it's recommended to use
+`#prefer`:
 
     Tilt.prefer Tilt::ERBTemplate
 
@@ -124,20 +130,9 @@ following characters:
   * `'%'`  enables processing of lines beginning with `%`
   * `true` is an alias of `<>`
 
-#### `:safe => nil`
-
-The `$SAFE` level; when set, ERB code will be run in a
-separate thread with `$SAFE` set to the provided level.
-
-#### `:outvar => '_erbout'`
-
-The name of the variable used to accumulate template output. This can be
-any valid Ruby expression but must be assignable. By default a local
-variable named `_erbout` is used.
-
 ### See also
 
-  * [ERB documentation](http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html)
+  * [ERB documentation](https://docs.ruby-lang.org/en/master/ERB.html)
 
 
 <a name='erubis'></a>
@@ -151,7 +146,7 @@ All the documentation of [ERB](#erb) applies in addition to the following:
 ### Usage
 
 The `Tilt::ErubisTemplate` class is registered for all files ending in `.erb` or
-`.rhtml` by default, but with a *higher* priority than `ERBTemplate`. If you
+`.rhtml` by default, but with a *lower* priority than `ErubiTemplate`. If you
 specifically want to use Erubis, it's recommended to use `#prefer`:
 
     Tilt.prefer Tilt::ErubisTemplate
@@ -172,24 +167,48 @@ When `true`, `Erubis::EscapedEruby` will be used as the engine class
 instead of the default. All content within `<%= %>` blocks will be
 automatically html escaped.
 
-#### `:outvar => '_erbout'`
+#### Other
 
-The name of the variable used to accumulate template output. This can be
-any valid Ruby expression but must be assignable. By default a local
-variable named `_erbout` is used.
-
-#### `:pattern => '<% %>'`
-
-Set pattern for embedded Ruby code.
-
-#### `:trim => true`
-
-Delete spaces around `<% %>`. (But, spaces around `<%= %>` are preserved.)
+Other options are passed to the constructor of the engine class.
 
 ### See also
 
   * [Erubis Home][erubis]
-  * [Erubis User's Guide](http://www.kuwata-lab.com/erubis/users-guide.html)
+
+
+<a name='erubi'></a>
+Erubi (`erb`, `rhtml`, `erubi`)
+---------------------------------
+
+[Erubi][erubi] is a ERB implementation that uses the same algorithm as
+[Erubis][erubis], but is maintained and offers numerous improvements..
+
+All the documentation of [ERB](#erb) applies in addition to the following:
+
+### Usage
+
+The `Tilt::ErubiTemplate` class is registered for all files ending in `.erb` or
+`.rhtml` by default, with the *highest* priority.
+
+    Tilt.prefer Tilt::ErubisTemplate
+
+__NOTE:__ It's suggested that your program `require 'erubi'` at load time when
+using this template engine within a threaded environment.
+
+### Options
+
+#### `:engine_class => Erubi::Engine`
+
+Allows you to specify a custom engine class to use instead of the
+default which is `Erubi::Engine`.
+
+#### Other
+
+Other options are passed to the constructor of the engine class.
+
+### See also
+
+  * [Erubi Home][erubi]
 
 
 <a name='haml'></a>
@@ -459,7 +478,6 @@ Markdown formatted texts are converted to HTML with one of these libraries:
 
   * [RDiscount](#rdiscount) - `Tilt::RDiscountTemplate`
   * Redcarpet - `Tilt::RedcarpetTemplate`
-  * BlueCloth - `Tilt::BlueClothTemplate`
   * Kramdown - `Tilt::KramdownTemplate`
   * Pandoc - `Tilt::PandocTemplate`
   * Maruku - `Tilt::MarukuTemplate`
@@ -535,10 +553,10 @@ using this template engine within a threaded environment.
   * GitHub: [rtomayko/rdiscount][rdiscount]
 
 
-[lesscss]: http://lesscss.org/ "Less CSS"
 [sass]: http://sass-lang.com/ "Sass"
 [coffee-script]: http://jashkenas.github.com/coffee-script/ "Coffee Script"
-[erubis]: http://www.kuwata-lab.com/erubis/ "Erubis"
+[erubis]: https://github.com/kwatch/erubis "Erubis"
+[erubi]: https://github.com/jeremyevans/erubi "Erubi"
 [haml]: http://haml.info/ "Haml"
 [liquid]: http://www.liquidmarkup.org/ "Liquid"
 [radius]: http://radius.rubyforge.org/ "Radius"

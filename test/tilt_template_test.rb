@@ -186,7 +186,7 @@ describe "tilt/template" do
       scope_class = Class.new
       assert_equal 'Hey', inst.render(scope_class.new)
       assert_equal "compiled_path (#{base.inspect}) ignored on template with anonymous scope_class (#{scope_class.inspect})", message
-      assert_equal [], Dir.new(dir).children
+      assert_equal [], Dir["#{dir}/*"]
     end
   end
 

@@ -34,11 +34,11 @@ MARKDOWN
       end
 
       expected = <<EXPECTED_HTML
-  <div class="alert alert-info full-width">
-    <h5 class="card-title">TL;DR</h5>
-    <p>This is an unsafe HTML block</p>
-  </div>
-  <p>And then some <strong>other</strong> Markdown</p>
+<div class="alert alert-info full-width">
+  <h5 class="card-title">TL;DR</h5>
+  <p>This is an unsafe HTML block</p>
+</div>
+<p>And then some <strong>other</strong> Markdown</p>
 EXPECTED_HTML
 
       assert_match(expected, template.render)

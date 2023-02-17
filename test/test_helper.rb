@@ -6,6 +6,8 @@ ENV['MT_NO_PLUGINS'] = '1' # Work around stupid autoloading of plugins
 require 'minitest/autorun'
 require 'minitest/mock'
 
+FrozenError = RuntimeError unless defined?(FrozenError)
+
 class Minitest::Spec
   # Returns true if line numbers are reported incorrectly in heredocs.
   def heredoc_line_number_bug?

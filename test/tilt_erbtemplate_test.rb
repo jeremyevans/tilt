@@ -226,7 +226,7 @@ describe 'tilt/erb (compiled)' do
     f.delete
   end
 
-  if RUBY_VERSION >= '2.3'
+  if RUBY_VERSION >= '2.4'
     it "uses frozen literal strings if :freeze option is used" do
       template = Tilt::ERBTemplate.new(nil, :freeze => true) { |t| %(<%= "".frozen? %>) }
       assert_equal "true", template.render

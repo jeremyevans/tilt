@@ -1,6 +1,14 @@
-name: "Test suite"
+name: CI
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
 
 jobs:
   test:
@@ -8,39 +16,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby:
-          # We test on all stable versions of Ruby
-          - "2.7"
-          - "3.0"
-          - "3.1"
-          - "3.2"
-          - "jruby"
-        # but only the primary templates
-        bundle_without: ["secondary:development"]
-        title: ["primary templates"]
-
-        # In addition we test for the secondary templates on the latest version of Ruby
-        include:
-          - ruby: "3.2"
-            bundle_without: "primary:development"
-            title: "secondary templates"
-
+        ruby: [ "2.0.0", 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, "3.0", 3.1, 3.2, jruby-9.1, jruby-9.2, jruby-9.3, jruby-9.4 ]
+    name: ${{ matrix.ruby }}
     env:
-      BUNDLE_WITHOUT: ${{ matrix.bundle_without }}
+      BUNDLE_GEMFILE: .ci.gemfile
       COFFEE_SCRIPT: use
-    name: Ruby ${{ matrix.ruby }} (${{ matrix.title }})
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        # WikiCloth needs IDN
-        # Pandoc needs Pandoc
-        run: sudo apt-get install -y libidn11-dev pandoc
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-
-      - name: Run test suite
-        run: bundle exec rake
+    - uses: actions/checkout@v2
+    # WikiCloth needs IDN
+    # Pandoc needs Pandoc
+    - run: sudo apt-get install -y libidn11-dev pandoc
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - run: bundle exec rake

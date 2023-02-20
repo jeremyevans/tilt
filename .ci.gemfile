@@ -1,0 +1,73 @@
+source 'https://rubygems.org'
+
+gem 'rake'
+gem 'minitest'
+
+gem 'babel-transpiler'
+gem 'builder'
+gem 'creole'
+gem 'erubi'
+gem 'erubis'
+gem 'haml', '>= 4'
+gem 'liquid'
+gem 'livescript'
+gem 'markaby'
+gem 'nokogiri'
+gem 'pdf-reader'
+gem 'prawn', '>= 2.0.0'
+gem 'radius'
+gem 'rdoc'
+gem 'typescript-node'
+
+gem 'coffee-script' if ENV['COFFEE_SCRIPT']
+
+if RUBY_VERSION < '2.1'
+  gem 'kramdown', '< 1.1'
+else
+  gem 'asciidoctor'
+  gem 'kramdown'
+end
+
+if RUBY_VERSION < '2.4' && RUBY_ENGINE == 'jruby'
+  # Don't install pandoc or maruku
+else
+  gem 'pandoc-ruby'
+  gem 'maruku'
+end
+
+if RUBY_VERSION >= '2.6'
+  gem 'sass-embedded'
+elsif RUBY_ENGINE == 'jruby'
+  gem 'sass'
+else
+  gem 'sassc'
+end
+
+if RUBY_VERSION >= '3.1'
+  # Was default library, now bundled gem.
+  # Needed by prawn tests.
+  gem 'matrix'
+end
+
+platform :ruby do
+  gem 'wikicloth'
+  gem 'rinku' # dependency for wikicloth for handling links
+
+  gem 'RedCloth'
+  gem 'commonmarker'
+  gem 'duktape', '~> 1.3.0.6'
+  gem 'rdiscount', '>= 2.1.6'
+  gem 'redcarpet'
+  gem 'yajl-ruby'
+
+  if RUBY_VERSION < '2.3'
+    # CommonMarker versions that support Ruby <2.3 have
+    # a dependency on ruby-enum, which requires Ruby 2.3
+    # without specifying required_ruby_version
+    gem 'ruby-enum', '< 0.6'
+
+    # i18n is pulled in by wikicloth. This avoids errors
+    # on Ruby 2.0.
+    gem 'i18n', '<1.3'
+  end
+end

@@ -1,6 +1,5 @@
 /dist
 *.swp
-/Gemfile.lock
 /vendor
 /.bundle
 /.yardoc

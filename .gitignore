@@ -6,4 +6,4 @@
 /.yardoc
 /doc
 .sass-cache
-/man
+/tilt-*.gem

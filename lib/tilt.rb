@@ -116,7 +116,7 @@ module Tilt
       @cache = {}
     end
   end
-
+  deprecate_constant :Cache if respond_to?(:deprecate_constant, true)
 
   # Template Implementations ================================================
 

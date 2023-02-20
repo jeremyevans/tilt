@@ -1,5 +1,6 @@
 ## master
 
+* Deprecate Tilt::Cache (jeremyevans)
 * Deprecate Tilt.current_template (jeremyevans)
 * Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
 

@@ -30,4 +30,15 @@ class Minitest::Spec
   def with_utf8_default_encoding(&block)
     with_default_encoding('UTF-8', &block)
   end
+
+  def self.deprecated(*a, &block)
+    it(*a) do
+      begin
+        verbose, $VERBOSE = $VERBOSE, nil
+        instance_exec(&block)
+      ensure
+        $VERBOSE = verbose
+      end
+    end
+  end
 end

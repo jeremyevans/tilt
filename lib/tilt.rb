@@ -72,6 +72,7 @@ module Tilt
   # @note This is currently an experimental feature and might return nil
   #   in the future.
   def self.current_template
+    warn "Tilt.current_template is deprecated and will be removed in Tilt 2.2", uplevel: 1
     Thread.current[:tilt_current_template]
   end
 

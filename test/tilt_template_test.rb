@@ -295,14 +295,14 @@ describe "tilt/template" do
     assert_equal "Hey Bob!", inst.render(_BasicPerson)
   end
 
-  it "populates Tilt.current_template during rendering" do
+  deprecated "populates Tilt.current_template during rendering" do
     inst = _SourceGeneratingMockTemplate.new { '#{$inst = Tilt.current_template}' }
     inst.render
     assert_equal inst, $inst
     assert_nil Tilt.current_template
   end
 
-  it "populates Tilt.current_template in nested rendering" do
+  deprecated "populates Tilt.current_template in nested rendering" do
     inst1 = _SourceGeneratingMockTemplate.new { '#{$inst.render; $inst1 = Tilt.current_template}' }
     inst2 = _SourceGeneratingMockTemplate.new { '#{$inst2 = Tilt.current_template}' }
     $inst = inst2

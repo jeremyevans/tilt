@@ -39,14 +39,14 @@ module Tilt
   # the exception of the first, since that was the most preferred one.
   #
   #     mapping = Tilt::Mapping.new
-  #     mapping.register_lazy('Bluecloth::Template', 'bluecloth/template', 'md')
+  #     mapping.register_lazy('Maruku::Template', 'maruku/template', 'md')
   #     mapping.register_lazy('RDiscount::Template', 'rdiscount/template', 'md')
   #     mapping['index.md']
   #     # => RDiscount::Template
   #
   # In the previous example we say that RDiscount has a *higher priority* than
-  # BlueCloth. Tilt will first try to `require "rdiscount/template"`, falling
-  # back to `require "bluecloth/template"`. If none of these are successful,
+  # Maruku. Tilt will first try to `require "rdiscount/template"`, falling
+  # back to `require "maruku/template"`. If none of these are successful,
   # the first error will be raised.
   class Mapping
     # @private

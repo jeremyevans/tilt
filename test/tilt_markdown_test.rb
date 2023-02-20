@@ -121,22 +121,6 @@ rescue LoadError => boom
 end
 
 begin
-  require 'tilt/bluecloth'
-
-  describe 'tilt/bluecloth (markdown)' do
-    include _MarkdownTests
-    template Tilt::BlueClothTemplate
-
-    it "should use smartypants if :smartypants => true" do
-      html = nrender "Hello ``World'' -- This is --- a it ...", :smartypants => true
-      assert_equal "<p>Hello “World” — This is —– a it …</p>", html
-    end
-  end
-rescue LoadError => boom
-  # It should already be warned in the main tests
-end
-
-begin
   require 'tilt/kramdown'
 
   describe 'tilt/kramdown (markdown)' do

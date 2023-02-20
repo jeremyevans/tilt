@@ -4,13 +4,13 @@ begin
   require 'tilt/rdiscount'
 
   describe 'tilt/rdiscount' do
-    it "registered above BlueCloth" do
+    it "registered above Maruku" do
       %w[md mkd markdown].each do |ext|
         lazy = Tilt.lazy_map[ext]
         rdis_idx = lazy.index { |klass, file| klass == 'Tilt::RDiscountTemplate' }
-        blue_idx = lazy.index { |klass, file| klass == 'Tilt::BlueClothTemplate' }
-        assert rdis_idx < blue_idx,
-          "#{rdis_idx} should be lower than #{blue_idx}"
+        maruku_idx = lazy.index { |klass, file| klass == 'Tilt::MarukuTemplate' }
+        assert rdis_idx < maruku_idx,
+          "#{rdis_idx} should be lower than #{maruku_idx}"
       end
     end
 

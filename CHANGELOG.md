@@ -1,3 +1,7 @@
+## master
+
+* Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
+
 ## 2.1.0 (2023-02-17)
 
 * Use UnboundMethod#bind_call on Ruby 2.7+ for better performance (#380, jeremyevans)

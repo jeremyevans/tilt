@@ -125,7 +125,6 @@ module Tilt
   register_lazy :ErubiTemplate,  'tilt/erubi',  'erb', 'rhtml', 'erubi'
 
   # Markdown
-  register_lazy :BlueClothTemplate,    'tilt/bluecloth',    'markdown', 'mkd', 'md'
   register_lazy :MarukuTemplate,       'tilt/maruku',       'markdown', 'mkd', 'md'
   register_lazy :KramdownTemplate,     'tilt/kramdown',     'markdown', 'mkd', 'md'
   register_lazy :RDiscountTemplate,    'tilt/rdiscount',    'markdown', 'mkd', 'md'
@@ -143,7 +142,6 @@ module Tilt
   register_lazy :CreoleTemplate,       'tilt/creole',    'wiki', 'creole'
   register_lazy :EtanniTemplate,       'tilt/etanni',    'etn', 'etanni'
   register_lazy :HamlTemplate,         'tilt/haml',      'haml'
-  register_lazy :LessTemplate,         'tilt/less',      'less'
   register_lazy :LiquidTemplate,       'tilt/liquid',    'liquid'
   register_lazy :LiveScriptTemplate,   'tilt/livescript','ls', 'livescript'
   register_lazy :MarkabyTemplate,      'tilt/markaby',   'mab'
@@ -156,7 +154,6 @@ module Tilt
   register_lazy :RstPandocTemplate,    'tilt/rst-pandoc', 'rst'
   register_lazy :SassTemplate,         'tilt/sass',      'sass'
   register_lazy :ScssTemplate,         'tilt/sass',      'scss'
-  register_lazy :SigilTemplate,        'tilt/sigil',     'sigil'
   register_lazy :StringTemplate,       'tilt/string',    'str'
   register_lazy :TypeScriptTemplate,   'tilt/typescript', 'ts', 'tsx'
   register_lazy :WikiClothTemplate,    'tilt/wikicloth', 'wiki', 'mediawiki', 'mw'

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.authors = ["Ryan Tomayko", "Magnus Holm", "Jeremy Evans"]
-  s.email = "r@tomayko.com"
+  s.email = "code@jeremyevans.net"
 
   s.files = %w'COPYING bin/tilt' + Dir["lib/**/*.rb"]
   s.executables = ['tilt']

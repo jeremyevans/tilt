@@ -29,13 +29,6 @@ begin
 rescue LoadError
 end
 
-task :man do
-  require 'ronn'
-  ENV['RONN_MANUAL'] = "Tilt Manual"
-  ENV['RONN_ORGANIZATION'] = "Tilt #{SPEC.version}"
-  sh "ronn -w -s toc -r5 --markdown man/*.ronn"
-end
-
 # PACKAGING =================================================================
 
 if defined?(Gem)

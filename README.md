@@ -1,4 +1,4 @@
-Tilt [![Test suite](https://github.com/rtomayko/tilt/actions/workflows/test.yml/badge.svg)](https://github.com/rtomayko/tilt/actions/workflows/test.yml) [![Inline docs](http://inch-ci.org/github/rtomayko/tilt.svg)](http://inch-ci.org/github/rtomayko/tilt)
+Tilt
 ====
 
 Tilt is a thin interface over a bunch of different Ruby template engines in
@@ -91,7 +91,7 @@ These template engines ship with their own Tilt integration:
 See [TEMPLATES.md][t] for detailed information on template engine
 options and supported features.
 
-[t]: http://github.com/rtomayko/tilt/blob/master/docs/TEMPLATES.md
+[t]: http://github.com/jeremyevans/tilt/blob/master/docs/TEMPLATES.md
    "Tilt Template Engine Documentation"
 
 Basic Usage

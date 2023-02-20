@@ -1,9 +1,6 @@
 Tilt Templates
 ==============
 
-(See <https://github.com/rtomayko/tilt/blob/master/docs/TEMPLATES.md> for a rendered,
-HTML-version of this file).
-
 While all Tilt templates use the same basic interface for template loading and
 evaluation, each varies in its capabilities and available options. Detailed
 documentation on each supported template engine is provided below.

@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 
 module Tilt
   # The template source is evaluated as a Ruby string. The #{} interpolation

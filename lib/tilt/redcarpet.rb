@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 require 'redcarpet'
 
 module Tilt

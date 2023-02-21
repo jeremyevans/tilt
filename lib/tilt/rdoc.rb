@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 require 'rdoc'
 require 'rdoc/markup'
 require 'rdoc/markup/to_html'

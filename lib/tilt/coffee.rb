@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 require 'coffee_script'
 
 module Tilt

@@ -1,4 +1,4 @@
-require 'tilt/erb'
+require_relative 'erb'
 require 'erubis'
 
 module Tilt

@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 require 'haml'
 
 module Tilt

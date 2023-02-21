@@ -1,4 +1,4 @@
-require 'tilt/template'
+require_relative 'template'
 
 module Tilt
   # Sass template implementation. See:

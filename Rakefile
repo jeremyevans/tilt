@@ -1,15 +1,15 @@
-require 'rake/testtask'
 task :default => [:test]
 
-# SPECS =====================================================================
-
-desc 'Run tests (default)'
-Rake::TestTask.new(:test) do |t|
-  t.test_files = FileList['test/*_test.rb']
-  t.warning = false
+desc "Run tests"
+task :test do
+  sh "#{FileUtils::RUBY} test/all.rb"
 end
 
-# DOCUMENTATION =============================================================
+desc "Run tests with coverage"
+task :test_cov do
+  ENV['COVERAGE'] = '1'
+  sh "#{FileUtils::RUBY} test/all.rb"
+end
 
 begin
   require 'yard'
@@ -28,8 +28,6 @@ begin
   end
 rescue LoadError
 end
-
-# PACKAGING =================================================================
 
 desc 'Build packages'
 task :package do

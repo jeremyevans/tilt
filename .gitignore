@@ -6,3 +6,4 @@
 /doc
 .sass-cache
 /tilt-*.gem
+/coverage

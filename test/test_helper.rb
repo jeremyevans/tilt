@@ -8,6 +8,15 @@ ENV['MT_NO_PLUGINS'] = '1' # Work around stupid autoloading of plugins
 require 'minitest/autorun'
 require 'minitest/mock'
 
+if $VERBOSE
+  begin
+    require 'warning'
+  rescue LoadError
+  else
+    Warning.ignore(%r{lib/wikicloth/extensions/|lib/pdf/reader/font.rb|lib/maruku/|lib/creole/parser.rb})
+  end
+end
+
 FrozenError = RuntimeError unless defined?(FrozenError)
 
 class Minitest::Spec
@@ -21,11 +30,11 @@ class Minitest::Spec
     prev = Encoding.default_external
 
     begin
-      Encoding.default_external = encoding
+      silence{Encoding.default_external = encoding}
 
       yield
     ensure
-      Encoding.default_external = prev
+      silence{Encoding.default_external = prev}
     end
   end
 
@@ -34,13 +43,13 @@ class Minitest::Spec
   end
 
   def self.deprecated(*a, &block)
-    it(*a) do
-      begin
-        verbose, $VERBOSE = $VERBOSE, nil
-        instance_exec(&block)
-      ensure
-        $VERBOSE = verbose
-      end
-    end
+    it(*a){silence{instance_exec(&block)}}
+  end
+
+  def silence
+    verbose, $VERBOSE = $VERBOSE, nil
+    yield
+  ensure
+    $VERBOSE = verbose
   end
 end

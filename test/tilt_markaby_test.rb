@@ -47,7 +47,6 @@ begin
 
     it "should yield to the block given" do
       tilt = ::Tilt::MarkabyTemplate.new("test/markaby/yielding.mab", &@block)
-      eval_scope = Markaby::Builder.new
 
       output = tilt.render(Object.new, {}) do
         text("Joe")

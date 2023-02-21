@@ -44,13 +44,12 @@ begin
       assert_equal "Hey Joe!", template.render(scope)
     end
 
-    class MockOutputVariableScope
-      attr_accessor :exposed_buffer
-    end
-
     it "exposing the buffer to the template by default" do
       template = Tilt::ErubiTemplate.new(nil, :bufvar=>'@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
-      scope = MockOutputVariableScope.new
+      scope = Class.new do
+        attr_accessor :exposed_buffer
+      end.new
+
       template.render(scope)
       refute_nil scope.exposed_buffer
       assert_equal scope.exposed_buffer, 'hey'

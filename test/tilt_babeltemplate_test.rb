@@ -30,7 +30,7 @@ begin
       end
     end
   end
-rescue LoadError => boom
+rescue LoadError
   warn "Tilt::BabelTemplate (disabled)"
 end
 

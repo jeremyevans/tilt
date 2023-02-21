@@ -193,19 +193,19 @@ describe "tilt/template" do
   it "template with compiled_path with locals" do
     Dir.mktmpdir('tilt') do |dir|
       base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
+      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
       inst.compiled_path = base + '.rb'
 
       tempfile = "#{base}.rb"
       assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Object.new, 'a' => 1)
+      assert_equal 'Hey local-variable ', inst.render(Object.new, 'a' => 1)
       content = File.read(tempfile)
       assert_match(/\Aclass Object/, content)
       assert_includes(content, "\na = locals[\"a\"]\n")
 
       tempfile = "#{base}-1.rb"
       assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Object.new, 'b' => 1, 'a' => 1)
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, 'b' => 1, 'a' => 1)
       content = File.read(tempfile)
       assert_match(/\Aclass Object/, content)
       assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
@@ -373,13 +373,13 @@ describe "tilt/template (encoding)" do
 
   it "reading from file with default_internal set does no transcoding" do
     begin
-      Encoding.default_internal = 'utf-8'
+      silence{Encoding.default_internal = 'utf-8'}
       with_default_encoding('Big5') do
         inst = _MockTemplate.new(@template)
         assert_equal 'Big5', inst.data.encoding.to_s
       end
     ensure
-      Encoding.default_internal = nil
+      silence{Encoding.default_internal = nil}
     end
   end
 

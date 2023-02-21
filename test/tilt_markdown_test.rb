@@ -83,7 +83,7 @@ begin
       assert_equal "<p>Hello “World” – This is — a it …</p>", html
     end
   end
-rescue LoadError => boom
+rescue LoadError
   # It should already be warned in the main tests
 end
 
@@ -116,7 +116,7 @@ begin
       assert_equal %Q{<pre><code class="ruby">puts "hello world"\n</code></pre>}, html
     end
   end
-rescue LoadError => boom
+rescue LoadError
   # It should already be warned in the main tests
 end
 
@@ -135,7 +135,7 @@ begin
       undef_method method
     end
   end
-rescue LoadError => boom
+rescue LoadError
   # It should already be warned in the main tests
 end
 
@@ -157,7 +157,7 @@ begin
       undef_method method
     end
   end
-rescue LoadError => boom
+rescue LoadError
   # It should already be warned in the main tests
 end
 
@@ -168,7 +168,7 @@ begin
     include _MarkdownTests
     template Tilt::PandocTemplate
   end
-rescue LoadError => boom
+rescue LoadError
   # It should already be warned in the main tests
 end
 

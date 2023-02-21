@@ -70,7 +70,7 @@ begin
         }
         four = 2 * 2
         json[:integer] = four
-        nil
+        a = a = nil
       } }
       result = template.render
       assert( (result == '{"string":"hello","integer":4}') || (result == '{"integer":4,"string":"hello"}') )

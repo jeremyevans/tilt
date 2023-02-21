@@ -34,9 +34,9 @@ describe 'tilt compile site' do
           Thread.new {
             begin
               locals = { "local#{i}" => 'value' }
-              res = template.render(self, locals)
+              template.render(self, locals)
               thread_id = Thread.current.object_id
-              res = template.render(self, "local#{thread_id.abs.to_s}" => 'value')
+              template.render(self, "local#{thread_id.abs.to_s}" => 'value')
             rescue => boom
               main_thread.raise(boom)
             end

@@ -55,7 +55,6 @@ platform :ruby do
 
   gem 'RedCloth'
   gem 'commonmarker'
-  gem 'duktape', '~> 1.3.0.6'
   gem 'rdiscount', '>= 2.1.6'
   gem 'redcarpet'
   gem 'yajl-ruby'

@@ -149,6 +149,14 @@ describe "tilt/template" do
     assert inst.prepared?
   end
 
+  it "template_source with locals including 'locals'" do
+    # Ensure that a locals hash value named `locals` doesn't clobber the ability to assign other
+    # locals that follow it in sorted order
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{name}!' }
+    assert_equal "Hey Jane!", inst.render(Object.new, :locals => {other: 'stuff here'}, :name => 'Jane')
+    assert inst.prepared?
+  end
+
   it "template with compiled_path" do
     Dir.mktmpdir('tilt') do |dir|
       base = File.join(dir, 'template')

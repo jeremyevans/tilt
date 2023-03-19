@@ -179,6 +179,11 @@ module Tilt
       locals_keys = locals.keys
       locals_keys.sort!{|x, y| x.to_s <=> y.to_s}
 
+      # If there is a locals key itself named `locals`, put it last so it
+      # doesn't clobber the assignment of other locals from the same-named
+      # local variable in `#compile_template_method`
+      locals_keys.delete(:locals) and locals_keys.push(:locals) if locals_keys.include?(:locals)
+
       case scope
       when Object
         scope_class = Module === scope ? scope : scope.class

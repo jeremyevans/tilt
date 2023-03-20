@@ -3,6 +3,10 @@
 * Deprecate Tilt::Cache (jeremyevans)
 * Deprecate Tilt.current_template (jeremyevans)
 * Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
+* Handle `locals` as a local variable in templates (timriley) (#3) 
+
+The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
+repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).
 
 ## 2.1.0 (2023-02-17)
 

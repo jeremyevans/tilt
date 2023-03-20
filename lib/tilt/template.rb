@@ -262,26 +262,24 @@ module Tilt
     end
 
     def local_extraction(local_keys)
-      # If there is a locals key itself named `locals`, delete it from the ordered keys so we can
-      # assign it last. This is important because the assignment of all other locals depends on the
-      # `locals` local variable still matching the `locals` method argument given to the method
-      # created in `#compile_template_method`.
-      local_keys = local_keys.dup
-      locals_local_key = local_keys.delete(:locals)
-
       assignments = local_keys.map do |k|
         if k.to_s =~ /\A[a-z_][a-zA-Z_0-9]*\z/
           "#{k} = locals[#{k.inspect}]"
         else
           raise "invalid locals key: #{k.inspect} (keys must be variable names)"
         end
-      end.join("\n")
-
-      if locals_local_key
-        assignments += "\nlocals = locals[:locals]"
       end
 
-      assignments
+      s = "locals = locals[:locals]"
+      if assignments.delete(s)
+        # If there is a locals key itself named `locals`, delete it from the ordered keys so we can
+        # assign it last. This is important because the assignment of all other locals depends on the
+        # `locals` local variable still matching the `locals` method argument given to the method
+        # created in `#compile_template_method`.
+        assignments << s
+      end
+
+      assignments.join("\n")
     end
 
     def compile_template_method(local_keys, scope_class=nil)

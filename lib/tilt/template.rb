@@ -179,11 +179,6 @@ module Tilt
       locals_keys = locals.keys
       locals_keys.sort!{|x, y| x.to_s <=> y.to_s}
 
-      # If there is a locals key itself named `locals`, put it last so it
-      # doesn't clobber the assignment of other locals from the same-named
-      # local variable in `#compile_template_method`
-      locals_keys.delete(:locals) and locals_keys.push(:locals) if locals_keys.include?(:locals)
-
       case scope
       when Object
         scope_class = Module === scope ? scope : scope.class
@@ -267,13 +262,26 @@ module Tilt
     end
 
     def local_extraction(local_keys)
-      local_keys.map do |k|
+      # If there is a locals key itself named `locals`, delete it from the ordered keys so we can
+      # assign it last. This is important because the assignment of all other locals depends on the
+      # `locals` local variable still matching the `locals` method argument given to the method
+      # created in `#compile_template_method`.
+      local_keys = local_keys.dup
+      locals_local_key = local_keys.delete(:locals)
+
+      assignments = local_keys.map do |k|
         if k.to_s =~ /\A[a-z_][a-zA-Z_0-9]*\z/
           "#{k} = locals[#{k.inspect}]"
         else
           raise "invalid locals key: #{k.inspect} (keys must be variable names)"
         end
       end.join("\n")
+
+      if locals_local_key
+        assignments += "\nlocals = locals[:locals]"
+      end
+
+      assignments
     end
 
     def compile_template_method(local_keys, scope_class=nil)

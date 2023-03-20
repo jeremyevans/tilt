@@ -306,11 +306,11 @@ module Tilt
       method_source << source
       method_source << "\nend;end;"
 
-      bind_compiled_method(method_source, offset, scope_class, local_keys)
+      bind_compiled_method(method_source, offset, scope_class)
       unbind_compiled_method(method_name)
     end
 
-    def bind_compiled_method(method_source, offset, scope_class, local_keys)
+    def bind_compiled_method(method_source, offset, scope_class)
       path = compiled_path
       if path && scope_class.name
         path = path.dup

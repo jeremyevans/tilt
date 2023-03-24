@@ -2,10 +2,16 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/sass'
-
+rescue LoadError => e
+  warn "Tilt::SassTemplate (disabled): #{e.message}"
+else
   describe 'tilt/sass' do
     it "is registered for '.sass' files" do
       assert_equal Tilt::SassTemplate, Tilt['test.sass']
+    end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::SassTemplate.new{}.metadata[:allows_script]
     end
 
     it "compiles and evaluates the template on #render" do
@@ -34,8 +40,4 @@ begin
       3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
     end
   end
-
-rescue LoadError => err
-  raise err if ENV['FORCE_SASS']
-  warn "Tilt::SassTemplate (disabled)"
 end

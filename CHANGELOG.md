@@ -10,6 +10,8 @@
 * Deprecate support for RedCarpet 1.x (jeremyevans)
 * Remove Redcarpet1Template and Redcarpet2Template from the RedCarpet support (jeremyevans)
 * Drop support for RDoc < 4 (jeremyevans)
+* Separate CoffeeScriptTemplate.default_bare and CoffeeScriptLiterateTemplate.default_bare (jeremyevans)
+* Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

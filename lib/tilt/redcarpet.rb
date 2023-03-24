@@ -2,14 +2,22 @@ require_relative 'template'
 require 'redcarpet'
 
 module Tilt
-  # Compatibility mode for Redcarpet 1.x
-  class Redcarpet1Template < Template
+  class RedcarpetTemplate < Template
     self.default_mime_type = 'text/html'
+
+    def allows_script?
+      false
+    end
 
     ALIAS = {
       :escape_html => :filter_html,
       :smartypants => :smart
     }
+
+  # :nocov:
+  unless defined? ::Redcarpet::Render and defined? ::Redcarpet::Markdown
+    # Redcarpet 1.x
+    warn "Tilt support for RedCarpet 1.x is deprecated and will be removed in Tilt 2.3", uplevel: 1
 
     FLAGS = [:smart, :filter_html, :smartypants, :escape_html]
 
@@ -25,16 +33,8 @@ module Tilt
     def evaluate(scope, locals, &block)
       @output ||= @engine.to_html
     end
-
-    def allows_script?
-      false
-    end
-  end
-
-  # Future proof mode for Redcarpet 2.x (not yet released)
-  class Redcarpet2Template < Template
-    self.default_mime_type = 'text/html'
-
+  # :nocov:
+  else
     def generate_renderer
       renderer = options.delete(:renderer) || ::Redcarpet::Render::HTML.new(options)
       return renderer unless options.delete(:smartypants)
@@ -53,9 +53,10 @@ module Tilt
 
     def prepare
       # try to support the same aliases
-      Redcarpet1Template::ALIAS.each do |opt, aka|
-        next if options.key? opt or not options.key? aka
-        options[opt] = options.delete(aka)
+      ALIAS.each do |opt, aka|
+        if options.key?(aka) || !options.key?(opt)
+          options[opt] = options.delete(aka)
+        end
       end
 
       # only raise an exception if someone is trying to enable :escape_html
@@ -68,19 +69,7 @@ module Tilt
     def evaluate(scope, locals, &block)
       @output ||= @engine.render(data)
     end
-
-    def allows_script?
-      false
-    end
   end
 
-  if defined? ::Redcarpet::Render and defined? ::Redcarpet::Markdown
-    superclass = Redcarpet2Template
-  else
-    superclass = Redcarpet1Template
-  end
-
-  class RedcarpetTemplate < superclass
   end
 end
-

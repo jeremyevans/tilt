@@ -7,6 +7,8 @@
 * Do not cache output in PrawnTemplate#evaluate (jeremyevans)
 * Deprecate non-string template code in PrawnTemplate (jeremyevans)
 * Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)
+* Deprecate support for RedCarpet 1.x (jeremyevans)
+* Remove Redcarpet1Template and Redcarpet2Template from the RedCarpet support (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

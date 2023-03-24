@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/redcarpet'
-
+rescue LoadError => e
+  warn "Tilt::RedcarpetTemplate (disabled): #{e.message}"
+else
   describe 'tilt/redcarpet' do
     it "works correctly with #extensions_for" do
       extensions = Tilt.default_mapping.extensions_for(Tilt::RedcarpetTemplate)
@@ -29,30 +31,51 @@ begin
       end
     end
 
-    it "preparing and evaluating templates on #render" do
-      template = Tilt::RedcarpetTemplate.new { |t| "# Hello World!" }
-      assert_equal "<h1>Hello World!</h1>\n", template.render
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::RedcarpetTemplate.new{}.metadata[:allows_script]
     end
 
-    it "can be rendered more than once" do
+    it "preparing and evaluating templates on #render" do
       template = Tilt::RedcarpetTemplate.new { |t| "# Hello World!" }
       3.times { assert_equal "<h1>Hello World!</h1>\n", template.render }
     end
 
-    it "smartypants when :smart is set" do
-      template = Tilt::RedcarpetTemplate.new(:smartypants => true) { |t|
-        "OKAY -- 'Smarty Pants'" }
-      assert_match %r!<p>OKAY &ndash; (&#39;|&lsquo;)Smarty Pants(&#39;|&rsquo;)<\/p>!,
-        template.render
+    smarty_block = proc { |t| "OKAY -- 'Smarty Pants'" }
+    smarty_regexp = %r!<p>OKAY &ndash; (&#39;|&lsquo;)Smarty Pants(&#39;|&rsquo;)<\/p>!
+
+    it "smartypants when using :smart=>true" do
+      template = Tilt::RedcarpetTemplate.new(:smart => true, &smarty_block)
+      assert_match smarty_regexp, template.render
     end
 
-    it "smartypants with a rendererer instance" do
-      template = Tilt::RedcarpetTemplate.new(:renderer => Redcarpet::Render::HTML.new(:hard_wrap => true), :smartypants => true) { |t|
-        "OKAY -- 'Smarty Pants'" }
-      assert_match %r!<p>OKAY &ndash; (&#39;|&lsquo;)Smarty Pants(&#39;|&rsquo;)<\/p>!,
-        template.render
+    it "smartypants when using :smartypants=>true" do
+      template = Tilt::RedcarpetTemplate.new(:smartypants => true, &smarty_block)
+      assert_match smarty_regexp, template.render
+    end
+
+    it "smartypants when using :smartypants=>true, :renderer=>::Redcarpet::Render::HTML" do
+      template = Tilt::RedcarpetTemplate.new(:smartypants => true, :renderer=>::Redcarpet::Render::HTML, &smarty_block)
+      assert_match smarty_regexp, template.render
+    end
+
+    it "smartypants when using :smartypants=>true, :renderer=>::Redcarpet::Render::XHTML" do
+      template = Tilt::RedcarpetTemplate.new(:smartypants => true, :renderer=>::Redcarpet::Render::XHTML, &smarty_block)
+      assert_match smarty_regexp, template.render
+    end
+
+    it "smartypants when using :smartypants=>true, :renderer=>::Redcarpet::Render::Safe" do
+      template = Tilt::RedcarpetTemplate.new(:smartypants => true, :renderer=>::Redcarpet::Render::Safe, &smarty_block)
+      assert_match smarty_regexp, template.render
+    end
+
+    it "smartypants when using :smartypants=>true, :renderer=>::Redcarpet::Render::SmartyHTML" do
+      template = Tilt::RedcarpetTemplate.new(:smartypants => true, :renderer=>::Redcarpet::Render::SmartyHTML, &smarty_block)
+      assert_match smarty_regexp, template.render
+    end
+
+    it "smartypants with a :smartypants=>true, with :renderer instance" do
+      template = Tilt::RedcarpetTemplate.new(:renderer => Redcarpet::Render::HTML.new(:hard_wrap => true), :smartypants => true, &smarty_block)
+      assert_match smarty_regexp, template.render
     end
   end
-rescue LoadError
-  warn "Tilt::RedcarpetTemplate (disabled)"
 end

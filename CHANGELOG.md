@@ -4,6 +4,9 @@
 * Deprecate Tilt.current_template (jeremyevans)
 * Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
 * Handle `locals` as a local variable in templates (timriley) (#3) 
+* Do not cache output in PrawnTemplate#evaluate (jeremyevans)
+* Deprecate non-string template code in PrawnTemplate (jeremyevans)
+* Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

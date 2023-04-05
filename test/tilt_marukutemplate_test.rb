@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/maruku'
-
+rescue LoadError => e
+  warn "Tilt::MarukuTemplate (disabled): #{e.message}"
+else
   describe 'tilt/maruku' do
     it "registered below Kramdown" do
       %w[md mkd markdown].each do |ext|
@@ -29,7 +31,9 @@ begin
         "HELLO <blink>WORLD</blink>" }
       assert_equal "<p>HELLO</p>", template.render.strip
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::MarukuTemplate.new { |t| "# Hello World!" }.metadata[:allows_script]
+    end
   end
-rescue LoadError
-  warn "Tilt::MarukuTemplate (disabled)"
 end

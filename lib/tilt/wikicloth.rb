@@ -2,8 +2,7 @@ require_relative 'template'
 require 'wikicloth'
 
 module Tilt
-  # WikiCloth implementation. See:
-  # http://redcloth.org/
+  # WikiCloth implementation. See: https://github.com/nricciar/wikicloth
   class WikiClothTemplate < Template
     def prepare
       @parser = options.delete(:parser) || WikiCloth::Parser

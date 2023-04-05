@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/pandoc'
-
+rescue LoadError => e
+  warn "Tilt::PandocTemplate (disabled): #{e.message}"
+else
   describe 'tilt/pandoc' do
     it "preparing and evaluating templates on #render" do
       template = Tilt::PandocTemplate.new { |t| "# Hello World!" }
@@ -44,9 +46,19 @@ begin
         assert_equal "<p>Here is an inline note.^[Inlines notes are cool!]</p>", template.render
       end
 
+      it "generates footnotes with markdown_strict: false option" do
+        template = Tilt::PandocTemplate.new(:markdown_strict => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
+        assert_includes template.render, 'id="footnotes"'
+      end
+
       it "doesn't generate footnotes with commonmark option" do
         template = Tilt::PandocTemplate.new(:commonmark => true) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
         assert_equal "<p>Here is an inline note.^[Inlines notes are cool!]</p>", template.render
+      end
+
+      it "generates footnotes with commonmark: false option" do
+        template = Tilt::PandocTemplate.new(:commonmark => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
+        assert_includes template.render, 'id="footnotes"'
       end
 
       it "accepts arguments with values (e.g. :id_prefix => 'xyz')" do
@@ -63,8 +75,15 @@ begin
         template = Tilt::PandocTemplate.new(:standalone => true) { |t| "# This is a heading" }
         assert_match(/^<!DOCTYPE html.*<h1 id="this-is-a-heading">This is a heading<\/h1>.*<\/html>$/m, template.render)
       end
+
+      it "ignores options with false values (e.g. :standalone => false)" do
+        template = Tilt::PandocTemplate.new(:standalone => false) { |t| "# This is a heading" }
+        assert_equal '<h1 id="this-is-a-heading">This is a heading</h1>', template.render
+      end
+    end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::PandocTemplate.new { |t| "# Hello World!" }.metadata[:allows_script]
     end
   end
-rescue LoadError
-  warn "Tilt::PandocTemplate (disabled)"
 end

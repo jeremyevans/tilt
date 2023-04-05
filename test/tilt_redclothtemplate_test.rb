@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/redcloth'
-
+rescue LoadError => e
+  warn "Tilt::RedClothTemplate (disabled): #{e.message}"
+else
   describe 'tilt/redcloth' do
     it "is registered for '.textile' files" do
       assert_equal Tilt::RedClothTemplate, Tilt['test.textile']
@@ -29,7 +31,9 @@ begin
       template = Tilt::RedClothTemplate.new(:hard_breaks => false) { |t| "But they can be\nturned off." }
       assert_equal "<p>But they can be\nturned off.</p>", template.render
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::RedClothTemplate.new { |t| "h1. Hello World!" }.metadata[:allows_script]
+    end
   end
-rescue LoadError
-  warn "Tilt::RedClothTemplate (disabled)"
 end

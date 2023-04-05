@@ -12,6 +12,7 @@
 * Drop support for RDoc < 4 (jeremyevans)
 * Separate CoffeeScriptTemplate.default_bare and CoffeeScriptLiterateTemplate.default_bare (jeremyevans)
 * Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
+* Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

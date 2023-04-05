@@ -2,13 +2,16 @@ require_relative 'template'
 require 'kramdown'
 
 module Tilt
-  # Kramdown Markdown implementation. See:
-  # http://kramdown.rubyforge.org/
+  # Kramdown Markdown implementation. See: https://kramdown.gettalong.org/
   class KramdownTemplate < Template
-    DUMB_QUOTES = [39, 39, 34, 34]
+    DUMB_QUOTES = [39, 39, 34, 34].freeze
 
     def prepare
-      options[:smart_quotes] = DUMB_QUOTES unless options[:smartypants]
+      unless options[:smartypants]
+        # dup as Krawmdown modifies the passed option with map!
+        options[:smart_quotes] = DUMB_QUOTES.dup
+      end
+
       @engine = Kramdown::Document.new(data, options)
       @output = nil
     end
@@ -22,4 +25,3 @@ module Tilt
     end
   end
 end
-

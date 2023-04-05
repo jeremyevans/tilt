@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/livescript'
-
+rescue LoadError => e
+  warn "Tilt::LiveScriptTemplate (disabled): #{e.message}"
+else
   describe 'tilt/livescript' do
     before do
       @code_without_variables = "puts 'Hello, World!'\n"
@@ -30,7 +32,9 @@ begin
     it "is registered for '.ls' files" do
       assert_equal @renderer, Tilt['test.ls']
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, @renderer.new { |t| @code_without_variables }.metadata[:allows_script]
+    end
   end
-rescue LoadError
-  warn "Tilt::LiveScriptTemplate (disabled)"
 end

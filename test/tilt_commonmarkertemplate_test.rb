@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/commonmarker'
-
+rescue LoadError => e
+  warn "Tilt::CommonMarkerTemplate (disabled): #{e.message}"
+else
   describe 'tilt/commonmarker' do
     it "preparing and evaluating templates on #render" do
       template = Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }
@@ -43,7 +45,9 @@ EXPECTED_HTML
 
       assert_match(expected, template.render)
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }.metadata[:allows_script]
+    end
   end
-rescue LoadError
-  warn "Tilt::CommonMarkerTemplate (disabled)"
 end

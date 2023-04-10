@@ -7,7 +7,7 @@ module Tilt
 
     OPTION_ALIAS = {
       :smartypants => :SMART
-    }
+    }.freeze
     PARSE_OPTIONS = [
       :FOOTNOTES,
       :LIBERAL_HTML_TAG,

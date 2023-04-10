@@ -2,21 +2,15 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/yajl'
-
+rescue LoadError => e
+  warn "Tilt::YajlTemplateTest (disabled): #{e.message}"
+else
   describe 'tilt/yajl' do
     it "is registered for '.yajl' files" do
       assert_equal Tilt::YajlTemplate, Tilt['test.yajl']
     end
 
     it "compiles and evaluates the template on #render" do
-      template = Tilt::YajlTemplate.new { "json = { :integer => 3, :string => 'hello' }" }
-      output = template.render
-      result = Yajl::Parser.parse(output)
-      expect = {"integer" => 3,"string" => "hello"}
-      assert_equal expect, result
-    end
-
-    it "can be rendered more than once" do
       template = Tilt::YajlTemplate.new { "json = { :integer => 3, :string => 'hello' }" }
       expect = {"integer" => 3,"string" => "hello"}
       3.times do
@@ -36,6 +30,11 @@ begin
       scope = Object.new
       scope.instance_variable_set :@name, 'Joe'
       assert_equal '{"string":"Hey Joe!"}', template.render(scope)
+    end
+
+    it "passing locals with :json option" do
+      template = Tilt::YajlTemplate.new { "json[:string] = 'Hey ' + name + '!'" }
+      assert_equal '{"a":1,"string":"Hey Joe!"}', template.render(Object.new, :name => 'Joe', :json => {'a'=>1})
     end
 
     it "passing locals" do
@@ -93,8 +92,5 @@ begin
       template = Tilt::YajlTemplate.new(nil, options) { "json = { :string => 'hello' }" }
       assert_equal 'var output = {"string":"hello"}; foo(output);', template.render
     end
-
   end
-rescue LoadError
-  warn "Tilt::YajlTemplateTest (disabled)"
 end

@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/builder'
-
+rescue LoadError => e
+  warn "Tilt::BuilderTemplate (disabled): #{e.message}"
+else
   describe 'tilt/builder' do
     it "registered for '.builder' files" do
       assert_equal Tilt::BuilderTemplate, Tilt['test.builder']
@@ -11,17 +13,17 @@ begin
 
     it "preparing and evaluating the template on #render" do
       template = Tilt::BuilderTemplate.new { |t| "xml.em 'Hello World!'" }
-      assert_equal "<em>Hello World!</em>\n", template.render
-    end
-
-    it "can be rendered more than once" do
-      template = Tilt::BuilderTemplate.new { |t| "xml.em 'Hello World!'" }
       3.times { assert_equal "<em>Hello World!</em>\n", template.render }
     end
 
     it "passing locals" do
       template = Tilt::BuilderTemplate.new { "xml.em('Hey ' + name + '!')" }
       assert_equal "<em>Hey Joe!</em>\n", template.render(Object.new, :name => 'Joe')
+    end
+
+    it "passing :xml in locals" do
+      template = Tilt::BuilderTemplate.new { "xml.div { xml.em('Hey') }" }
+      assert_equal "<div><em>Hey</em></div>", template.render(nil, xml: ::Builder::XmlMarkup.new(:indent => 0))
     end
 
     it "evaluating in an object scope" do
@@ -67,6 +69,4 @@ begin
       end
     end
   end
-rescue LoadError
-  warn "Tilt::BuilderTemplate (disabled)"
 end

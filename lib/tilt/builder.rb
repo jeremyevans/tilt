@@ -2,8 +2,7 @@ require_relative 'template'
 require 'builder'
 
 module Tilt
-  # Builder template implementation. See:
-  # http://builder.rubyforge.org/
+  # Builder template implementation.
   class BuilderTemplate < Template
     self.default_mime_type = 'text/xml'
 
@@ -12,15 +11,15 @@ module Tilt
     end
 
     def evaluate(scope, locals, &block)
-      xml = (locals[:xml] || ::Builder::XmlMarkup.new(options))
-
       if data.respond_to?(:to_str)
-        if !locals[:xml]
-          locals = locals.merge(:xml => xml)
+        unless locals[:xml]
+          locals = Hash[locals]
+          locals[:xml] = xml_builder
         end
         return super(scope, locals, &block)
       end
 
+      xml = locals[:xml] || xml_builder
       data.call(xml)
       xml.target!
     end
@@ -32,6 +31,11 @@ module Tilt
     def precompiled_template(locals)
       data.to_str
     end
+
+    private
+
+    def xml_builder
+      ::Builder::XmlMarkup.new(options)
+    end
   end
 end
-

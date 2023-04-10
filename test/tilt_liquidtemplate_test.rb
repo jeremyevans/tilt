@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/liquid'
-
+rescue LoadError => e
+  warn "Tilt::LiquidTemplate (disabled): #{e.message}"
+else
   describe 'tilt/liquid' do
     it "registered for '.liquid' files" do
       assert_equal Tilt::LiquidTemplate, Tilt['test.liquid']
@@ -79,8 +81,9 @@ begin
       assert_equal "Beer is wet but Whisky is wetter.",
         template.render({}) { 'wet' }
     end
-  end
 
-rescue LoadError
-  warn "Tilt::LiquidTemplate (disabled)"
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::LiquidTemplate.new { |t| "Hello World!" }.metadata[:allows_script]
+    end
+  end
 end

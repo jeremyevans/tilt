@@ -12,10 +12,13 @@ module Tilt
 
     def evaluate(scope, locals)
       if data.respond_to?(:to_str)
-        wrapper = proc { yield.sub(DOCUMENT_HEADER, "") } if block_given?
-        super(scope, locals, &wrapper)
+        if block_given?
+          super(scope, locals){yield.sub(DOCUMENT_HEADER, "")}
+        else
+          super
+        end
       else
-        ::Nokogiri::XML::Builder.new.tap(&data).to_xml
+        ::Nokogiri::XML::Builder.new(&data).to_xml
       end
     end
 
@@ -33,4 +36,3 @@ module Tilt
     end
   end
 end
-

@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/nokogiri'
-
+rescue LoadError => e
+  warn "Tilt::NokogiriTemplate (disabled): #{e.message}"
+else
   describe 'tilt/nokogiri' do
     it "registered for '.nokogiri' files" do
       assert_equal Tilt::NokogiriTemplate, Tilt['test.nokogiri']
@@ -10,13 +12,6 @@ begin
     end
 
     it "preparing and evaluating the template on #render" do
-      template = Tilt::NokogiriTemplate.new { |t| "xml.em 'Hello World!'" }
-      doc = Nokogiri.XML template.render
-      assert_equal 'Hello World!', doc.root.text
-      assert_equal 'em', doc.root.name
-    end
-
-    it "can be rendered more than once" do
       template = Tilt::NokogiriTemplate.new { |t| "xml.em 'Hello World!'" }
       3.times do
         doc = Nokogiri.XML template.render
@@ -28,6 +23,13 @@ begin
     it "passing locals" do
       template = Tilt::NokogiriTemplate.new { "xml.em('Hey ' + name + '!')" }
       doc = Nokogiri.XML template.render(Object.new, :name => 'Joe')
+      assert_equal 'Hey Joe!', doc.root.text
+      assert_equal 'em', doc.root.name
+    end
+
+    it "passing locals with :xml" do
+      template = Tilt::NokogiriTemplate.new { "xml.em('Hey ' + name + '!')" }
+      doc = Nokogiri.XML template.render(Object.new, :name => 'Joe', :xml => Nokogiri::XML::Builder.new)
       assert_equal 'Hey Joe!', doc.root.text
       assert_equal 'em', doc.root.name
     end
@@ -82,6 +84,4 @@ begin
       end
     end
   end
-rescue LoadError
-  warn "Tilt::NokogiriTemplate (disabled)"
 end

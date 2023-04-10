@@ -42,6 +42,7 @@ describe 'tilt/erb' do
     begin
       $VERBOSE = nil
       Tilt::ERBTemplate.default_output_variable = '@_out_buf'
+      assert_equal '@_out_buf', Tilt::ERBTemplate.default_output_variable
       template = Tilt::ERBTemplate.new { '<% self.exposed_buffer = @_out_buf %>hey' }
       scope = _MockOutputVariableScope.new
       template.render(scope)

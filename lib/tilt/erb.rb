@@ -5,22 +5,25 @@ module Tilt
   # ERB template implementation. See:
   # http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html
   class ERBTemplate < Template
-    @@default_output_variable = '_erbout'
-
     SUPPORTS_KVARGS = ::ERB.instance_method(:initialize).parameters.assoc(:key) rescue false
 
-    def self.default_output_variable
-      @@default_output_variable
+    # Remove in Tilt 2.3
+    @default_output_variable = nil
+    def self._default_output_variable
+      @default_output_variable
     end
-
+    def self.default_output_variable
+      warn "#{self}.default_output_variable is deprecated and will be removed in Tilt 2.3.", uplevel: 1
+      @default_output_variable
+    end
     def self.default_output_variable=(name)
-      warn "#{self}.default_output_variable= has been replaced with the :outvar-option"
-      @@default_output_variable = name
+      warn "#{self}.default_output_variable= is deprecated and will be removed in Tilt 2.3. Switch to using the :outvar option.", uplevel: 1
+      @default_output_variable = name
     end
 
     def prepare
       @freeze_string_literals = !!@options[:freeze]
-      @outvar = options[:outvar] || self.class.default_output_variable
+      @outvar = options[:outvar] || self.class._default_output_variable || '_erbout'
       trim = case options[:trim]
       when false
         nil
@@ -31,8 +34,10 @@ module Tilt
       end
       @engine = if SUPPORTS_KVARGS
         ::ERB.new(data, trim_mode: trim, eoutvar: @outvar)
+      # :nocov:
       else
         ::ERB.new(data, options[:safe], trim, @outvar)
+      # :nocov:
       end
     end
 

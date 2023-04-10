@@ -14,6 +14,7 @@
 * Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
 * Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)
 * Deprecate Tilt.prefer (jeremyevans)
+* Do not define yield tag for RadiusTemplate if no block is given to render (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

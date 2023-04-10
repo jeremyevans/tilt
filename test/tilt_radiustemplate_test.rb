@@ -2,22 +2,15 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/radius'
-
-  # Disable radius tests for old Radius versions since it's still buggy.
-  # Remove when fixed upstream.
-  raise LoadError if Radius.version < "0.7"
-
+rescue LoadError => e
+  warn "Tilt::RadiusTemplate (disabled): #{e.message}"
+else
   describe 'tilt/radius' do
     it "registered for '.radius' files" do
       assert_equal Tilt::RadiusTemplate, Tilt['test.radius']
     end
 
     it "preparing and evaluating templates on #render" do
-      template = Tilt::RadiusTemplate.new { |t| "Hello World!" }
-      assert_equal "Hello World!", template.render
-    end
-
-    it "can be rendered more than once" do
       template = Tilt::RadiusTemplate.new { |t| "Hello World!" }
       3.times { assert_equal "Hello World!", template.render }
     end
@@ -49,16 +42,6 @@ begin
         template.render(scope, :beer => 'great', :whisky => 'greater')
     end
 
-    #it "handles local scope" do
-    #  beer   = 'wet'
-    #  whisky = 'wetter'
-    #
-    #  template = Tilt::RadiusTemplate.new {
-    #    'Beer is <r:beer /> but Whisky is <r:whisky />.'
-    #  }
-    #  assert_equal "Beer is wet but Whisky is wetter.", template.render(self)
-    #end
-
     it "passing a block for yield" do
       template = Tilt::RadiusTemplate.new {
         'Beer is <r:yield /> but Whisky is <r:yield />ter.'
@@ -66,9 +49,9 @@ begin
       assert_equal "Beer is wet but Whisky is wetter.",
         template.render({}) { 'wet' }
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::RadiusTemplate.new { |t| "Hello World!" }.metadata[:allows_script]
+    end
   end
-
-rescue LoadError
-  warn "Tilt::RadiusTemplate (disabled)"
 end
-

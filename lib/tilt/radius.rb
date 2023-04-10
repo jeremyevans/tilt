@@ -5,19 +5,17 @@ module Tilt
   # Radius Template
   # http://github.com/jlong/radius/
   class RadiusTemplate < Template
-    def self.context_class
-      @context_class ||= Class.new(Radius::Context) do
-        attr_accessor :tilt_scope
+    class ContextClass < Radius::Context
+      attr_accessor :tilt_scope
 
-        def tag_missing(name, attributes)
-          tilt_scope.__send__(name)
-        end
+      def tag_missing(name, attributes)
+        tilt_scope.__send__(name)
+      end
 
-        def dup
-          i = super
-          i.tilt_scope = tilt_scope
-          i
-        end
+      def dup
+        i = super
+        i.tilt_scope = tilt_scope
+        i
       end
     end
 
@@ -25,20 +23,17 @@ module Tilt
     end
 
     def evaluate(scope, locals, &block)
-      context = self.class.context_class.new
+      context = ContextClass.new
       context.tilt_scope = scope
-      context.define_tag("yield") do
-        block.call
-      end
+      context.define_tag("yield", &block) if block
       locals.each do |tag, value|
         context.define_tag(tag) do
           value
         end
       end
 
-      options = {:tag_prefix => 'r'}.merge(@options)
-      parser = Radius::Parser.new(context, options)
-      parser.parse(data)
+      options = {:tag_prefix => 'r'}.merge!(@options)
+      Radius::Parser.new(context, options).parse(data)
     end
 
     def allows_script?

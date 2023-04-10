@@ -2,11 +2,13 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/typescript'
-
+rescue LoadError => e
+  warn "Tilt::TypeScriptTemplate (disabled): #{e.message}"
+else
   describe 'tilt/typescript' do
     before do
       @ts = "var x:number = 5"
-      @js = /var x = 5;\s*/
+      @js = 'var x = 5;'
     end
 
     it "is registered for '.ts' files" do
@@ -19,19 +21,24 @@ begin
 
     it "compiles and evaluates the template on #render" do
       template = Tilt::TypeScriptTemplate.new { @ts }
-      assert_match @js, template.render
+      3.times { assert_includes template.render, @js }
     end
 
     it "supports source map" do
       template = Tilt::TypeScriptTemplate.new(inlineSourceMap: true)  { @ts }
-      assert_match %r(sourceMappingURL), template.render
+      assert_includes template.render, 'sourceMappingURL'
     end
 
-    it "can be rendered more than once" do
-      template = Tilt::TypeScriptTemplate.new { @ts }
-      3.times { assert_match @js, template.render }
+    it "skips options with nil value" do
+      template = Tilt::TypeScriptTemplate.new(completely_bogus_option: nil) { @ts }
+      assert_includes template.render, @js
+    end
+
+    it "supports options with string values" do
+      template = Tilt::TypeScriptTemplate.new(target: 'ES5') { '() => this' }
+      assert_includes template.render, 'function () { return _this; }'
+      template = Tilt::TypeScriptTemplate.new(target: 'ES6') { '() => this' }
+      assert_includes template.render, '() => this'
     end
   end
-rescue LoadError
-  warn "Tilt::TypeScriptTemplate (disabled)"
 end

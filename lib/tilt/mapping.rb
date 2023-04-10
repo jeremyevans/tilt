@@ -269,18 +269,13 @@ module Tilt
       [full_pattern[0,prefix_size-1], pattern]
     end
 
-    def lookup(ext)
-      @template_map[ext] || lazy_load(ext)
-    end
-
     LOCK = Monitor.new
 
+    def lookup(ext)
+      @template_map[ext] || LOCK.synchronize{lazy_load(ext)}
+    end
+
     def lazy_load(pattern)
-      return unless @lazy_map.has_key?(pattern)
-
-      LOCK.enter
-      entered = true
-
       choices = @lazy_map[pattern]
 
       # Check if a template class is already present
@@ -309,9 +304,7 @@ module Tilt
         end
       end
 
-      raise first_failure if first_failure
-    ensure
-      LOCK.exit if entered
+      raise first_failure
     end
 
     # The proper behavior (in MRI) for autoload? is to

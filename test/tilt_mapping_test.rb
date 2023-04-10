@@ -55,6 +55,19 @@ describe 'tilt/mapping' do
     assert_equal _Stub, @mapping['foo']
   end
 
+  it "#new raises if no template engine found" do
+    assert_raises(RuntimeError) do
+      @mapping.new('foo.nonexistant')
+    end
+  end
+
+  it "#[] raises if template engine recognized but cannot be loaded" do
+    @mapping.register_lazy :NonExistantTemplate,    'tilt/nonexistant_template',    'test-nonexist'
+    assert_raises(LoadError) do
+      @mapping['foo.test-nonexist']
+    end
+  end
+
   describe "lazy with one template class" do
     before do
       @mapping.register_lazy('MyTemplate', 'my_template', 'mt')

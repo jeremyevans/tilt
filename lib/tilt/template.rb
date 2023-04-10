@@ -256,9 +256,17 @@ module Tilt
 
     # The compiled method for the locals keys provided.
     def compiled_method(locals_keys, scope_class=nil)
+      key = [scope_class, locals_keys]
       LOCK.synchronize do
-        @compiled_method[[scope_class, locals_keys]] ||= compile_template_method(locals_keys, scope_class)
+        if meth = @compiled_method[key]
+          return meth
+        end
       end
+      meth = compile_template_method(locals_keys, scope_class)
+      LOCK.synchronize do
+        @compiled_method[key] = meth
+      end
+      meth
     end
 
     def local_extraction(local_keys)

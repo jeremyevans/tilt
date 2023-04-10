@@ -33,10 +33,13 @@ module Tilt
     default_mapping.register_pipeline(ext, options)
   end
 
+  # :nocov:
   # @deprecated Use {register} instead.
   def self.prefer(template_class, *extensions)
+    warn "Tilt.prefer is deprecated and will be removed in Tilt 2.3. Please switch to Tilt.register.", uplevel: 1
     register(template_class, *extensions)
   end
+  # :nocov:
 
   # @see Tilt::Mapping#registered?
   def self.registered?(ext)
@@ -116,7 +119,9 @@ module Tilt
       @cache = {}
     end
   end
+  # :nocov:
   deprecate_constant :Cache if respond_to?(:deprecate_constant, true)
+  # :nocov:
 
   # Template Implementations ================================================
 

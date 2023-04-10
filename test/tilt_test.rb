@@ -9,6 +9,10 @@ describe 'tilt' do
     end
   end
 
+  after do
+    Tilt.default_mapping.unregister('mock')
+  end
+
   it "registering template implementation classes by file extension" do
     Tilt.register(_MockTemplate, 'mock')
   end
@@ -26,6 +30,16 @@ describe 'tilt' do
     Tilt.register(_MockTemplate, 'mock')
     impl = Tilt['mock']
     assert_equal _MockTemplate, impl
+  end
+
+  it "should have working template_for" do
+    Tilt.register(_MockTemplate, 'mock')
+    assert_equal _MockTemplate, Tilt.template_for('mock')
+  end
+
+  it "should have working templates_for" do
+    Tilt.register(_MockTemplate, 'mock')
+    assert_equal [_MockTemplate], Tilt.templates_for('mock')
   end
 
   it "looking up template classes by implicit file extension" do

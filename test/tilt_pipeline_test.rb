@@ -68,3 +68,16 @@ describe 'tilt/pipeline (options)' do
     assert_equal "11", template.render
   end
 end
+
+describe 'Tilt.register_pipeline' do
+  before do
+    @pipeline_class = Tilt.register_pipeline('str.erb')
+  end
+  after do
+    Tilt.default_mapping.unregister('str.erb')
+  end
+
+  it "registers itself for the given extension" do
+    assert_equal @pipeline_class, Tilt['test.str.erb']
+  end
+end

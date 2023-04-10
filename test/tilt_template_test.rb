@@ -13,6 +13,12 @@ describe "tilt/template" do
     assert_raises(ArgumentError) { Tilt::Template.new }
   end
 
+  it "handles frozen strings with :default_encoding" do
+    inst = _MockTemplate.new('foo.erb', default_encoding: 'US-ASCII') {''.freeze}
+    assert_equal false, inst.data.frozen?
+    assert_equal Encoding::US_ASCII, inst.data.encoding
+  end
+
   it "initializing with a file" do
     inst = _MockTemplate.new('foo.erb') {}
     assert_equal 'foo.erb', inst.file
@@ -30,6 +36,18 @@ describe "tilt/template" do
     assert_equal File.basename(tempfile.path), inst.basename
   end
 
+  it "initializing with an object responding to to_path" do
+    o = Object.new
+    def o.to_path; 'foo.erb' end
+    assert_equal 'foo.erb', _MockTemplate.new(o){}.file
+  end
+
+  it "initializing with an object not responding to any expected convertor" do
+    assert_raises(TypeError) do
+      _MockTemplate.new(Object.new)
+    end
+  end
+
   it "initializing with a pathname" do
     tempfile = Tempfile.new('tilt_template_test')
     pathname = Pathname.new(tempfile.path)
@@ -37,10 +55,10 @@ describe "tilt/template" do
     assert_equal File.basename(tempfile.path), inst.basename
   end
 
-  it "initialize with hash that implements #path" do
+  it "initialize with hash that implements #path and #to_path" do
     _SillyHash = Class.new(Hash) do
-      def path(arg)
-      end
+      def path; end
+      def to_path; end
     end
 
     options = _SillyHash[:key => :value]
@@ -67,6 +85,16 @@ describe "tilt/template" do
   it "calculating the template's #name" do
     inst = _MockTemplate.new('/tmp/templates/foo.html.erb') {}
     assert_equal 'foo', inst.name
+  end
+
+  it "handles #basename and #name without file" do
+    inst = _MockTemplate.new {}
+    assert_nil inst.basename
+    assert_nil inst.name
+  end
+
+  it "#metadata returns class metdata" do
+    assert_equal({}, _MockTemplate.new{}.metadata)
   end
 
   it "initializing with a data loading block" do
@@ -159,6 +187,12 @@ describe "tilt/template" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{name}!' }
     assert_equal "Hey Jane!", inst.render(Object.new, :locals => [], :name => 'Jane')
     assert inst.prepared?
+  end
+
+  it "template with nil compiled_path" do
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
+    inst.compiled_path = nil
+    assert_nil inst.compiled_path
   end
 
   it "template with compiled_path" do

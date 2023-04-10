@@ -2,7 +2,9 @@ require_relative 'test_helper'
 
 begin
   require 'tilt/rdiscount'
-
+rescue LoadError => e
+  warn "Tilt::RDiscountTemplate (disabled): #{e.message}"
+else
   describe 'tilt/rdiscount' do
     it "registered above Maruku" do
       %w[md mkd markdown].each do |ext|
@@ -36,7 +38,9 @@ begin
         "HELLO <blink>WORLD</blink>" }
       assert_equal "<p>HELLO &lt;blink>WORLD&lt;/blink></p>\n", template.render
     end
+
+    it "sets allows_script metadata set to false" do
+      assert_equal false, Tilt::RDiscountTemplate.new { |t| "# Hello World!" }.metadata[:allows_script]
+    end
   end
-rescue LoadError
-  warn "Tilt::RDiscountTemplate (disabled)"
 end

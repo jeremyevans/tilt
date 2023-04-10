@@ -14,9 +14,9 @@ module Tilt
     ALIAS = {
       :escape_html => :filter_html,
       :smartypants => :smart
-    }
+    }.freeze
 
-    FLAGS = [:smart, :filter_html, :smartypants, :escape_html]
+    FLAGS = [:smart, :filter_html, :smartypants, :escape_html].freeze
 
     def flags
       FLAGS.select { |flag| options[flag] }.map { |flag| ALIAS[flag] || flag }
@@ -36,4 +36,3 @@ module Tilt
     end
   end
 end
-

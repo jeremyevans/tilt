@@ -35,7 +35,7 @@ else
   gem 'maruku'
 end
 
-if RUBY_VERSION >= '2.6'
+if RUBY_VERSION >= '3.1'
   gem 'sass-embedded'
 elsif RUBY_ENGINE == 'jruby'
   gem 'sass'

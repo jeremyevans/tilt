@@ -1,8 +1,10 @@
 require_relative 'test_helper'
 
 begin
-require 'nokogiri'
-
+  require 'nokogiri'
+rescue LoadError
+  warn "Markdown tests need Nokogiri"
+else
 _MarkdownTests = Module.new do
   extend Minitest::Spec::DSL
 
@@ -71,107 +73,75 @@ _MarkdownTests = Module.new do
   end
 end
 
-begin
-  require 'tilt/rdiscount'
-
-  describe 'tilt/rdiscount (markdown)' do
-    include _MarkdownTests
-    template Tilt::RDiscountTemplate
-
-    it "should use smartypants if :smartypants => true" do
-      html = nrender "Hello ``World'' -- This is --- a it ...", :smartypants => true
-      assert_equal "<p>Hello “World” – This is — a it …</p>", html
+markdown_describe = ->(lib, constant, &block) do
+  begin
+    require lib
+  rescue LoadError
+    # do nothing, main tests for the lib already warn
+  else
+    describe("#{lib} (markdown)") do
+      include _MarkdownTests
+      template Tilt.const_get(constant)
+      instance_exec(&block) if block
     end
   end
-rescue LoadError
-  # It should already be warned in the main tests
-end
-
-begin
-  require 'tilt/redcarpet'
-
-  describe 'tilt/redcarpet (markdown)' do
-    include _MarkdownTests
-    template Tilt::RedcarpetTemplate
-
-    it "should use smartypants if :smartypants => true" do
-      # Various versions of Redcarpet support various versions of Smart pants.
-      html = nrender "Hello ``World'' -- This is --- a it ...", :smartypants => true
-      assert_match %r!<p>Hello “World(''|”) – This is — a it …<\/p>!, html
-    end
-
-    it "should support :no_links option" do
-      html = nrender "Hello [World](http://example.com)", :smartypants => true, :no_links => true
-      assert_equal "<p>Hello [World](http://example.com)</p>", html
-    end
-
-    it "should support fenced code blocks with lang" do
-      code = <<-COD.gsub(/^\s+/,"")
-      ```ruby
-      puts "hello world"
-      ```
-      COD
-
-      html = nrender code, :fenced_code_blocks => true
-      assert_equal %Q{<pre><code class="ruby">puts "hello world"\n</code></pre>}, html
-    end
-  end
-rescue LoadError
-  # It should already be warned in the main tests
-end
-
-begin
-  require 'tilt/kramdown'
-
-  describe 'tilt/kramdown (markdown)' do
-    include _MarkdownTests
-    template Tilt::KramdownTemplate
-    skip_tests = [
-      ':escape_html => true',
-      'smartypants by default',
-      'smartypants if :smartypants => false',
-    ]
-    instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
-      undef_method method
-    end
-  end
-rescue LoadError
-  # It should already be warned in the main tests
 end
 
 
-begin
-  require 'tilt/maruku'
-
-  describe 'tilt/maruku (markdown)' do
-    include _MarkdownTests
-    template Tilt::MarukuTemplate
-    skip_tests = [
-      ':escape_html => true',
-      'smartypants by default',
-      'smartypants if :smartypants => false',
-      'smart quotes by default',
-      'smart quotes if :smartypants => false',
-    ]
-    instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
-      undef_method method
-    end
+markdown_describe.call 'tilt/rdiscount', :RDiscountTemplate do
+  it "should use smartypants if :smartypants => true" do
+    html = nrender "Hello ``World'' -- This is --- a it ...", :smartypants => true
+    assert_equal "<p>Hello “World” – This is — a it …</p>", html
   end
-rescue LoadError
-  # It should already be warned in the main tests
 end
 
-begin
-  require 'tilt/pandoc'
-
-  describe 'tilt/pandoc (markdown)' do
-    include _MarkdownTests
-    template Tilt::PandocTemplate
+markdown_describe.call 'tilt/redcarpet', :RedcarpetTemplate do
+  it "should use smartypants if :smartypants => true" do
+    # Various versions of Redcarpet support various versions of Smart pants.
+    html = nrender "Hello ``World'' -- This is --- a it ...", :smartypants => true
+    assert_match %r!<p>Hello “World(''|”) – This is — a it …<\/p>!, html
   end
-rescue LoadError
-  # It should already be warned in the main tests
+
+  it "should support :no_links option" do
+    html = nrender "Hello [World](http://example.com)", :smartypants => true, :no_links => true
+    assert_equal "<p>Hello [World](http://example.com)</p>", html
+  end
+
+  it "should support fenced code blocks with lang" do
+    code = <<-COD.gsub(/^\s+/,"")
+    ```ruby
+    puts "hello world"
+    ```
+    COD
+
+    html = nrender code, :fenced_code_blocks => true
+    assert_equal %Q{<pre><code class="ruby">puts "hello world"\n</code></pre>}, html
+  end
 end
 
-rescue LoadError
-  warn "Markdown tests need Nokogiri"
+markdown_describe.call 'tilt/kramdown', :KramdownTemplate do
+  skip_tests = [
+    ':escape_html => true',
+    'smartypants by default',
+    'smartypants if :smartypants => false',
+  ]
+  instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
+    undef_method method
+  end
+end
+
+markdown_describe.call 'tilt/maruku', :MarukuTemplate do
+  skip_tests = [
+    ':escape_html => true',
+    'smartypants by default',
+    'smartypants if :smartypants => false',
+    'smart quotes by default',
+    'smart quotes if :smartypants => false',
+  ]
+  instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
+    undef_method method
+  end
+end
+
+markdown_describe.call 'tilt/pandoc', :PandocTemplate
 end

@@ -19,6 +19,21 @@ end
 
 FrozenError = RuntimeError unless defined?(FrozenError)
 
+def self.checked_require(lib)
+  require lib
+rescue LoadError => e
+  warn "skipping tests of #{lib}: #{e.class}: #{e.message}"
+else
+  yield
+end
+
+def self.checked_describe(lib, &block)
+  checked_require lib do
+    describe(lib, &block)
+  end
+end
+
+
 class Minitest::Spec
   # Returns true if line numbers are reported incorrectly in heredocs.
   def heredoc_line_number_bug?

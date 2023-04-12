@@ -1,11 +1,6 @@
 require_relative 'test_helper'
 
-begin
-  require 'tilt/coffee'
-rescue LoadError => e
-  warn "Tilt::CoffeeScriptTemplate (disabled): #{e.message}"
-else
-
+checked_require 'tilt/coffee' do
   _CoffeeScriptTests = proc do
     it "bare is disabled by default" do
       assert_equal false, @renderer.default_bare

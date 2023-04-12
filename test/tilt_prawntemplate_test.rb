@@ -4,23 +4,23 @@ begin
   require 'tilt/prawn'
   require 'pdf-reader'
 rescue LoadError => e
-  warn "Tilt::PrawnTemplate (disabled): #{e.message}"
+  warn "skipping tests of tilt/prawn: #{e.class}: #{e.message}"
 else
-  _PdfOutput = Class.new do
-    def initialize(pdf_raw)
-      @reader = PDF::Reader.new(StringIO.new(pdf_raw))
-    end
-    
-    def text
-      @reader.pages.map(&:text).join
-    end
-    
-    def page_attributes(page_num=1)
-      @reader.page(page_num).attributes
-    end
-  end
-
   describe 'tilt/prawn' do
+    _PdfOutput = Class.new do
+      def initialize(pdf_raw)
+        @reader = PDF::Reader.new(StringIO.new(pdf_raw))
+      end
+      
+      def text
+        @reader.pages.map(&:text).join
+      end
+      
+      def page_attributes(page_num=1)
+        @reader.page(page_num).attributes
+      end
+    end
+
     it "is registered for '.prawn' files" do
       assert_equal Tilt::PrawnTemplate, Tilt['test.prawn']
     end

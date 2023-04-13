@@ -49,6 +49,8 @@ module Tilt
   # back to `require "maruku/template"`. If none of these are successful,
   # the first error will be raised.
   class Mapping
+    LOCK = Mutex.new
+
     # @private
     attr_reader :lazy_map, :template_map
 
@@ -59,8 +61,10 @@ module Tilt
 
     # @private
     def initialize_copy(other)
-      @template_map = other.template_map.dup
-      @lazy_map = other.lazy_map.dup
+      LOCK.synchronize do
+        @template_map = other.template_map.dup
+        @lazy_map = other.lazy_map.dup
+      end
     end
 
     # Registers a lazy template implementation by file extension. You
@@ -86,8 +90,9 @@ module Tilt
         class_name = "Tilt::#{class_name}"
       end
 
+      v = [class_name, file].freeze
       extensions.each do |ext|
-        @lazy_map[ext].unshift([class_name, file])
+        LOCK.synchronize{@lazy_map[ext]}.unshift(v)
       end
     end
 
@@ -109,7 +114,10 @@ module Tilt
       end
 
       extensions.each do |ext|
-        @template_map[ext.to_s] = template_class
+        ext = ext.to_s
+        LOCK.synchronize do
+          @template_map[ext] = template_class
+        end
       end
     end
 
@@ -162,8 +170,10 @@ module Tilt
     def unregister(*extensions)
       extensions.each do |ext|
         ext = ext.to_s
-        @template_map.delete(ext)
-        @lazy_map.delete(ext)
+        LOCK.synchronize do
+          @template_map.delete(ext)
+          @lazy_map.delete(ext)
+        end
       end
 
       nil
@@ -178,7 +188,8 @@ module Tilt
     #   mapping.registered?('erb')  # => true
     #   mapping.registered?('nope') # => false
     def registered?(ext)
-      @template_map.has_key?(ext.downcase) or lazy?(ext)
+      ext_downcase = ext.downcase
+      LOCK.synchronize{@template_map.has_key?(ext_downcase)} or lazy?(ext)
     end
 
     # Instantiates a new template class based on the file.
@@ -239,10 +250,10 @@ module Tilt
     # @param [template class] template_class
     def extensions_for(template_class)
       res = []
-      template_map.each do |ext, klass|
+      LOCK.synchronize{@template_map.to_a}.each do |ext, klass|
         res << ext if template_class == klass
       end
-      lazy_map.each do |ext, choices|
+      LOCK.synchronize{@lazy_map.to_a}.each do |ext, choices|
         res << ext if choices.any? { |klass, file| template_class.to_s == klass }
       end
       res.uniq
@@ -252,7 +263,7 @@ module Tilt
 
     def lazy?(ext)
       ext = ext.downcase
-      @lazy_map.has_key?(ext) && !@lazy_map[ext].empty?
+      LOCK.synchronize{@lazy_map.has_key?(ext) && !@lazy_map[ext].empty?}
     end
 
     def split(file)
@@ -269,14 +280,12 @@ module Tilt
       [full_pattern[0,prefix_size-1], pattern]
     end
 
-    LOCK = Monitor.new
-
     def lookup(ext)
-      @template_map[ext] || LOCK.synchronize{lazy_load(ext)}
+      LOCK.synchronize{@template_map[ext]} || lazy_load(ext)
     end
 
     def lazy_load(pattern)
-      choices = @lazy_map[pattern]
+      choices = LOCK.synchronize{@lazy_map[pattern]}
 
       # Check if a template class is already present
       choices.each do |class_name, file|

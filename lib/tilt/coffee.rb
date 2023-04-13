@@ -10,7 +10,9 @@ module Tilt
     self.default_mime_type = 'application/javascript'
 
     @default_bare = false
-    singleton_class.attr_accessor :default_bare
+    class << self
+      attr_accessor :default_bare
+    end
 
     # :nocov:
     def self.default_no_wrap

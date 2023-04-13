@@ -1,4 +1,3 @@
-require 'monitor'
 require_relative 'pipeline'
 
 module Tilt

@@ -3,10 +3,7 @@ require 'tempfile'
 require 'tmpdir'
 require 'pathname'
 
-_MockTemplate = Class.new(Tilt::Template) do
-  def prepare
-  end
-end
+_MockTemplate = Class.new(Tilt::Template)
 
 describe "tilt/template" do
   it "needs a file or block" do
@@ -107,10 +104,6 @@ describe "tilt/template" do
       @prepared = true
     end
     def prepared? ; @prepared ; end
-  end
-
-  it "raises NotImplementedError when #prepare not defined" do
-    assert_raises(NotImplementedError) { Tilt::Template.new { |template| "Hello World!" } }
   end
 
   it "raises NotImplementedError when #evaluate or #template_source not defined" do

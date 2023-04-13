@@ -15,9 +15,6 @@ module Tilt
       end
     end
 
-    def prepare
-    end
-
     def evaluate(scope, locals, &block)
       builder = self.class.builder_class.new({}, scope)
       builder.locals = locals

@@ -19,9 +19,6 @@ module Tilt
       end
     end
 
-    def prepare
-    end
-
     def evaluate(scope, locals, &block)
       context = ContextClass.new
       context.tilt_scope = scope

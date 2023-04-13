@@ -6,9 +6,6 @@ describe 'tilt compile site' do
   end
 
   _CompilingTemplate = Class.new(Tilt::Template) do
-    def prepare
-    end
-
     def precompiled_template(locals)
       @data.inspect
     end

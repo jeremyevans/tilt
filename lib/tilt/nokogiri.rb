@@ -8,8 +8,6 @@ module Tilt
     DOCUMENT_HEADER = /^<\?xml version=\"1\.0\"\?>\n?/
     self.default_mime_type = 'text/xml'
 
-    def prepare; end
-
     def evaluate(scope, locals)
       if data.respond_to?(:to_str)
         if block_given?

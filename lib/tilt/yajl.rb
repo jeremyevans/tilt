@@ -41,9 +41,6 @@ module Tilt
   class YajlTemplate < Template
     self.default_mime_type = 'application/json'
 
-    def prepare
-    end
-
     def evaluate(scope, locals, &block)
       decorate(super)
     end

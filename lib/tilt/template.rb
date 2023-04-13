@@ -163,9 +163,8 @@ module Tilt
     # engine. Called immediately after template data is loaded. Instance
     # variables set in this method are available when #evaluate is called.
     #
-    # Subclasses must provide an implementation of this method.
+    # Empty by default as some subclasses do not need separate preparation.
     def prepare
-      raise NotImplementedError
     end
 
     CLASS_METHOD = Kernel.instance_method(:class)

@@ -13,7 +13,6 @@
 * Separate CoffeeScriptTemplate.default_bare and CoffeeScriptLiterateTemplate.default_bare (jeremyevans)
 * Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
 * Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)
-* Deprecate Tilt.prefer (jeremyevans)
 * Do not define yield tag for RadiusTemplate if no block is given to render (jeremyevans)
 * Deprecate {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
 * Avoid holding mutex while compiling template methods (jeremyevans)

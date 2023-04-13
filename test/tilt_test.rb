@@ -26,6 +26,10 @@ describe 'tilt' do
     Tilt.register(_MockTemplate, :mock)
   end
 
+  it "registering template classes with prefer" do
+    Tilt.prefer(_MockTemplate, :mock)
+  end
+
   it "looking up template classes by exact file extension" do
     Tilt.register(_MockTemplate, 'mock')
     impl = Tilt['mock']

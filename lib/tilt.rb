@@ -8,11 +8,6 @@ module Tilt
 
   @default_mapping = Mapping.new
 
-  class << self
-    # @return [Tilt::Mapping] the main mapping object
-    attr_reader :default_mapping
-  end
-
   # @private
   def self.lazy_map
     default_mapping.lazy_map
@@ -32,14 +27,6 @@ module Tilt
   def self.register_pipeline(ext, options={})
     default_mapping.register_pipeline(ext, options)
   end
-
-  # :nocov:
-  # @deprecated Use {register} instead.
-  def self.prefer(template_class, *extensions)
-    warn "Tilt.prefer is deprecated and will be removed in Tilt 2.3. Please switch to Tilt.register.", uplevel: 1
-    register(template_class, *extensions)
-  end
-  # :nocov:
 
   # @see Tilt::Mapping#registered?
   def self.registered?(ext)
@@ -77,6 +64,14 @@ module Tilt
   def self.current_template
     warn "Tilt.current_template is deprecated and will be removed in Tilt 2.3", uplevel: 1
     Thread.current[:tilt_current_template]
+  end
+
+  class << self
+    # @return [Tilt::Mapping] the main mapping object
+    attr_reader :default_mapping
+
+    # Alias register as prefer for Tilt 1.x compatibility.
+    alias prefer register
   end
 
   # Extremely simple template cache implementation. Calling applications

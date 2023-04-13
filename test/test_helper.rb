@@ -13,7 +13,7 @@ if $VERBOSE
     require 'warning'
   rescue LoadError
   else
-    Warning.ignore(%r{lib/wikicloth/extensions/|lib/pdf/reader/font.rb|lib/maruku/|lib/creole/parser.rb})
+    Warning.ignore(%r{lib/wikicloth/extensions/|lib/pdf/reader/font.rb|lib/maruku/|lib/creole/parser.rb|lib/commonmarker})
   end
 end
 

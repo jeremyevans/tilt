@@ -19,61 +19,43 @@ feature is relevant to the engine):
 The primary goal is to get all of the things listed above right for all
 template engines included in the distribution.
 
-Support for these template engines is included with the package:
+Support for these template engines is included with Tilt:
 
-| Engine                  | File Extensions        | Required Libraries                         | Maintainer  |
-| ----------------------- | ---------------------- | ------------------------------------------ | ----------- |
-| Asciidoctor             | .ad, .adoc, .asciidoc  | asciidoctor (>= 0.1.0)                     | Community   |
-| ERB                     | .erb, .rhtml           | none (included ruby stdlib)                | Tilt team   |
-| InterpolatedString      | .str                   | none (included ruby core)                  | Tilt team   |
-| Erubi                   | .erb, .rhtml, .erubi   | erubi                                      | Community   |
-| Erubis                  | .erb, .rhtml, .erubis  | erubis                                     | Tilt team   |
-| Haml                    | .haml                  | haml                                       | Tilt team   |
-| Sass                    | .sass                  | sass-embedded (>= 1.0) or sassc (>=2.0)    | Tilt team   |
-| Scss                    | .scss                  | sass-embedded (>= 1.0) or sassc (>=2.0)    | Tilt team   |
-| Builder                 | .builder               | builder                                    | Tilt team   |
-| Liquid                  | .liquid                | liquid                                     | Community   |
-| RDiscount               | .markdown, .mkd, .md   | rdiscount                                  | Community   |
-| Redcarpet               | .markdown, .mkd, .md   | redcarpet                                  | Community   |
-| Kramdown                | .markdown, .mkd, .md   | kramdown                                   | Community   |
-| Pandoc                  | .markdown, .mkd, .md   | pandoc                                     | Community   |
-| reStructuredText        | .rst                   | pandoc                                     | Community   |
-| Maruku                  | .markdown, .mkd, .md   | maruku                                     | Community   |
-| CommonMarker            | .markdown, .mkd, .md   | commonmarker                               | Community   |
-| RedCloth                | .textile               | redcloth                                   | Community   |
-| RDoc                    | .rdoc                  | rdoc                                       | Tilt team   |
-| Radius                  | .radius                | radius                                     | Community   |
-| Markaby                 | .mab                   | markaby                                    | Tilt team   |
-| Nokogiri                | .nokogiri              | nokogiri                                   | Community   |
-| CoffeeScript            | .coffee                | coffee-script (+ javascript)               | Tilt team   |
-| CoffeeScript (literate) | .litcoffee             | coffee-script (>= 1.5.0) (+ javascript)    | Tilt team   |
-| LiveScript              | .ls                    | livescript (+ javascript)                  | Tilt team   |
-| TypeScript              | .ts                    | typescript (+ javascript)                  | Tilt team   |
-| Creole (Wiki markup)    | .wiki, .creole         | creole                                     | Community   |
-| WikiCloth (Wiki markup) | .wiki, .mediawiki, .mw | wikicloth                                  | Community   |
-| Yajl                    | .yajl                  | yajl-ruby                                  | Community   |
-| CSV                     | .rcsv                  | none (included ruby stdlib)                | Tilt team   |
-| Prawn                   | .prawn                 | prawn (>= 2.0.0)                           | Community   |
-| Babel                   | .es6, .babel, .jsx     | babel-transpiler                           | Tilt team   |
-| Opal                    | .rb                    | opal                                       | Community   |
-
-Every supported template engine has a *maintainer*. Note that this is the
-maintainer of the Tilt integration, not the maintainer of the template engine
-itself. The maintainer is responsible for providing an adequate integration and
-keeping backwards compatibility across Tilt version. Some integrations are
-maintained by the *community*, which is handled in the following way:
-
-- The Tilt team will liberally accept pull requests to update existing
-  community-maintained template integrations. It's up to the community as a
-  whole to make sure the integration stays consistent and backwards compatible
-  over time.
-- Test failures in community-maintained integrations will not be prioritized by
-  the Tilt team and a new version of Tilt might be released even though these
-  tests are failing.
-- Anyone can become a maintainer for a template engine integration they care
-  about. Just open an issue and we'll figure it out.
-- The Tilt team is no longer accepting new community-maintained template
-  integrations.
+| Engine                  | File Extensions        | Required Libraries            |
+| ----------------------- | ---------------------- | ------------------------------|
+| Asciidoctor             | .ad, .adoc, .asciidoc  | asciidoctor                   |
+| ERB                     | .erb, .rhtml           | none (included ruby stdlib)   |
+| InterpolatedString      | .str                   | none (included ruby core)     |
+| Erubi                   | .erb, .rhtml, .erubi   | erubi                         |
+| Erubis                  | .erb, .rhtml, .erubis  | erubis                        |
+| Haml                    | .haml                  | haml                          |
+| Sass                    | .sass                  | sass-embedded, sassc, or sass |
+| Scss                    | .scss                  | sass-embedded, sassc, or sass |
+| Builder                 | .builder               | builder                       |
+| Liquid                  | .liquid                | liquid                        |
+| RDiscount               | .markdown, .mkd, .md   | rdiscount                     |
+| Redcarpet               | .markdown, .mkd, .md   | redcarpet                     |
+| Kramdown                | .markdown, .mkd, .md   | kramdown                      |
+| Pandoc                  | .markdown, .mkd, .md   | pandoc                        |
+| reStructuredText        | .rst                   | pandoc                        |
+| Maruku                  | .markdown, .mkd, .md   | maruku                        |
+| CommonMarker            | .markdown, .mkd, .md   | commonmarker                  |
+| RedCloth                | .textile               | redcloth                      |
+| RDoc                    | .rdoc                  | rdoc                          |
+| Radius                  | .radius                | radius                        |
+| Markaby                 | .mab                   | markaby                       |
+| Nokogiri                | .nokogiri              | nokogiri                      |
+| CoffeeScript            | .coffee                | coffee-script (+ javascript)  |
+| CoffeeScript (literate) | .litcoffee             | coffee-script (+ javascript)  |
+| LiveScript              | .ls                    | livescript (+ javascript)     |
+| TypeScript              | .ts                    | typescript (+ javascript)     |
+| Creole (Wiki markup)    | .wiki, .creole         | creole                        |
+| WikiCloth (Wiki markup) | .wiki, .mediawiki, .mw | wikicloth                     |
+| Yajl                    | .yajl                  | yajl-ruby                     |
+| CSV                     | .rcsv                  | none (included ruby stdlib)   |
+| Prawn                   | .prawn                 | prawn                         |
+| Babel                   | .es6, .babel, .jsx     | babel-transpiler              |
+| Opal                    | .rb                    | opal                          |
 
 These template engines ship with their own Tilt integration:
 
@@ -240,7 +222,8 @@ it on subsequent template invocations. Benchmarks show this yields a 5x-10x
 performance increase over evaluating the Ruby source on each invocation.
 
 Template compilation is currently supported for these template engines:
-StringTemplate, ERB, Erubis, Erubi, Haml, Nokogiri, Builder and Yajl.
+StringTemplate, ERB, Erubis, Erubi, Etanni, Haml, Nokogiri, Builder, CSV,
+Prawn, and Yajl.
 
 LICENSE
 -------

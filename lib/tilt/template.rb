@@ -381,4 +381,28 @@ module Tilt
       string.force_encoding(original_encoding)
     end
   end
+
+  class StaticTemplate < Template
+    def self.subclass(mime_type: 'text/html', &block)
+      Class.new(self) do
+        self.default_mime_type = mime_type
+
+        private
+
+        define_method(:_prepare_output, &block)
+      end
+    end
+
+    def prepare
+      @output = _prepare_output
+    end
+
+    def render(scope=nil, locals=nil)
+      @output
+    end
+
+    def allows_script?
+      false
+    end
+  end
 end

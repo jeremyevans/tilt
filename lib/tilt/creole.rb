@@ -1,25 +1,13 @@
 require_relative 'template'
 require 'creole'
 
-module Tilt
-  # Creole implementation. See:
-  # http://www.wikicreole.org/
-  class CreoleTemplate < Template
-    def prepare
-      opts = {}
-      [:allowed_schemes, :extensions, :no_escape].each do |k|
-        opts[k] = options[k] if options[k]
-      end
-      @engine = Creole::Parser.new(data, opts)
-      @output = nil
-    end
+allowed_opts = [:allowed_schemes, :extensions, :no_escape].freeze
 
-    def evaluate(scope, locals, &block)
-      @output ||= @engine.to_html
-    end
-
-    def allows_script?
-      false
-    end
+# Creole implementation. See: http://www.wikicreole.org/
+Tilt::CreoleTemplate = Tilt::StaticTemplate.subclass do
+  opts = {}
+  allowed_opts.each do |k|
+    opts[k] = options[k] if options[k]
   end
+  Creole::Parser.new(data, opts).to_html
 end

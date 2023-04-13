@@ -6,7 +6,7 @@ checked_describe 'tilt/sass' do
   end
 
   it "sets allows_script metadata set to false" do
-    assert_equal false, Tilt::SassTemplate.new{}.metadata[:allows_script]
+    assert_equal false, Tilt::SassTemplate.new{''}.metadata[:allows_script]
   end
 
   it "compiles and evaluates the template on #render" do

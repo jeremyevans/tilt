@@ -1,21 +1,7 @@
 require_relative 'template'
 require 'maruku'
 
-module Tilt
-  # Maruku markdown implementation. See:
-  # http://maruku.rubyforge.org/
-  class MarukuTemplate < Template
-    def prepare
-      @engine = Maruku.new(data, options)
-      @output = nil
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= @engine.to_html
-    end
-
-    def allows_script?
-      false
-    end
-  end
+# Maruku markdown implementation. See: https://github.com/bhollis/maruku
+Tilt::MarukuTemplate = Tilt::StaticTemplate.subclass do
+  Maruku.new(data, options).to_html
 end

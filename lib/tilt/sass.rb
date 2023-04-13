@@ -4,24 +4,19 @@ module Tilt
   # Sass template implementation for generating CSS. See: https://sass-lang.com/
   #
   # Sass templates do not support object scopes, locals, or yield.
-  class SassTemplate < Template
+  class SassTemplate < StaticTemplate
     self.default_mime_type = 'text/css'
-
-    def allows_script?
-      false
-    end
 
     begin
       require 'sass-embedded'
     # :nocov:
       require 'uri'
-      Engine = nil
-
-      def evaluate(scope, locals, &block)
-        @output ||= ::Sass.compile_string(data, **sass_options).css
-      end
 
       private
+
+      def _prepare_output
+        ::Sass.compile_string(data, **sass_options).css
+      end
 
       def sass_options
         path = File.absolute_path(eval_file)
@@ -42,15 +37,11 @@ module Tilt
         end
       end
 
-      def prepare
-        @engine = Engine.new(data, sass_options)
-      end
-
-      def evaluate(scope, locals, &block)
-        @output ||= @engine.render
-      end
-
       private
+
+      def _prepare_output
+        Engine.new(data, sass_options).render
+      end
 
       def sass_options
         options.merge(:filename => eval_file, :line => line, :syntax => :sass)

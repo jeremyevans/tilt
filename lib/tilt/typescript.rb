@@ -1,26 +1,18 @@
 require_relative 'template'
 require 'typescript-node'
 
-module Tilt
-  class TypeScriptTemplate < Template
-    self.default_mime_type = 'application/javascript'
+Tilt::TypeScriptTemplate = Tilt::StaticTemplate.subclass(mime_type: 'application/javascript') do
+  option_args = []
 
-    def prepare
-      @option_args = []
+  options.each do |key, value|
+    next unless value
 
-      options.each do |key, value|
-        next unless value
+    option_args << "--#{key}"
 
-        @option_args << "--#{key}"
-
-        if value != true
-          @option_args << value.to_s
-        end
-      end
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= TypeScript::Node.compile(data, *@option_args)
+    if value != true
+      option_args << value.to_s
     end
   end
+
+  TypeScript::Node.compile(data, *option_args)
 end

@@ -6,7 +6,7 @@ module Tilt
   # http://coffeescript.org/
   #
   # CoffeeScript templates do not support object scopes, locals, or yield.
-  class CoffeeScriptTemplate < Template
+  class CoffeeScriptTemplate < StaticTemplate
     self.default_mime_type = 'application/javascript'
 
     @default_bare = false
@@ -33,14 +33,7 @@ module Tilt
         options[:bare] = self.class.default_bare
       end
       options[:literate] ||= self.class.literate?
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= CoffeeScript.compile(data, options)
-    end
-
-    def allows_script?
-      false
+      @output = CoffeeScript.compile(data, options)
     end
   end
 

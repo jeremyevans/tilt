@@ -27,7 +27,7 @@ checked_describe 'tilt/redcarpet' do
   end
 
   it "sets allows_script metadata set to false" do
-    assert_equal false, Tilt::RedcarpetTemplate.new{}.metadata[:allows_script]
+    assert_equal false, Tilt::RedcarpetTemplate.new{''}.metadata[:allows_script]
   end
 
   it "preparing and evaluating templates on #render" do

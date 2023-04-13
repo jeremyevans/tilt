@@ -1,22 +1,12 @@
 require_relative 'template'
 require 'redcloth'
 
-module Tilt
-  # RedCloth implementation. See:
-  # http://redcloth.org/
-  class RedClothTemplate < Template
-    def prepare
-      @engine = RedCloth.new(data)
-      options.each {|k, v| @engine.send("#{k}=", v) if @engine.respond_to? "#{k}="}
-      @output = nil
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= @engine.to_html
-    end
-
-    def allows_script?
-      false
-    end
+# RedCloth implementation. See: https://github.com/jgarber/redcloth
+Tilt::RedClothTemplate = Tilt::StaticTemplate.subclass do
+  engine = RedCloth.new(data)
+  options.each  do |k, v|
+    m = :"#{k}="
+    engine.send(m, v) if engine.respond_to? m
   end
+  engine.to_html
 end

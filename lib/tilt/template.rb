@@ -40,12 +40,12 @@ module Tilt
         @metadata ||= {}
       end
 
-      # @deprecated Use `.metadata[:mime_type]` instead.
+      # Use `.metadata[:mime_type]` instead.
       def default_mime_type
         metadata[:mime_type]
       end
 
-      # @deprecated Use `.metadata[:mime_type] = val` instead.
+      # Use `.metadata[:mime_type] = val` instead.
       def default_mime_type=(value)
         metadata[:mime_type] = value
       end

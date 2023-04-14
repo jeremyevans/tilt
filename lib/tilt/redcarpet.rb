@@ -10,22 +10,22 @@ unless defined? ::Redcarpet::Render and defined? ::Redcarpet::Markdown
   _flags = [:smart, :filter_html, :smartypants, :escape_html]
 
   Tilt::RedcarpetTemplate = Tilt::StaticTemplate.subclass do
-    flags = _flags.select { |flag| options[flag] }.map! { |flag| aliases[flag] || flag }
-    RedcarpetCompat.new(data, *flags).to_html
+    flags = _flags.select { |flag| @options[flag] }.map! { |flag| aliases[flag] || flag }
+    RedcarpetCompat.new(@data, *flags).to_html
   end
 # :nocov:
 else
   Tilt::RedcarpetTemplate = Tilt::StaticTemplate.subclass do
     aliases.each do |opt, aka|
-      if options.key?(aka) || !options.key?(opt)
-        options[opt] = options.delete(aka)
+      if options.key?(aka) || !@options.key?(opt)
+        @options[opt] = @options.delete(aka)
       end
     end
 
     # only raise an exception if someone is trying to enable :escape_html
-    options.delete(:escape_html) unless options[:escape_html]
+    @options.delete(:escape_html) unless @options[:escape_html]
 
-    renderer = options.delete(:renderer) || ::Redcarpet::Render::HTML.new(options)
+    renderer = @options.delete(:renderer) || ::Redcarpet::Render::HTML.new(@options)
     if options.delete(:smartypants) && !(renderer.is_a?(Class) && renderer <= ::Redcarpet::Render::SmartyPants)
       renderer = if renderer == ::Redcarpet::Render::XHTML
         ::Redcarpet::Render::SmartyHTML.new(:xhtml => true)
@@ -38,6 +38,6 @@ else
       end
     end
 
-    Redcarpet::Markdown.new(renderer, options).render(data)
+    Redcarpet::Markdown.new(renderer, @options).render(@data)
   end
 end

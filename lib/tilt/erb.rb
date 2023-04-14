@@ -23,20 +23,20 @@ module Tilt
 
     def prepare
       @freeze_string_literals = !!@options[:freeze]
-      @outvar = options[:outvar] || self.class._default_output_variable || '_erbout'
-      trim = case options[:trim]
+      @outvar = @options[:outvar] || self.class._default_output_variable || '_erbout'
+      trim = case @options[:trim]
       when false
         nil
       when nil, true
         '<>'
       else
-        options[:trim]
+        @options[:trim]
       end
       @engine = if SUPPORTS_KVARGS
-        ::ERB.new(data, trim_mode: trim, eoutvar: @outvar)
+        ::ERB.new(@data, trim_mode: trim, eoutvar: @outvar)
       # :nocov:
       else
-        ::ERB.new(data, options[:safe], trim, @outvar)
+        ::ERB.new(@data, options[:safe], trim, @outvar)
       # :nocov:
       end
     end

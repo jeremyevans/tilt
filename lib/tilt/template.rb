@@ -104,7 +104,7 @@ module Tilt
 
     # The basename of the template file.
     def basename(suffix='')
-      File.basename(file, suffix) if file
+      File.basename(@file, suffix) if @file
     end
 
     # The template file's basename with all extensions chomped off.
@@ -116,7 +116,7 @@ module Tilt
 
     # The filename used in backtraces to describe the template.
     def eval_file
-      file || '(__TEMPLATE__)'
+      @file || '(__TEMPLATE__)'
     end
 
     # An empty Hash that the template engine can populate with various

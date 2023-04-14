@@ -12,47 +12,47 @@ module Tilt
 
   # @private
   def self.lazy_map
-    default_mapping.lazy_map
+    @default_mapping.lazy_map
   end
 
   # @see Tilt::Mapping#register
   def self.register(template_class, *extensions)
-    default_mapping.register(template_class, *extensions)
+    @default_mapping.register(template_class, *extensions)
   end
 
   # @see Tilt::Mapping#register_lazy
   def self.register_lazy(class_name, file, *extensions)
-    default_mapping.register_lazy(class_name, file, *extensions)
+    @default_mapping.register_lazy(class_name, file, *extensions)
   end
 
   # @see Tilt::Mapping#register_pipeline
   def self.register_pipeline(ext, options=EMPTY_HASH)
-    default_mapping.register_pipeline(ext, options)
+    @default_mapping.register_pipeline(ext, options)
   end
 
   # @see Tilt::Mapping#registered?
   def self.registered?(ext)
-    default_mapping.registered?(ext)
+    @default_mapping.registered?(ext)
   end
 
   # @see Tilt::Mapping#new
   def self.new(file, line=nil, options=nil, &block)
-    default_mapping.new(file, line, options, &block)
+    @default_mapping.new(file, line, options, &block)
   end
 
   # @see Tilt::Mapping#[]
   def self.[](file)
-    default_mapping[file]
+    @default_mapping[file]
   end
 
   # @see Tilt::Mapping#template_for
   def self.template_for(file)
-    default_mapping.template_for(file)
+    @default_mapping.template_for(file)
   end
 
   # @see Tilt::Mapping#templates_for
   def self.templates_for(file)
-    default_mapping.templates_for(file)
+    @default_mapping.templates_for(file)
   end
 
   # @return the template object that is currently rendering.

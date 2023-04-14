@@ -7,7 +7,7 @@ allowed_opts = [:allowed_schemes, :extensions, :no_escape].freeze
 Tilt::CreoleTemplate = Tilt::StaticTemplate.subclass do
   opts = {}
   allowed_opts.each do |k|
-    opts[k] = options[k] if options[k]
+    opts[k] = @options[k] if @options[k]
   end
-  Creole::Parser.new(data, opts).to_html
+  Creole::Parser.new(@data, opts).to_html
 end

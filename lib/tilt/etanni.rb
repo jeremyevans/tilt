@@ -9,7 +9,7 @@ module Tilt
       stop = "\n#{separator}\n"
       replacement = "#{stop}\\1#{start}"
 
-      temp = data.strip
+      temp = @data.strip
       temp.gsub!(/<\?r\s+(.*?)\s+\?>/m, replacement)
 
       @code = "_out_ = [<<#{separator}.chomp!]\n#{temp}#{stop}_out_.join"

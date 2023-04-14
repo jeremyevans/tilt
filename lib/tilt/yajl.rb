@@ -55,7 +55,7 @@ module Tilt
     end
 
     def precompiled_template(locals)
-      data.to_str
+      @data.to_str
     end
 
     # Decorates the +json+ input according to given +options+.
@@ -65,7 +65,7 @@ module Tilt
     #
     # Returns the decorated String.
     def decorate(json)
-      callback, variable = options[:callback], options[:variable]
+      callback, variable = @options[:callback], @options[:variable]
       if callback && variable
         "var #{variable} = #{json}; #{callback}(#{variable});"
       elsif variable

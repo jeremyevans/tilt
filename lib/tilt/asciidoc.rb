@@ -9,6 +9,6 @@ require 'asciidoctor'
 # converting AsciiDoc documents or strings into HTML 5,
 # DocBook 4.5 and other formats.
 Tilt::AsciidoctorTemplate = Tilt::StaticTemplate.subclass do
-  options[:header_footer] = false if options[:header_footer].nil?
-  Asciidoctor.render(data, options)
+  @options[:header_footer] = false if @options[:header_footer].nil?
+  Asciidoctor.render(@data, @options)
 end

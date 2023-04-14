@@ -31,11 +31,11 @@ module Tilt
     end
 
     def prepare
-      if !options.key?(:bare) and !options.key?(:no_wrap)
-        options[:bare] = self.class.default_bare
+      if !@options.key?(:bare) and !@options.key?(:no_wrap)
+        @options[:bare] = self.class.default_bare
       end
-      options[:literate] ||= self.class.literate?
-      @output = CoffeeScript.compile(data, options)
+      @options[:literate] ||= self.class.literate?
+      @output = CoffeeScript.compile(@data, @options)
     end
   end
 

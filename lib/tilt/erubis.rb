@@ -20,11 +20,13 @@ module Tilt
 
     def prepare
       @freeze_string_literals = !!@options.delete(:freeze)
-      @outvar = options.delete(:outvar) || self.class._default_output_variable  || '_erbout'
-      @options.merge!(:preamble => false, :postamble => false, :bufvar => @outvar)
-      engine_class = options.delete(:engine_class)
-      engine_class = ::Erubis::EscapedEruby if options.delete(:escape_html)
-      @engine = (engine_class || ::Erubis::Eruby).new(data, options)
+      @outvar = @options.delete(:outvar) || self.class._default_output_variable  || '_erbout'
+      @options[:preamble] = false
+      @options[:postamble] = false
+      @options[:bufvar] = @outvar
+      engine_class = @options.delete(:engine_class)
+      engine_class = ::Erubis::EscapedEruby if @options.delete(:escape_html)
+      @engine = (engine_class || ::Erubis::Eruby).new(@data, @options)
     end
 
     def precompiled_preamble(locals)

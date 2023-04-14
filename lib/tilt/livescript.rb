@@ -6,5 +6,5 @@ require 'livescript'
 #
 # LiveScript templates do not support object scopes, locals, or yield.
 Tilt::LiveScriptTemplate = Tilt::StaticTemplate.subclass(mime_type: 'application/javascript') do
-  LiveScript.compile(data, options)
+  LiveScript.compile(@data, @options)
 end

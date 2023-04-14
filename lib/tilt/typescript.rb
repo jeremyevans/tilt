@@ -4,7 +4,7 @@ require 'typescript-node'
 Tilt::TypeScriptTemplate = Tilt::StaticTemplate.subclass(mime_type: 'application/javascript') do
   option_args = []
 
-  options.each do |key, value|
+  @options.each do |key, value|
     next unless value
 
     option_args << "--#{key}"
@@ -14,5 +14,5 @@ Tilt::TypeScriptTemplate = Tilt::StaticTemplate.subclass(mime_type: 'application
     end
   end
 
-  TypeScript::Node.compile(data, *option_args)
+  TypeScript::Node.compile(@data, *option_args)
 end

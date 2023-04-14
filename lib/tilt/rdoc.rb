@@ -14,5 +14,5 @@ require 'rdoc/options'
 #   require 'rdoc/markup/to_html'
 #   require 'rdoc/options'
 Tilt::RDocTemplate = Tilt::StaticTemplate.subclass do
-  RDoc::Markup::ToHtml.new(RDoc::Options.new, nil).convert(data).to_s
+  RDoc::Markup::ToHtml.new(RDoc::Options.new, nil).convert(@data).to_s
 end

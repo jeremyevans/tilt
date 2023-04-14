@@ -3,5 +3,7 @@ require 'wikicloth'
 
 # WikiCloth implementation. See: https://github.com/nricciar/wikicloth
 Tilt::WikiClothTemplate = Tilt::StaticTemplate.subclass do
-  (options.delete(:parser) || WikiCloth::Parser).new(options.merge(:data => data)).to_html
+  parser = @options.delete(:parser) || WikiCloth::Parser
+  @options[:data] = @data
+  parser.new(@options).to_html
 end

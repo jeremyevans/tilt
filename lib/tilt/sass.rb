@@ -15,14 +15,15 @@ module Tilt
       private
 
       def _prepare_output
-        ::Sass.compile_string(data, **sass_options).css
+        ::Sass.compile_string(@data, **sass_options).css
       end
 
       def sass_options
         path = File.absolute_path(eval_file)
         path = '/' + path unless path.start_with?('/')
-        eval_file_url = ::URI::File.build([nil, ::URI::DEFAULT_PARSER.escape(path)]).to_s
-        options.merge(:url => eval_file_url, :syntax => :indented)
+        @options[:url] = ::URI::File.build([nil, ::URI::DEFAULT_PARSER.escape(path)]).to_s
+        @options[:syntax] = :indented
+        @options
       end
     rescue LoadError => err
       begin
@@ -40,11 +41,14 @@ module Tilt
       private
 
       def _prepare_output
-        Engine.new(data, sass_options).render
+        Engine.new(@data, sass_options).render
       end
 
       def sass_options
-        options.merge(:filename => eval_file, :line => line, :syntax => :sass)
+        @options[:filename] = eval_file
+        @options[:line] = @line
+        @options[:syntax] = :sass
+        @options
       end
     # :nocov:
     end
@@ -56,11 +60,9 @@ module Tilt
     private
 
     def sass_options
-      options = super
-      # Mutation is safe here, because the superclass method always
-      # returns new hash.
-      options[:syntax] = :scss
-      options
+      super
+      @options[:syntax] = :scss
+      @options
     end
   end
 end

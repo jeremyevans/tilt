@@ -35,12 +35,12 @@ exts = [
 
 Tilt::CommonMarkerTemplate = Tilt::StaticTemplate.subclass do
   extensions = exts.select do |extension|
-    options[extension]
+    @options[extension]
   end
 
   parse_options, render_options = [parse_opts, render_opts].map do |opts|
     opts = opts.select do |option|
-      options[option]
+      @options[option]
     end.map! do |option|
       aliases[option] || option
     end
@@ -49,5 +49,5 @@ Tilt::CommonMarkerTemplate = Tilt::StaticTemplate.subclass do
     opts
   end
 
-  CommonMarker.render_doc(data, parse_options, extensions).to_html(render_options, extensions)
+  CommonMarker.render_doc(@data, parse_options, extensions).to_html(render_options, extensions)
 end

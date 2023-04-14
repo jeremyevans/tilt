@@ -9,14 +9,14 @@ module Tilt
     self.default_mime_type = 'text/xml'
 
     def evaluate(scope, locals)
-      if data.respond_to?(:to_str)
+      if @data.respond_to?(:to_str)
         if block_given?
           super(scope, locals){yield.sub(DOCUMENT_HEADER, "")}
         else
           super
         end
       else
-        ::Nokogiri::XML::Builder.new(&data).to_xml
+        ::Nokogiri::XML::Builder.new(&@data).to_xml
       end
     end
 
@@ -30,7 +30,7 @@ module Tilt
     end
 
     def precompiled_template(locals)
-      data.to_str
+      @data.to_str
     end
   end
 end

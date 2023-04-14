@@ -19,12 +19,12 @@ module Tilt
       builder = self.class.builder_class.new({}, scope)
       builder.locals = locals
 
-      if data.kind_of? Proc
-        (class << builder; self end).send(:define_method, :__run_markaby_tilt__, &data)
+      if @data.kind_of? Proc
+        (class << builder; self end).send(:define_method, :__run_markaby_tilt__, &@data)
       else
         builder.instance_eval <<-CODE, __FILE__, __LINE__
           def __run_markaby_tilt__
-            #{data}
+            #{@data}
           end
         CODE
       end

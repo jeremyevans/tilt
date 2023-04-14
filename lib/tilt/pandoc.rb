@@ -11,7 +11,7 @@ Tilt::PandocTemplate = Tilt::StaticTemplate.subclass do
   pandoc_options = []
   from = "markdown"
   smart_extension = "-smart"
-  options.each do |k,v|
+  @options.each do |k,v|
     case k
     when :smartypants
       smart_extension = "+smart" if v
@@ -34,5 +34,5 @@ Tilt::PandocTemplate = Tilt::StaticTemplate.subclass do
   end
   pandoc_options << { :f => from + smart_extension }
 
-  PandocRuby.new(data, *pandoc_options).to_html.strip
+  PandocRuby.new(@data, *pandoc_options).to_html.strip
 end

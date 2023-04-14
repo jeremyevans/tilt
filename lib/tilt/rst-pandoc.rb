@@ -5,5 +5,5 @@ rst = {:f => "rst"}.freeze
 
 # Pandoc reStructuredText implementation. See: # http://pandoc.org/
 Tilt::RstPandocTemplate = Tilt::StaticTemplate.subclass do
-  PandocRuby.new(data, rst).to_html.strip
+  PandocRuby.new(@data, rst).to_html.strip
 end

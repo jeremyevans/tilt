@@ -7,20 +7,20 @@ module Tilt
     self.default_mime_type = 'text/xml'
 
     def prepare
-      options[:indent] ||= 2
+      @options[:indent] ||= 2
     end
 
     def evaluate(scope, locals, &block)
-      if data.respond_to?(:to_str)
+      if @data.respond_to?(:to_str)
         unless locals[:xml]
           locals = Hash[locals]
           locals[:xml] = xml_builder
         end
-        return super(scope, locals, &block)
+        return super
       end
 
       xml = locals[:xml] || xml_builder
-      data.call(xml)
+      @data.call(xml)
       xml.target!
     end
 
@@ -29,7 +29,7 @@ module Tilt
     end
 
     def precompiled_template(locals)
-      data.to_str
+      @data.to_str
     end
 
     private

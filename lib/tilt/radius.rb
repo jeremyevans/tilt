@@ -29,8 +29,8 @@ module Tilt
         end
       end
 
-      options = {:tag_prefix => 'r'}.merge!(@options)
-      Radius::Parser.new(context, options).parse(data)
+      @options[:tag_prefix] = 'r' unless @options.has_key?(:tag_prefix)
+      Radius::Parser.new(context, @options).parse(@data)
     end
 
     def allows_script?

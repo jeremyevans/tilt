@@ -12,7 +12,9 @@ module Tilt
   #                  instead of the default (which is ::Erubi::Engine).
   class ErubiTemplate < Template
     def prepare
-      @options.merge!(:preamble => false, :postamble => false, :ensure=>true)
+      @options[:preamble] = false
+      @options[:postamble] = false
+      @options[:ensure] = true
 
       engine_class = @options[:engine_class] || Erubi::Engine
 
@@ -34,7 +36,7 @@ module Tilt
         @options[:freeze_template_literals] = false
       end
 
-      @engine = engine_class.new(data, @options)
+      @engine = engine_class.new(@data, @options)
       @outvar = @engine.bufvar
 
       # Remove dup after tilt supports frozen source.

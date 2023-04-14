@@ -14,13 +14,14 @@ module Tilt
       # `Gem::Version.correct?` may return false because of Haml::VERSION #=> "3.1.8 (Separated Sally)". After Haml 4, it's always correct.
       if Gem::Version.correct?(Haml::VERSION) && Gem::Version.new(Haml::VERSION) >= Gem::Version.new('5.0.0.beta.2')
         def prepare
-          options = {}.update(@options).update(filename: eval_file, line: line)
-          if options.include?(:outvar)
-            options[:buffer] = options.delete(:outvar)
-            options[:save_buffer] = true
+          @options[:filename] = eval_file
+          @options[:line] = @line
+          if @options.include?(:outvar)
+            @options[:buffer] = @options.delete(:outvar)
+            @options[:save_buffer] = true
           end
-          @engine = ::Haml::TempleEngine.new(options)
-          @engine.compile(data)
+          @engine = ::Haml::TempleEngine.new(@options)
+          @engine.compile(@data)
         end
 
         def evaluate(scope, locals, &block)
@@ -39,8 +40,9 @@ module Tilt
         end
       else # Following definitions are for Haml <= 4 and deprecated.
         def prepare
-          options = @options.merge(:filename => eval_file, :line => line)
-          @engine = ::Haml::Engine.new(data, options)
+          @options[:filename] = eval_file
+          @options[:line] = @line
+          @engine = ::Haml::Engine.new(@data, @options)
         end
 
         def evaluate(scope, locals, &block)

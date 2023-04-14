@@ -15,8 +15,8 @@ _flags = [:smart, :filter_html, :smartypants, :escape_html].freeze
 # +locals+. The +:smart+ and +:filter_html+ options may be set true
 # to enable those flags on the underlying RDiscount object.
 Tilt::RDiscountTemplate = Tilt::StaticTemplate.subclass do
-  flags = _flags.select { |flag| options[flag] }.
+  flags = _flags.select { |flag| @options[flag] }.
     map! { |flag| aliases[flag] || flag }
 
-  RDiscount.new(data, *flags).to_html
+  RDiscount.new(@data, *flags).to_html
 end

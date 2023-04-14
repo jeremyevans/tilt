@@ -57,33 +57,25 @@ module Tilt
     # a block is required.
     #
     # All arguments are optional.
-    def initialize(file=nil, line=1, options={}, &block)
-      @file, @line, @options = nil, 1, {}
+    def initialize(file=nil, line=nil, options=nil)
+      @file, @line, @options = nil, 1, nil
 
-      [options, line, file].compact.each do |arg|
-        case
-        when arg.respond_to?(:to_str)  ; @file = arg.to_str
-        when arg.respond_to?(:to_int)  ; @line = arg.to_int
-        when arg.respond_to?(:to_hash) ; @options = arg.to_hash.dup
-        when arg.respond_to?(:path)    ; @file = arg.path
-        when arg.respond_to?(:to_path) ; @file = arg.to_path
-        else raise TypeError, "Can't load the template file. Pass a string with a path " +
-          "or an object that responds to 'to_str', 'path' or 'to_path'"
-        end
-      end
+      process_arg(options)
+      process_arg(line)
+      process_arg(file)
 
-      raise ArgumentError, "file or block required" if (@file || block).nil?
+      raise ArgumentError, "file or block required" unless @file || block_given?
 
-      # used to hold compiled template methods
-      @compiled_method = {}
+      @options ||= {}
 
-      # used on 1.9 to set the encoding if it is not set elsewhere (like a magic comment)
+      set_compiled_method_cache
+
+      # set the encoding if it is not set elsewhere (like a magic comment)
       # currently only used if template compiles to ruby
       @default_encoding = @options.delete :default_encoding
 
       # load template data and prepare (uses binread to avoid encoding issues)
-      @reader = block || lambda { |t| read_template_file }
-      @data = @reader.call(self)
+      @data = block_given? ? yield(self) : read_template_file
 
       if @data.respond_to?(:force_encoding)
         if default_encoding
@@ -247,6 +239,20 @@ module Tilt
 
     private
 
+    def process_arg(arg)
+      if arg
+        case
+        when arg.respond_to?(:to_str)  ; @file = arg.to_str
+        when arg.respond_to?(:to_int)  ; @line = arg.to_int
+        when arg.respond_to?(:to_hash) ; @options = arg.to_hash.dup
+        when arg.respond_to?(:path)    ; @file = arg.path
+        when arg.respond_to?(:to_path) ; @file = arg.to_path
+        else raise TypeError, "Can't load the template file. Pass a string with a path " +
+          "or an object that responds to 'to_str', 'path' or 'to_path'"
+        end
+      end
+    end
+
     def read_template_file
       data = File.binread(file)
       # Set it to the default external (without verifying)
@@ -254,6 +260,10 @@ module Tilt
       data.force_encoding(Encoding.default_external) if Encoding.default_external
       # :nocov:
       data
+    end
+
+    def set_compiled_method_cache
+      @compiled_method = {}
     end
 
     # The compiled method for the locals keys provided.
@@ -398,6 +408,10 @@ module Tilt
 
     def render(scope=nil, locals=nil)
       @output
+    end
+
+    # Do nothing, since compiled method cache is not used.
+    def set_compiled_method_cache
     end
 
     def allows_script?

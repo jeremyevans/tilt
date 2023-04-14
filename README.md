@@ -81,18 +81,18 @@ Basic Usage
 Instant gratification:
 
 ~~~ruby
-require 'erb'
 require 'tilt'
+require 'tilt/erb'
 template = Tilt.new('templates/foo.erb')
 => #<Tilt::ERBTemplate @file="templates/foo.erb" ...>
 output = template.render
 => "Hello world!"
 ~~~
 
-It's recommended that calling programs explicitly require template engine
-libraries (like 'erb' above) at load time. Tilt attempts to lazy require the
-template engine library the first time a template is created but this is
-prone to error in threaded environments.
+It's recommended that calling programs explicitly require the Tilt template
+engine libraries (like 'tilt/erb' above) at load time. Tilt attempts to
+lazy require the template engine library the first time a template is
+created, but this is prone to error in threaded environments.
 
 The {Tilt} module contains generic implementation classes for all supported
 template engines. Each template class adheres to the same interface for
@@ -191,6 +191,32 @@ mappings:
   2. `foo.html.erb`
   3. `html.erb`
   4. `erb`
+
+Finalizing Mappings
+-------------------
+
+By default, {Tilt::Mapping} instances will lazy load files for template
+classes, and will allow for registering an unregistering template classes.
+To make sure this is safe in a multithreaded environment, a mutex is used
+to synchronize access. To improve performance, and prevent additional lazy
+loading of template classes, you can finalize mappings.  Finalizing a mapping
+returns a new finalized mapping that is frozen, cannot be modified, and will
+not lazy load template classes not already loaded.  Users of Tilt are
+encouraged to manually require the template libraries they desire to use,
+and then freeze the mappings. {Tilt.finalize!} will replace Tilt's default
+mapping with a finalized versions, as well as freeze {Tilt} so that no
+further changes can be made.
+
+~~~ruby
+require 'tilt/erubi'
+require 'tilt/string'
+require 'tilt/sass'
+Tilt.finalize!
+Tilt['erb'] # => Tilt::ErubiTemplate
+Tilt['str'] # => Tilt::StringTemplate
+Tilt['scss'] # => Tilt::ScssTemplate
+Tilt['haml'] # => nil # even if haml is installed
+~~~
 
 Encodings
 ---------

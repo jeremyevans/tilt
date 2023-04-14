@@ -1,6 +1,80 @@
 require_relative 'pipeline'
 
 module Tilt
+  # Private internal base class for both Mapping and FinalizedMapping, for the shared methods.
+  class BaseMapping
+    # Instantiates a new template class based on the file.
+    #
+    # @raise [RuntimeError] if there is no template class registered for the
+    #   file name.
+    #
+    # @example
+    #   mapping.new('index.mt') # => instance of MyEngine::Template
+    #
+    # @see Tilt::Template.new
+    def new(file, line=nil, options={}, &block)
+      if template_class = self[file]
+        template_class.new(file, line, options, &block)
+      else
+        fail "No template engine registered for #{File.basename(file)}"
+      end
+    end
+
+    # Looks up a template class based on file name and/or extension.
+    #
+    # @example
+    #   mapping['views/hello.erb'] # => Tilt::ERBTemplate
+    #   mapping['hello.erb']       # => Tilt::ERBTemplate
+    #   mapping['erb']             # => Tilt::ERBTemplate
+    #
+    # @return [template class]
+    def [](file)
+      _, ext = split(file)
+      ext && lookup(ext)
+    end
+
+    alias template_for []
+
+    # Looks up a list of template classes based on file name. If the file name
+    # has multiple extensions, it will return all template classes matching the
+    # extensions from the end.
+    #
+    # @example
+    #   mapping.templates_for('views/index.haml.erb')
+    #   # => [Tilt::ERBTemplate, Tilt::HamlTemplate]
+    #
+    # @return [Array<template class>]
+    def templates_for(file)
+      templates = []
+
+      while true
+        prefix, ext = split(file)
+        break unless ext
+        templates << lookup(ext)
+        file = prefix
+      end
+
+      templates
+    end
+
+    private
+
+    def split(file)
+      pattern = file.to_s.downcase
+      full_pattern = pattern.dup
+
+      until registered?(pattern)
+        return if pattern.empty?
+        pattern = File.basename(pattern)
+        pattern.sub!(/^[^.]*\.?/, '')
+      end
+
+      prefix_size = full_pattern.size - pattern.size
+      [full_pattern[0,prefix_size-1], pattern]
+    end
+  end
+  private_constant :BaseMapping
+
   # Tilt::Mapping associates file extensions with template implementations.
   #
   #     mapping = Tilt::Mapping.new
@@ -47,7 +121,7 @@ module Tilt
   # Maruku. Tilt will first try to `require "rdiscount/template"`, falling
   # back to `require "maruku/template"`. If none of these are successful,
   # the first error will be raised.
-  class Mapping
+  class Mapping < BaseMapping
     LOCK = Mutex.new
 
     # @private
@@ -64,6 +138,22 @@ module Tilt
         @template_map = other.template_map.dup
         @lazy_map = other.lazy_map.dup
       end
+    end
+
+    # Return a finalized mapping. A finalized mapping will only include
+    # support for template libraries already loaded, and will not
+    # allow registering new template libraries or lazy loading template
+    # libraries not yet loaded. Finalized mappings improve performance
+    # by not requiring synchronization and ensure that the mapping will
+    # not attempt to load additional files (useful when restricting
+    # file system access after template libraries in use are loaded).
+    def finalized
+      LOCK.synchronize{@lazy_map.dup}.each do |pattern, classes|
+        register_defined_classes(LOCK.synchronize{classes.map(&:first)}, pattern)
+      end
+
+      # Check if a template class is already present
+      FinalizedMapping.new(LOCK.synchronize{@template_map.dup}.freeze)
     end
 
     # Registers a lazy template implementation by file extension. You
@@ -91,7 +181,7 @@ module Tilt
 
       v = [class_name, file].freeze
       extensions.each do |ext|
-        LOCK.synchronize{@lazy_map[ext]}.unshift(v)
+        LOCK.synchronize{@lazy_map[ext].unshift(v)}
       end
     end
 
@@ -191,60 +281,6 @@ module Tilt
       LOCK.synchronize{@template_map.has_key?(ext_downcase)} or lazy?(ext)
     end
 
-    # Instantiates a new template class based on the file.
-    #
-    # @raise [RuntimeError] if there is no template class registered for the
-    #   file name.
-    #
-    # @example
-    #   mapping.new('index.mt') # => instance of MyEngine::Template
-    #
-    # @see Tilt::Template.new
-    def new(file, line=nil, options=nil, &block)
-      if template_class = self[file]
-        template_class.new(file, line, options, &block)
-      else
-        fail "No template engine registered for #{File.basename(file)}"
-      end
-    end
-
-    # Looks up a template class based on file name and/or extension.
-    #
-    # @example
-    #   mapping['views/hello.erb'] # => Tilt::ERBTemplate
-    #   mapping['hello.erb']       # => Tilt::ERBTemplate
-    #   mapping['erb']             # => Tilt::ERBTemplate
-    #
-    # @return [template class]
-    def [](file)
-      _, ext = split(file)
-      ext && lookup(ext)
-    end
-
-    alias template_for []
-
-    # Looks up a list of template classes based on file name. If the file name
-    # has multiple extensions, it will return all template classes matching the
-    # extensions from the end.
-    #
-    # @example
-    #   mapping.templates_for('views/index.haml.erb')
-    #   # => [Tilt::ERBTemplate, Tilt::HamlTemplate]
-    #
-    # @return [Array<template class>]
-    def templates_for(file)
-      templates = []
-
-      while true
-        prefix, ext = split(file)
-        break unless ext
-        templates << lookup(ext)
-        file = prefix
-      end
-
-      templates
-    end
-
     # Finds the extensions the template class has been registered under.
     # @param [template class] template_class
     def extensions_for(template_class)
@@ -253,9 +289,10 @@ module Tilt
         res << ext if template_class == klass
       end
       LOCK.synchronize{@lazy_map.to_a}.each do |ext, choices|
-        res << ext if choices.any? { |klass, file| template_class.to_s == klass }
+        res << ext if LOCK.synchronize{choices.dup}.any? { |klass, file| template_class.to_s == klass }
       end
-      res.uniq
+      res.uniq!
+      res
     end
 
     private
@@ -265,34 +302,26 @@ module Tilt
       LOCK.synchronize{@lazy_map.has_key?(ext) && !@lazy_map[ext].empty?}
     end
 
-    def split(file)
-      pattern = file.to_s.downcase
-      full_pattern = pattern.dup
-
-      until registered?(pattern)
-        return if pattern.empty?
-        pattern = File.basename(pattern)
-        pattern.sub!(/^[^.]*\.?/, '')
-      end
-
-      prefix_size = full_pattern.size - pattern.size
-      [full_pattern[0,prefix_size-1], pattern]
-    end
-
     def lookup(ext)
       LOCK.synchronize{@template_map[ext]} || lazy_load(ext)
     end
 
-    def lazy_load(pattern)
-      choices = LOCK.synchronize{@lazy_map[pattern]}
-
-      # Check if a template class is already present
-      choices.each do |class_name, file|
+    def register_defined_classes(class_names, pattern)
+      class_names.each do |class_name|
         template_class = constant_defined?(class_name)
         if template_class
           register(template_class, pattern)
-          return template_class
+          yield template_class if block_given?
         end
+      end
+    end
+
+    def lazy_load(pattern)
+      choices = LOCK.synchronize{@lazy_map[pattern].dup}
+
+      # Check if a template class is already present
+      register_defined_classes(choices.map(&:first), pattern) do |template_class|
+        return template_class
       end
 
       first_failure = nil
@@ -334,4 +363,49 @@ module Tilt
       end
     end
   end
+
+  # Private internal class for finalized mappings, which are frozen and
+  # cannot be modified.
+  class FinalizedMapping < BaseMapping
+    # Set the template map to use.  The template map should already
+    # be frozen, but this is an internal class, so it does not
+    # explicitly check for that.
+    def initialize(template_map)
+      @template_map = template_map
+      freeze
+    end
+
+    # Returns receiver, since instances are always frozen.
+    def dup
+      self
+    end
+
+    # Returns receiver, since instances are always frozen.
+    def clone(freeze: false)
+      self
+    end
+
+    # Return whether the given file extension has been registered.
+    def registered?(ext)
+      @template_map.has_key?(ext.downcase)
+    end
+
+    # Returns an aarry of all extensions the template class will
+    # be used for.
+    def extensions_for(template_class)
+      res = []
+      @template_map.each do |ext, klass|
+        res << ext if template_class == klass
+      end
+      res.uniq!
+      res
+    end
+
+    private
+
+    def lookup(ext)
+      @template_map[ext]
+    end
+  end
+  private_constant :FinalizedMapping
 end

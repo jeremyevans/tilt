@@ -16,10 +16,11 @@
 * Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)
 * Do not define yield tag for RadiusTemplate if no block is given to render (jeremyevans)
 * Avoid holding mutex while compiling template methods (jeremyevans)
-* Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
 * Template#prepare no longer needs to be overridden if no preparation work is needed (jeremyevans)
 * Fix potential concurrency issues in Mapping (jeremyevans)
 * Stop modifying given locals hash in tilt/prawn (jeremyevans)
+* Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
+* Add Tilt::Mapping#finalized and Tilt.finalize! for finalized mappings that do not require mutex synchronization (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

@@ -11,6 +11,29 @@ module Tilt
 
   @default_mapping = Mapping.new
 
+  # Replace the default mapping with a finalized version of the default
+  # mapping. This can be done to improve performance after the template
+  # libraries you desire to use have already been loaded.  Once this is
+  # is called, all attempts to modify the default mapping will fail.
+  # This also freezes Tilt itself.
+  def self.finalize!
+    class << self
+      prepend(Module.new do
+        def lazy_map(*)
+          raise "Tilt.#{__callee__} not supported after Tilt.finalize! has been called"
+        end
+        alias register lazy_map
+        alias register_lazy lazy_map
+        alias register_pipeline lazy_map
+        alias prefer lazy_map
+      end)
+    end
+
+    @default_mapping = @default_mapping.finalized
+
+    freeze
+  end
+
   # @private
   def self.lazy_map
     @default_mapping.lazy_map

@@ -6,6 +6,8 @@ module Tilt
   # Current version.
   VERSION = '2.1.0'
 
+  EMPTY_HASH = {}.freeze
+
   @default_mapping = Mapping.new
 
   # @private
@@ -24,7 +26,7 @@ module Tilt
   end
 
   # @see Tilt::Mapping#register_pipeline
-  def self.register_pipeline(ext, options={})
+  def self.register_pipeline(ext, options=EMPTY_HASH)
     default_mapping.register_pipeline(ext, options)
   end
 
@@ -34,7 +36,7 @@ module Tilt
   end
 
   # @see Tilt::Mapping#new
-  def self.new(file, line=nil, options={}, &block)
+  def self.new(file, line=nil, options=nil, &block)
     default_mapping.new(file, line, options, &block)
   end
 

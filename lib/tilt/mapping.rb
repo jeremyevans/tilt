@@ -144,9 +144,9 @@ module Tilt
     #   mapping.register_pipeline('scss.erb', 'erb'=>{:outvar=>'@foo'})
     #   mapping.register_pipeline('scsserb', :extra_exts => 'scss.erb',
     #                             :templates=>['erb', 'scss'])
-    def register_pipeline(ext, options={})
+    def register_pipeline(ext, options=EMPTY_HASH)
       templates = options[:templates] || ext.split('.').reverse
-      templates = templates.map{|t| [self[t], options[t] || {}]}
+      templates = templates.map{|t| [self[t], options[t] || EMPTY_HASH]}
 
       klass = Class.new(Pipeline)
       klass.send(:const_set, :TEMPLATES, templates)
@@ -200,7 +200,7 @@ module Tilt
     #   mapping.new('index.mt') # => instance of MyEngine::Template
     #
     # @see Tilt::Template.new
-    def new(file, line=nil, options={}, &block)
+    def new(file, line=nil, options=nil, &block)
       if template_class = self[file]
         template_class.new(file, line, options, &block)
       else

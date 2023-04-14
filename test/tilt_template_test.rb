@@ -164,6 +164,25 @@ describe "tilt/template" do
     assert_equal "1 + 2 = 3", inst.render(Object.new, '_answer' => 3)
   end
 
+  it "#compiled_method should return UnboundMethod for given local keys and scope class" do
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
+    m = inst.compiled_method([], Object)
+    assert_kind_of UnboundMethod, m
+    o = Object.new
+    o.define_singleton_method(:x, m)
+    assert_equal 'Hey', o.x({})
+    assert_same m, inst.compiled_method([], Object)
+    m1 = inst.compiled_method([:a], Object)
+    m2 = inst.compiled_method([], Array)
+    refute_same m, m1
+    refute_same m, m2
+    o.define_singleton_method(:y, m1)
+    assert_equal 'Hey', o.y(a: 1)
+    ary = []
+    ary.define_singleton_method(:z, m2)
+    assert_equal 'Hey', ary.z({})
+  end
+
   it "template_source with nil locals" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
     assert_equal 'Hey', inst.render(Object.new, nil)

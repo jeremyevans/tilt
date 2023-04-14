@@ -19,6 +19,7 @@
 * Template#prepare no longer needs to be overridden if no preparation work is needed (jeremyevans)
 * Fix potential concurrency issues in Mapping (jeremyevans)
 * Stop modifying given locals hash in tilt/prawn (jeremyevans)
+* Change visibility of Template#compiled_method to public (jeremyevans)
 * Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
 * Add Tilt::Mapping#finalized and Tilt.finalize! for finalized mappings that do not require mutex synchronization (jeremyevans)
 

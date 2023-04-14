@@ -140,6 +140,24 @@ module Tilt
       @compiled_path = path
     end
 
+    # The compiled method for the locals keys and scope_class provided.
+    # Returns an UnboundMethod, which can be used to define methods
+    # directly on the scope class, which are much faster to call than
+    # Tilt's normal rendering.
+    def compiled_method(locals_keys, scope_class=nil)
+      key = [scope_class, locals_keys].freeze
+      LOCK.synchronize do
+        if meth = @compiled_method[key]
+          return meth
+        end
+      end
+      meth = compile_template_method(locals_keys, scope_class)
+      LOCK.synchronize do
+        @compiled_method[key] = meth
+      end
+      meth
+    end
+
     protected
 
     # @!group For template implementations
@@ -263,21 +281,6 @@ module Tilt
 
     def set_compiled_method_cache
       @compiled_method = {}
-    end
-
-    # The compiled method for the locals keys provided.
-    def compiled_method(locals_keys, scope_class=nil)
-      key = [scope_class, locals_keys]
-      LOCK.synchronize do
-        if meth = @compiled_method[key]
-          return meth
-        end
-      end
-      meth = compile_template_method(locals_keys, scope_class)
-      LOCK.synchronize do
-        @compiled_method[key] = meth
-      end
-      meth
     end
 
     def local_extraction(local_keys)

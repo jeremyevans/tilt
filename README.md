@@ -24,38 +24,37 @@ Support for these template engines is included with Tilt:
 | Engine                  | File Extensions        | Required Libraries            |
 | ----------------------- | ---------------------- | ------------------------------|
 | Asciidoctor             | .ad, .adoc, .asciidoc  | asciidoctor                   |
+| Babel                   | .es6, .babel, .jsx     | babel-transpiler              |
+| Builder                 | .builder               | builder                       |
+| CoffeeScript            | .coffee                | coffee-script (+ javascript)  |
+| CoffeeScript (literate) | .litcoffee             | coffee-script (+ javascript)  |
+| CommonMarker            | .markdown, .mkd, .md   | commonmarker                  |
+| Creole (Wiki markup)    | .wiki, .creole         | creole                        |
+| CSV                     | .rcsv                  | none (included ruby stdlib)   |
 | ERB                     | .erb, .rhtml           | none (included ruby stdlib)   |
-| InterpolatedString      | .str                   | none (included ruby core)     |
 | Erubi                   | .erb, .rhtml, .erubi   | erubi                         |
 | Erubis                  | .erb, .rhtml, .erubis  | erubis                        |
 | Haml                    | .haml                  | haml                          |
+| InterpolatedString      | .str                   | none (included ruby core)     |
+| Kramdown                | .markdown, .mkd, .md   | kramdown                      |
+| Liquid                  | .liquid                | liquid                        |
+| LiveScript              | .ls                    | livescript (+ javascript)     |
+| Markaby                 | .mab                   | markaby                       |
+| Maruku                  | .markdown, .mkd, .md   | maruku                        |
+| Nokogiri                | .nokogiri              | nokogiri                      |
+| Pandoc                  | .markdown, .mkd, .md   | pandoc                        |
+| Prawn                   | .prawn                 | prawn                         |
+| Radius                  | .radius                | radius                        |
+| RDiscount               | .markdown, .mkd, .md   | rdiscount                     |
+| RDoc                    | .rdoc                  | rdoc                          |
+| Redcarpet               | .markdown, .mkd, .md   | redcarpet                     |
+| RedCloth                | .textile               | redcloth                      |
+| reStructuredText        | .rst                   | pandoc                        |
 | Sass                    | .sass                  | sass-embedded, sassc, or sass |
 | Scss                    | .scss                  | sass-embedded, sassc, or sass |
-| Builder                 | .builder               | builder                       |
-| Liquid                  | .liquid                | liquid                        |
-| RDiscount               | .markdown, .mkd, .md   | rdiscount                     |
-| Redcarpet               | .markdown, .mkd, .md   | redcarpet                     |
-| Kramdown                | .markdown, .mkd, .md   | kramdown                      |
-| Pandoc                  | .markdown, .mkd, .md   | pandoc                        |
-| reStructuredText        | .rst                   | pandoc                        |
-| Maruku                  | .markdown, .mkd, .md   | maruku                        |
-| CommonMarker            | .markdown, .mkd, .md   | commonmarker                  |
-| RedCloth                | .textile               | redcloth                      |
-| RDoc                    | .rdoc                  | rdoc                          |
-| Radius                  | .radius                | radius                        |
-| Markaby                 | .mab                   | markaby                       |
-| Nokogiri                | .nokogiri              | nokogiri                      |
-| CoffeeScript            | .coffee                | coffee-script (+ javascript)  |
-| CoffeeScript (literate) | .litcoffee             | coffee-script (+ javascript)  |
-| LiveScript              | .ls                    | livescript (+ javascript)     |
 | TypeScript              | .ts                    | typescript (+ javascript)     |
-| Creole (Wiki markup)    | .wiki, .creole         | creole                        |
 | WikiCloth (Wiki markup) | .wiki, .mediawiki, .mw | wikicloth                     |
 | Yajl                    | .yajl                  | yajl-ruby                     |
-| CSV                     | .rcsv                  | none (included ruby stdlib)   |
-| Prawn                   | .prawn                 | prawn                         |
-| Babel                   | .es6, .babel, .jsx     | babel-transpiler              |
-| Opal                    | .rb                    | opal                          |
 
 These template engines ship with their own Tilt integration:
 

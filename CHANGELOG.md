@@ -19,6 +19,7 @@
 * Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
 * Template#prepare no longer needs to be overridden if no preparation work is needed (jeremyevans)
 * Fix potential concurrency issues in Mapping (jeremyevans)
+* Stop modifying given locals hash in tilt/prawn (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

@@ -13,6 +13,7 @@ module Tilt
     def evaluate(scope, locals, &block)
       pdf = @engine
       if data.respond_to?(:to_str)
+        locals = locals.dup
         locals[:pdf] = pdf
         super
       else

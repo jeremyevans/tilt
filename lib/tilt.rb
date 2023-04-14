@@ -7,6 +7,7 @@ module Tilt
   VERSION = '2.1.0'
 
   EMPTY_HASH = {}.freeze
+  private_constant :EMPTY_HASH
 
   @default_mapping = Mapping.new
 

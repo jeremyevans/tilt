@@ -52,7 +52,7 @@ describe 'tilt/etanni' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.etn:/).first
+      line = boom.backtrace.grep(/\Atest\.etn:/).first
       assert line, "Backtrace didn't contain test.etn"
       _file, line, _meth = line.split(":")
       skip if heredoc_line_number_bug?
@@ -138,7 +138,7 @@ describe 'tilt/etanni (compiled)' do
     rescue => boom
       assert_kind_of NameError, boom
       line = boom.backtrace.first
-      line = boom.backtrace.grep(/^test\.etn:/).first
+      line = boom.backtrace.grep(/\Atest\.etn:/).first
       assert line, "Backtrace didn't contain test.etn"
       _file, line, _meth = line.split(":")
       skip if heredoc_line_number_bug?

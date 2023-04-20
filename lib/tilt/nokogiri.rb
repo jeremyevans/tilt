@@ -5,7 +5,7 @@ module Tilt
   # Nokogiri template implementation. See:
   # http://nokogiri.org/
   class NokogiriTemplate < Template
-    DOCUMENT_HEADER = /^<\?xml version=\"1\.0\"\?>\n?/
+    DOCUMENT_HEADER = /\A<\?xml version=\"1\.0\"\?>\n?/
     self.default_mime_type = 'text/xml'
 
     def evaluate(scope, locals)

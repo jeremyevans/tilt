@@ -72,7 +72,7 @@ checked_describe 'tilt/erubis' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.erubis:/).first
+      line = boom.backtrace.grep(/\Atest\.erubis:/).first
       assert line, "Backtrace didn't contain test.erubis"
       _file, line, _meth = line.split(":")
       assert_equal '13', line

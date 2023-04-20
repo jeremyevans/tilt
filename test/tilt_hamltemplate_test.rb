@@ -54,7 +54,7 @@ checked_describe 'tilt/haml' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.haml:/).first
+      line = boom.backtrace.grep(/\Atest\.haml:/).first
       assert line, "Backtrace didn't contain test.haml"
       _file, line, _meth = line.split(":")
       assert_equal '12', line
@@ -123,7 +123,7 @@ checked_describe 'tilt/haml' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.haml:/).first
+      line = boom.backtrace.grep(/\Atest\.haml:/).first
       assert line, "Backtrace didn't contain test.haml"
       _file, line, _meth = line.split(":")
       assert_equal '12', line

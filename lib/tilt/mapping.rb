@@ -66,7 +66,7 @@ module Tilt
       until registered?(pattern)
         return if pattern.empty?
         pattern = File.basename(pattern)
-        pattern.sub!(/^[^.]*\.?/, '')
+        pattern.sub!(/\A[^.]*\.?/, '')
       end
 
       prefix_size = full_pattern.size - pattern.size

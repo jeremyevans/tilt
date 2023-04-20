@@ -68,7 +68,7 @@ describe 'tilt/erb' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.erb:/).first
+      line = boom.backtrace.grep(/\Atest\.erb:/).first
       assert line, "Backtrace didn't contain test.erb"
       _file, line, _meth = line.split(":")
       assert_equal '13', line
@@ -169,7 +169,7 @@ describe 'tilt/erb (compiled)' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.erb:/).first
+      line = boom.backtrace.grep(/\Atest\.erb:/).first
       assert line, "Backtrace didn't contain test.erb"
       _file, line, _meth = line.split(":")
       assert_equal '13', line

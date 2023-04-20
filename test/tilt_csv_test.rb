@@ -36,7 +36,7 @@ describe 'tilt/csv' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.csv:/).first
+      line = boom.backtrace.grep(/\Atest\.csv:/).first
       assert line, "Backtrace didn't contain test.csv"
       _file, line, _meth = line.split(":")
       assert_equal '4', line

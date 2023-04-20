@@ -47,7 +47,7 @@ ARGV.options do |o|
     groups = {}
     Tilt.lazy_map.each do |pattern,engines|
       engines.each do |engine|
-        key = engine[0].split('::').last.sub(/Template$/, '')
+        key = engine[0].split('::').last.sub(/Template\z/, '')
         (groups[key] ||= []) << pattern
       end
     end

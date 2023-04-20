@@ -48,7 +48,7 @@ describe 'tilt/string' do
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.str:/).first
+      line = boom.backtrace.grep(/\Atest\.str:/).first
       assert line, "Backtrace didn't contain test.str"
       _file, line, _meth = line.split(":")
       skip if heredoc_line_number_bug?
@@ -135,7 +135,7 @@ describe 'tilt/string (compiled)' do
     rescue => boom
       assert_kind_of NameError, boom
       line = boom.backtrace.first
-      line = boom.backtrace.grep(/^test\.str:/).first
+      line = boom.backtrace.grep(/\Atest\.str:/).first
       assert line, "Backtrace didn't contain test.str"
       _file, line, _meth = line.split(":")
       skip if heredoc_line_number_bug?

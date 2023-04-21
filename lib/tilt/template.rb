@@ -424,16 +424,9 @@ module Tilt
       end
     end
 
-    def prepare
-      @output = _prepare_output
-    end
-
+    # Static templates always return the prepared output.
     def render(scope=nil, locals=nil)
       @output
-    end
-
-    # Do nothing, since compiled method cache is not used.
-    def set_compiled_method_cache
     end
 
     # Raise NotImplementedError, since static templates
@@ -442,8 +435,21 @@ module Tilt
       raise NotImplementedError
     end
 
+    # Static templates never allow script.
     def allows_script?
       false
+    end
+
+    protected
+
+    def prepare
+      @output = _prepare_output
+    end
+
+    private
+
+    # Do nothing, since compiled method cache is not used.
+    def set_compiled_method_cache
     end
   end
 end

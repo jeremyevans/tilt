@@ -520,4 +520,12 @@ describe "tilt/template (encoding)" do
       _UTF8Template.new(@template) { "\xe4" }
     end
   end
+
+  it "StaticTemplate#compiled_method raise NotImplementedError" do
+    c = Tilt::StaticTemplate.subclass{data}
+    t = c.new{''}
+    assert_raises(NotImplementedError) do
+      t.compiled_method([], Object)
+    end
+  end
 end

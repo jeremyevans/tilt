@@ -436,6 +436,12 @@ module Tilt
     def set_compiled_method_cache
     end
 
+    # Raise NotImplementedError, since static templates
+    # do not support compiled methods.
+    def compiled_method(locals_keys, scope_class=nil)
+      raise NotImplementedError
+    end
+
     def allows_script?
       false
     end

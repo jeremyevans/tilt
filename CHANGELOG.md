@@ -22,6 +22,8 @@
 * Change visibility of Template#compiled_method to public (jeremyevans)
 * Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
 * Add Tilt::Mapping#finalized and Tilt.finalize! for finalized mappings that do not require mutex synchronization (jeremyevans)
+* Add frozen_string_literal magic comment to all source files (jeremyevans)
+* Support templates with frozen compiled source code (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

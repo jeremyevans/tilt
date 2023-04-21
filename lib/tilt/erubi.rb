@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'template'
 require 'erubi'
 
@@ -38,9 +39,7 @@ module Tilt
 
       @engine = engine_class.new(@data, @options)
       @outvar = @engine.bufvar
-
-      # Remove dup after tilt supports frozen source.
-      @src = @engine.src.dup
+      @src = @engine.src
 
       @engine
     end

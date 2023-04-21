@@ -24,6 +24,8 @@
 * Add Tilt::Mapping#finalized and Tilt.finalize! for finalized mappings that do not require mutex synchronization (jeremyevans)
 * Add frozen_string_literal magic comment to all source files (jeremyevans)
 * Support templates with frozen compiled source code (jeremyevans)
+* Support :skip_compiled_encoding_detection template option to not scan compiled source code for encoding lines (jeremyevans)
+* Template#extract_{encoding,magic_comment} private methods now require a block (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
 repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).

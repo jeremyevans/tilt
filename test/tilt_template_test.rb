@@ -459,6 +459,21 @@ describe "tilt/template (encoding)" do
     end
   end
 
+  it "uses the magic comment from the generated source code when generated source code is frozen" do
+    with_utf8_default_encoding do
+      tmpl = "ふが"
+      code = ("# coding: Shift_JIS\n" + tmpl.inspect).encode('Shift_JIS')
+      # Set it to an incorrect encoding
+      code.force_encoding('UTF-8')
+      code.freeze
+
+      inst = _DynamicMockTemplate.new(:code => code) { '' }
+      res = inst.render
+      assert_equal 'Shift_JIS', res.encoding.to_s
+      assert_equal tmpl, res.encode(tmpl.encoding)
+    end
+  end
+
   it "uses the magic comment from the generated source code" do
     with_utf8_default_encoding do
       tmpl = "ふが"
@@ -469,6 +484,20 @@ describe "tilt/template (encoding)" do
       inst = _DynamicMockTemplate.new(:code => code) { '' }
       res = inst.render
       assert_equal 'Shift_JIS', res.encoding.to_s
+      assert_equal tmpl, res.encode(tmpl.encoding)
+    end
+  end
+
+  it "uses compiled template encoding if :skip_compiled_encoding_detection is true" do
+    with_utf8_default_encoding do
+      tmpl = 'x'
+      code = ("# coding: UTF-8\n" + tmpl.inspect).encode('UTF-8')
+      # Set it to an incorrect encoding
+      code.force_encoding('US-ASCII')
+
+      inst = _DynamicMockTemplate.new(:code => code, :skip_compiled_encoding_detection=>true) { '' }
+      res = inst.render
+      assert_equal 'US-ASCII', res.encoding.to_s
       assert_equal tmpl, res.encode(tmpl.encoding)
     end
   end

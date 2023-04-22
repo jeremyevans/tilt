@@ -255,6 +255,8 @@ describe 'Tilt::Mapping' do
 end
 
 describe 'Tilt::FinalizedMapping' do
+  next if defined?(JRUBY_VERSION) && JRUBY_VERSION < '9.2'
+
   _Stub = Class.new
   _Stub2 = Class.new
 

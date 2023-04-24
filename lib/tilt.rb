@@ -142,6 +142,7 @@ module Tilt
     end
   end
   # :nocov:
+  # TILT3: Remove Tilt::Cache
   deprecate_constant :Cache if respond_to?(:deprecate_constant, true)
   # :nocov:
 
@@ -187,10 +188,11 @@ module Tilt
   register_lazy :WikiClothTemplate,    'tilt/wikicloth', 'wiki', 'mediawiki', 'mw'
   register_lazy :YajlTemplate,         'tilt/yajl',      'yajl'
 
-  # External template engines
-  register_lazy 'Slim::Template',            'slim',            'slim'
-  register_lazy 'Tilt::HandlebarsTemplate',  'tilt/handlebars', 'handlebars', 'hbs'
-  register_lazy 'Tilt::OrgTemplate',         'org-ruby',        'org'
-  register_lazy 'Tilt::EmacsOrgTemplate',    'tilt/emacs_org',  'org'
-  register_lazy 'Tilt::JbuilderTemplate',    'tilt/jbuilder',   'jbuilder'
+  # TILT3: Remove
+  # Deprecated lazy loading of external template engines
+  register_lazy 'Slim::Template',            'tilt/_slim',       'slim'
+  register_lazy 'Tilt::HandlebarsTemplate',  'tilt/_handlebars', 'handlebars', 'hbs'
+  register_lazy 'Tilt::OrgTemplate',         'tilt/_org',        'org'
+  register_lazy 'Tilt::OrgTemplate',         'tilt/_emacs_org',  'org'
+  register_lazy 'Tilt::JbuilderTemplate',    'tilt/_jbuilder',   'jbuilder'
 end

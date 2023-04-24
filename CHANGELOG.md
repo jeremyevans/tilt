@@ -8,6 +8,7 @@
 * Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
 * Deprecate {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
 * Deprecate non-string template code in PrawnTemplate (jeremyevans)
+* Deprecate default lazy loading of slim/handlebars/org/emacs_org/jbuilder external template engines (jeremyevans)
 * Handle `locals` as a local variable in templates (timriley) (#3) 
 * Do not cache output in PrawnTemplate#evaluate (jeremyevans)
 * Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)

@@ -58,19 +58,6 @@ Support for these template engines is included with Tilt:
 | WikiCloth            | .wiki, .mediawiki, .mw | wikicloth                     |
 | Yajl                 | .yajl                  | yajl-ruby                     |
 
-These template engines ship with their own Tilt integration:
-
-| Engine                | File Extensions  | Required Libraries  |
-| -------------------   | ---------------- | ------------------- |
-| Slim                  | .slim            | slim (>= 0.7)       |
-| Embedded JavaScript   |                  | sprockets           |
-| Embedded CoffeeScript |                  | sprockets           |
-| JST                   |                  | sprockets           |
-| Org-mode              | .org             | org-ruby (>= 0.6.2) |
-| Emacs Org             | .org             | tilt-emacs_org      |
-| Handlebars            | .hbs, handlebars | tilt-handlebars     |
-| Jbuilder              | .jbuilder        | tilt-jbuilder       |
-
 See [TEMPLATES.md][t] for detailed information on template engine
 options and supported features.
 

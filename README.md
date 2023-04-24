@@ -194,6 +194,46 @@ mappings:
   3. `html.erb`
   4. `erb`
 
+Template Pipelines
+------------------
+
+In some cases, it is useful to take the output of one template engine,
+and use it as input to another template engine.  This can be useful
+when a template engine does not support locals or a scope, and you
+want to customize the output per different locals.  For example, let's
+say you have an scss file that you want to allow customization with
+erb, such as:
+
+~~~scss
+.foo {
+  .bar {
+    .<%= hide_class %> {
+      display: none;
+    }
+  }
+}
+~~~
+
+You can do this manually:
+
+~~~ruby
+scss = Tilt.new("file.scss.erb").render(nil, hide_class: 'baz')
+css = Tilt.new("scss"){scss}.render
+~~~
+
+A more automated way to handle it is to register a template pipeline:
+
+~~~ruby
+  Tilt.register_pipeline("scss.erb")
+~~~
+
+Then Tilt will automatically take the output of the erb engine,
+and pass it to the scss engine, automating the above code.
+
+~~~ruby
+  css = Tilt.new("file.scss.erb").render(nil, hide_class: 'baz')
+~~~
+
 Finalizing Mappings
 -------------------
 
@@ -255,5 +295,4 @@ Prawn, and Yajl.
 LICENSE
 -------
 
-Tilt is Copyright (c) 2010 [Ryan Tomayko](http://tomayko.com/about) and
-distributed under the MIT license. See the `COPYING` file for more info.
+Tilt is distributed under the MIT license. See the `COPYING` file for more info.

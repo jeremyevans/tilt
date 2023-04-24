@@ -21,40 +21,42 @@ template engines included in the distribution.
 
 Support for these template engines is included with Tilt:
 
-| Engine                  | File Extensions        | Required Libraries            |
-| ----------------------- | ---------------------- | ------------------------------|
-| Asciidoctor             | .ad, .adoc, .asciidoc  | asciidoctor                   |
-| Babel                   | .es6, .babel, .jsx     | babel-transpiler              |
-| Builder                 | .builder               | builder                       |
-| CoffeeScript            | .coffee                | coffee-script (+ javascript)  |
-| CoffeeScript (literate) | .litcoffee             | coffee-script (+ javascript)  |
-| CommonMarker            | .markdown, .mkd, .md   | commonmarker                  |
-| Creole (Wiki markup)    | .wiki, .creole         | creole                        |
-| CSV                     | .rcsv                  | none (included ruby stdlib)   |
-| ERB                     | .erb, .rhtml           | none (included ruby stdlib)   |
-| Erubi                   | .erb, .rhtml, .erubi   | erubi                         |
-| Erubis                  | .erb, .rhtml, .erubis  | erubis                        |
-| Haml                    | .haml                  | haml                          |
-| InterpolatedString      | .str                   | none (included ruby core)     |
-| Kramdown                | .markdown, .mkd, .md   | kramdown                      |
-| Liquid                  | .liquid                | liquid                        |
-| LiveScript              | .ls                    | livescript (+ javascript)     |
-| Markaby                 | .mab                   | markaby                       |
-| Maruku                  | .markdown, .mkd, .md   | maruku                        |
-| Nokogiri                | .nokogiri              | nokogiri                      |
-| Pandoc                  | .markdown, .mkd, .md   | pandoc                        |
-| Prawn                   | .prawn                 | prawn                         |
-| Radius                  | .radius                | radius                        |
-| RDiscount               | .markdown, .mkd, .md   | rdiscount                     |
-| RDoc                    | .rdoc                  | rdoc                          |
-| Redcarpet               | .markdown, .mkd, .md   | redcarpet                     |
-| RedCloth                | .textile               | redcloth                      |
-| reStructuredText        | .rst                   | pandoc                        |
-| Sass                    | .sass                  | sass-embedded, sassc, or sass |
-| Scss                    | .scss                  | sass-embedded, sassc, or sass |
-| TypeScript              | .ts                    | typescript (+ javascript)     |
-| WikiCloth (Wiki markup) | .wiki, .mediawiki, .mw | wikicloth                     |
-| Yajl                    | .yajl                  | yajl-ruby                     |
+| Engine               | File Extensions        | Required Libraries            |
+| ---------------------| -----------------------| ------------------------------|
+| Asciidoctor          | .ad, .adoc, .asciidoc  | asciidoctor                   |
+| Babel                | .es6, .babel, .jsx     | babel-transpiler              |
+| Builder              | .builder               | builder                       |
+| CoffeeScript         | .coffee                | coffee-script (+ javascript)  |
+| CoffeeScriptLiterate | .litcoffee             | coffee-script (+ javascript)  |
+| CommonMarker         | .markdown, .mkd, .md   | commonmarker                  |
+| Creole               | .wiki, .creole         | creole                        |
+| CSV                  | .rcsv                  | csv (ruby stdlib)             |
+| ERB                  | .erb, .rhtml           | erb (ruby stdlib)             |
+| Erubi                | .erb, .rhtml, .erubi   | erubi                         |
+| Erubis               | .erb, .rhtml, .erubis  | erubis                        |
+| Etanni               | .ern, .etanni          | none                          |
+| Haml                 | .haml                  | haml                          |
+| Kramdown             | .markdown, .mkd, .md   | kramdown                      |
+| Liquid               | .liquid                | liquid                        |
+| LiveScript           | .ls                    | livescript (+ javascript)     |
+| Markaby              | .mab                   | markaby                       |
+| Maruku               | .markdown, .mkd, .md   | maruku                        |
+| Nokogiri             | .nokogiri              | nokogiri                      |
+| Pandoc               | .markdown, .mkd, .md   | pandoc                        |
+| Plain                | .html                  | none                          |
+| Prawn                | .prawn                 | prawn                         |
+| Radius               | .radius                | radius                        |
+| RDiscount            | .markdown, .mkd, .md   | rdiscount                     |
+| RDoc                 | .rdoc                  | rdoc                          |
+| Redcarpet            | .markdown, .mkd, .md   | redcarpet                     |
+| RedCloth             | .textile               | redcloth                      |
+| RstPandoc            | .rst                   | pandoc                        |
+| Sass                 | .sass                  | sass-embedded, sassc, or sass |
+| Scss                 | .scss                  | sass-embedded, sassc, or sass |
+| String               | .str                   | none                          |
+| TypeScript           | .ts                    | typescript (+ javascript)     |
+| WikiCloth            | .wiki, .mediawiki, .mw | wikicloth                     |
+| Yajl                 | .yajl                  | yajl-ruby                     |
 
 These template engines ship with their own Tilt integration:
 

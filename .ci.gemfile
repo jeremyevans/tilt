@@ -16,7 +16,6 @@ gem 'nokogiri'
 gem 'pdf-reader'
 gem 'prawn', '>= 2.0.0'
 gem 'radius'
-gem 'rdoc'
 gem 'typescript-node'
 
 if RUBY_VERSION < '2.6'

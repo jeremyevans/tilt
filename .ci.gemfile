@@ -19,6 +19,12 @@ gem 'radius'
 gem 'rdoc'
 gem 'typescript-node'
 
+if RUBY_VERSION < '2.6'
+  gem 'rdoc', '< 6.4'
+else
+  gem 'rdoc'
+end
+
 gem 'coffee-script' if ENV['COFFEE_SCRIPT']
 
 if RUBY_VERSION < '2.1'

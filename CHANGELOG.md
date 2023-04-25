@@ -8,7 +8,7 @@
 * Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
 * Deprecate {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
 * Deprecate non-string template code in PrawnTemplate (jeremyevans)
-* Deprecate default lazy loading of slim/handlebars/org/emacs_org/jbuilder external template engines (jeremyevans)
+* Deprecate default lazy loading of handlebars/org/emacs_org/jbuilder external template engines (jeremyevans)
 * Handle `locals` as a local variable in templates (timriley) (#3) 
 * Do not cache output in PrawnTemplate#evaluate (jeremyevans)
 * Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)
@@ -26,6 +26,7 @@
 * Add frozen_string_literal magic comment to all source files (jeremyevans)
 * Support templates with frozen compiled source code (jeremyevans)
 * Support :skip_compiled_encoding_detection template option to not scan compiled source code for encoding lines (jeremyevans)
+* Ship slim template support with tilt (minad) (#4)
 * Template#extract_{encoding,magic_comment} private methods now require a block (jeremyevans)
 
 The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that

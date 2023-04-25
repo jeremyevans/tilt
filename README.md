@@ -51,6 +51,7 @@ Support for these template engines is included with Tilt:
 | Redcarpet            | .markdown, .mkd, .md   | redcarpet                     |
 | RedCloth             | .textile               | redcloth                      |
 | RstPandoc            | .rst                   | pandoc                        |
+| Slim                 | .slim                  | slim                          |
 | Sass                 | .sass                  | sass-embedded, sassc, or sass |
 | Scss                 | .scss                  | sass-embedded, sassc, or sass |
 | String               | .str                   | none                          |

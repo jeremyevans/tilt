@@ -1,6 +1,15 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/slim' do
+  data = (<<'END').freeze
+html
+  body
+    h1= "Hey #{name}"
+
+    = raise MockError
+
+    p we never get here
+END
   self::MockError = Class.new(NameError)
 
   it "registered for '.slim' files" do
@@ -8,11 +17,6 @@ checked_describe 'tilt/slim' do
   end
 
   it "preparing and evaluating templates on #render" do
-    template = Tilt::SlimTemplate.new { |t| "p Hello World!" }
-    assert_equal "<p>Hello World!</p>", template.render
-  end
-
-  it "can be rendered more than once" do
     template = Tilt::SlimTemplate.new { |t| "p Hello World!" }
     3.times { assert_equal "<p>Hello World!</p>", template.render }
   end
@@ -41,8 +45,6 @@ checked_describe 'tilt/slim' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data.start_with? "html"
     template = Tilt::SlimTemplate.new('test.slim', 10) { data }
     begin
       template.render
@@ -57,8 +59,6 @@ checked_describe 'tilt/slim' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data.start_with? "html"
     template = Tilt::SlimTemplate.new('test.slim') { data }
     begin
       template.render(self, :name => 'Joe', :foo => 'bar')
@@ -105,8 +105,6 @@ checked_describe 'tilt/slim' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data.start_with? "html"
     template = Tilt::SlimTemplate.new('test.slim', 10) { data }
     begin
       template.render(_Scope.new)
@@ -121,8 +119,6 @@ checked_describe 'tilt/slim' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data.start_with? "html"
     template = Tilt::SlimTemplate.new('test.slim') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -135,12 +131,3 @@ checked_describe 'tilt/slim' do
     end
   end
 end
-
-__END__
-html
-  body
-    h1= "Hey #{name}"
-
-    = raise MockError
-
-    p we never get here

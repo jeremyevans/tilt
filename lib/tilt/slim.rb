@@ -1,6 +1,5 @@
 # frozen_string_literal: true
+require_relative 'template'
 require 'slim'
 
-module Tilt
-  SlimTemplate = Slim::Template
-end
+Tilt::SlimTemplate = Slim::Template

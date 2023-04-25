@@ -54,7 +54,7 @@ USAGE
         groups = {}
         Tilt.lazy_map.each do |pattern,engines|
           engines.each do |engine,|
-            engine = engine.split('::').last.sub(/Template\z/, '') if engine.start_with?('Tilt::')
+            engine = engine.split('::').last.sub(/Template\z/, '')
             (groups[engine] ||= []) << pattern
           end
         end

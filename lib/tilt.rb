@@ -183,6 +183,7 @@ module Tilt
   register_lazy :RstPandocTemplate,    'tilt/rst-pandoc', 'rst'
   register_lazy :SassTemplate,         'tilt/sass',      'sass'
   register_lazy :ScssTemplate,         'tilt/sass',      'scss'
+  register_lazy :SlimTemplate,         'tilt/slim',      'slim'
   register_lazy :StringTemplate,       'tilt/string',    'str'
   register_lazy :TypeScriptTemplate,   'tilt/typescript', 'ts', 'tsx'
   register_lazy :WikiClothTemplate,    'tilt/wikicloth', 'wiki', 'mediawiki', 'mw'
@@ -190,7 +191,6 @@ module Tilt
 
   # TILT3: Remove
   # Deprecated lazy loading of external template engines
-  register_lazy 'Slim::Template',            'tilt/_slim',       'slim'
   register_lazy 'Tilt::HandlebarsTemplate',  'tilt/_handlebars', 'handlebars', 'hbs'
   register_lazy 'Tilt::OrgTemplate',         'tilt/_org',        'org'
   register_lazy 'Tilt::OrgTemplate',         'tilt/_emacs_org',  'org'

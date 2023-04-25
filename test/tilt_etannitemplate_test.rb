@@ -1,6 +1,17 @@
 require_relative 'test_helper'
 require 'tilt/etanni'
 
+data = (<<'END').freeze
+<html>
+<body>
+  <h1>Hey #{name}!</h1>
+
+
+  <p>#{fail}</p>
+</body>
+</html>
+END
+
 describe 'tilt/etanni' do
   it "registered for '.etn' files" do
     assert_equal Tilt::EtanniTemplate, Tilt['test.etn']
@@ -44,8 +55,6 @@ describe 'tilt/etanni' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::EtanniTemplate.new('test.etn', 11) { data }
     begin
       template.render
@@ -61,8 +70,6 @@ describe 'tilt/etanni' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::EtanniTemplate.new('test.etn', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
@@ -129,8 +136,6 @@ describe 'tilt/etanni (compiled)' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::EtanniTemplate.new('test.etn', 11) { data }
     begin
       template.render(_Scope.new)
@@ -147,8 +152,6 @@ describe 'tilt/etanni (compiled)' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::EtanniTemplate.new('test.etn') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -163,13 +166,3 @@ describe 'tilt/etanni (compiled)' do
     end
   end
 end
-
-__END__
-<html>
-<body>
-  <h1>Hey #{name}!</h1>
-
-
-  <p>#{fail}</p>
-</body>
-</html>

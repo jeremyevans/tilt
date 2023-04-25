@@ -2,6 +2,17 @@ require_relative 'test_helper'
 require 'tilt/csv'
 
 describe 'tilt/csv' do
+  data = (<<END).freeze
+# header
+csv << ['Type', 'Age']
+
+raise NameError
+
+# rows
+csv << ['Frog', 2]
+csv << ['Cat', 5]
+END
+
   it "registered for '.rcsv' files" do
     assert_equal Tilt::CSVTemplate, Tilt['rcsv']
   end
@@ -29,7 +40,6 @@ describe 'tilt/csv' do
   end
 
   it "backtrace file and line reporting" do
-    data = File.read(__FILE__).split("\n__END__\n").last
     template = Tilt::CSVTemplate.new('test.csv') { data }
     begin
       template.render
@@ -56,13 +66,3 @@ describe 'tilt/csv' do
     assert_equal output, scope.instance_variable_get(outvar.to_sym)
   end
 end
-
-__END__
-# header
-csv << ['Type', 'Age']
-
-raise NameError
-
-# rows
-csv << ['Frog', 2]
-csv << ['Cat', 5]

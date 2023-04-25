@@ -1,6 +1,17 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/erubi' do
+  data = (<<END).freeze
+<html>
+<body>
+    <h1>Hey <%= name %>!</h1>
+
+
+    <p><% fail %></p>
+</body>
+</html>
+END
+
   it "registered for '.erubi' files" do
     assert_equal Tilt::ErubiTemplate, Tilt['test.erubi']
     assert_equal Tilt::ErubiTemplate, Tilt['test.html.erubi']
@@ -58,8 +69,6 @@ checked_describe 'tilt/erubi' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ErubiTemplate.new('test.erubis', 11) { data }
     begin
       template.render
@@ -74,8 +83,6 @@ checked_describe 'tilt/erubi' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ErubiTemplate.new('test.erubis', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
@@ -145,13 +152,3 @@ checked_describe 'tilt/erubi' do
     end
   end
 end
-
-__END__
-<html>
-<body>
-    <h1>Hey <%= name %>!</h1>
-
-
-    <p><% fail %></p>
-</body>
-</html>

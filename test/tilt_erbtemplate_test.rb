@@ -2,6 +2,17 @@ require_relative 'test_helper'
 require 'tilt/erb'
 require 'tempfile'
 
+data = (<<END).freeze
+<html>
+<body>
+  <h1>Hey <%= name %>!</h1>
+
+
+  <p><% fail %></p>
+</body>
+</html>
+END
+
 describe 'tilt/erb' do
   it "registered for '.erb' files" do
     assert_includes Tilt.lazy_map['erb'], ['Tilt::ERBTemplate', 'tilt/erb']
@@ -60,8 +71,6 @@ describe 'tilt/erb' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__, :encoding=>'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 11) { data }
     begin
       template.render
@@ -76,8 +85,6 @@ describe 'tilt/erb' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__, :encoding=>'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
@@ -161,8 +168,6 @@ describe 'tilt/erb (compiled)' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__, encoding: 'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 11) { data }
     begin
       template.render(_Scope.new)
@@ -177,8 +182,6 @@ describe 'tilt/erb (compiled)' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__, encoding: 'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -234,13 +237,3 @@ describe 'tilt/erb (compiled)' do
     end
   end
 end
-
-__END__
-<html>
-<body>
-  <h1>Hey <%= name %>!</h1>
-
-
-  <p><% fail %></p>
-</body>
-</html>

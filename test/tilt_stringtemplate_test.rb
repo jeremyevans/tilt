@@ -1,6 +1,17 @@
 require_relative 'test_helper'
 require 'tilt/string'
 
+data = (<<'END').freeze
+<html>
+<body>
+  <h1>Hey #{name}!</h1>
+
+
+  <p>#{fail}</p>
+</body>
+</html>
+END
+
 describe 'tilt/string' do
   it "registered for '.str' files" do
     assert_equal Tilt::StringTemplate, Tilt['test.str']
@@ -40,8 +51,6 @@ describe 'tilt/string' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::StringTemplate.new('test.str', 11) { data }
     begin
       template.render
@@ -57,8 +66,6 @@ describe 'tilt/string' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::StringTemplate.new('test.str', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
@@ -126,8 +133,6 @@ describe 'tilt/string (compiled)' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::StringTemplate.new('test.str', 11) { data }
     begin
       template.render(_Scope.new)
@@ -144,8 +149,6 @@ describe 'tilt/string (compiled)' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::StringTemplate.new('test.str') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -160,13 +163,3 @@ describe 'tilt/string (compiled)' do
     end
   end
 end
-
-__END__
-<html>
-<body>
-  <h1>Hey #{name}!</h1>
-
-
-  <p>#{fail}</p>
-</body>
-</html>

@@ -1,6 +1,15 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/haml' do
+  data = (<<'END').freeze
+%html
+  %body
+    %h1= "Hey #{name}"
+
+    = raise MockError
+
+    %p we never get here
+END
   self::MockError = Class.new(NameError)
 
   it "registered for '.haml' files" do
@@ -46,8 +55,6 @@ checked_describe 'tilt/haml' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?%
     template = Tilt::HamlTemplate.new('test.haml', 10) { data }
     begin
       template.render
@@ -62,8 +69,6 @@ checked_describe 'tilt/haml' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?%
     template = Tilt::HamlTemplate.new('test.haml') { data }
     begin
       template.render(self, :name => 'Joe', :foo => 'bar')
@@ -115,8 +120,6 @@ checked_describe 'tilt/haml' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?%
     template = Tilt::HamlTemplate.new('test.haml', 10) { data }
     begin
       template.render(_Scope.new)
@@ -131,8 +134,6 @@ checked_describe 'tilt/haml' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__).split("\n__END__\n").last
-    fail unless data[0] == ?%
     template = Tilt::HamlTemplate.new('test.haml') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -145,12 +146,3 @@ checked_describe 'tilt/haml' do
     end
   end
 end
-
-__END__
-%html
-  %body
-    %h1= "Hey #{name}"
-
-    = raise MockError
-
-    %p we never get here

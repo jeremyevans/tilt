@@ -41,8 +41,10 @@ checked_describe 'tilt/pandoc' do
   end
 
   it "generates footnotes with markdown_strict: false option" do
-    template = Tilt::PandocTemplate.new(:markdown_strict => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
-    assert_includes template.render, '"footnotes"'
+    with_utf8_default_encoding do
+      template = Tilt::PandocTemplate.new(:markdown_strict => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
+      assert_includes template.render, '"footnotes"'
+    end
   end
 
   it "doesn't generate footnotes with commonmark option" do
@@ -51,8 +53,10 @@ checked_describe 'tilt/pandoc' do
   end
 
   it "generates footnotes with commonmark: false option" do
-    template = Tilt::PandocTemplate.new(:commonmark => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
-    assert_includes template.render, '"footnotes"'
+    with_utf8_default_encoding do
+      template = Tilt::PandocTemplate.new(:commonmark => false) { |t| "Here is an inline note.^[Inlines notes are cool!]" }
+      assert_includes template.render, '"footnotes"'
+    end
   end
 
   it "accepts arguments with values (e.g. :id_prefix => 'xyz')" do

@@ -84,11 +84,11 @@ engine libraries (like 'tilt/erb' above) at load time. Tilt attempts to
 lazy require the template engine library the first time a template is
 created, but this is prone to error in threaded environments.
 
-The {Tilt} module contains generic implementation classes for all supported
+The Tilt module contains generic implementation classes for all supported
 template engines. Each template class adheres to the same interface for
 creation and rendering. In the instant gratification example, we let Tilt
 determine the template implementation class based on the filename, but
-{Tilt::Template} implementations can also be used directly:
+Tilt::Template implementations can also be used directly:
 
 ~~~ruby
 require 'tilt/haml'
@@ -138,14 +138,14 @@ template.render { 'Joe' }
 Template Mappings
 -----------------
 
-The {Tilt::Mapping} class includes methods for associating template
+The Tilt::Mapping class includes methods for associating template
 implementation classes with filename patterns and for locating/instantiating
 template classes based on those associations.
 
-The {Tilt} module has a global instance of `Mapping` that is populated with the
+The Tilt module has a global instance of `Mapping` that is populated with the
 table of template engines above.
 
-The {Tilt.register} method associates a filename pattern with a specific
+The Tilt.register method associates a filename pattern with a specific
 template implementation. To use ERB for files ending in a `.bar` extension:
 
 ~~~ruby
@@ -225,7 +225,7 @@ and pass it to the scss engine, automating the above code.
 Finalizing Mappings
 -------------------
 
-By default, {Tilt::Mapping} instances will lazy load files for template
+By default, Tilt::Mapping instances will lazy load files for template
 classes, and will allow for registering an unregistering template classes.
 To make sure this is safe in a multithreaded environment, a mutex is used
 to synchronize access. To improve performance, and prevent additional lazy
@@ -233,8 +233,8 @@ loading of template classes, you can finalize mappings.  Finalizing a mapping
 returns a new finalized mapping that is frozen, cannot be modified, and will
 not lazy load template classes not already loaded.  Users of Tilt are
 encouraged to manually require the template libraries they desire to use,
-and then freeze the mappings. {Tilt.finalize!} will replace Tilt's default
-mapping with a finalized versions, as well as freeze {Tilt} so that no
+and then freeze the mappings. Tilt.finalize! will replace Tilt's default
+mapping with a finalized versions, as well as freeze Tilt so that no
 further changes can be made.
 
 ~~~ruby

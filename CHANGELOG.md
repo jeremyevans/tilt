@@ -1,5 +1,6 @@
 ## master
 
+* Remove deprecated support for RedCarpet 1.x (jeremyevans)
 * Remove deprecated support for Tilt.current_template (jeremyevans)
 
 ## 2.2.0 (2023-06-05)

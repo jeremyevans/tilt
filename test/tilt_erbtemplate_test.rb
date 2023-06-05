@@ -49,20 +49,11 @@ describe 'tilt/erb' do
   end
 
   it "exposing the buffer to the template by default" do
-    verbose = $VERBOSE
-    begin
-      $VERBOSE = nil
-      Tilt::ERBTemplate.default_output_variable = '@_out_buf'
-      assert_equal '@_out_buf', Tilt::ERBTemplate.default_output_variable
-      template = Tilt::ERBTemplate.new { '<% self.exposed_buffer = @_out_buf %>hey' }
-      scope = _MockOutputVariableScope.new
-      template.render(scope)
-      refute_nil scope.exposed_buffer
-      assert_equal scope.exposed_buffer, 'hey'
-    ensure
-      Tilt::ERBTemplate.default_output_variable = '_erbout'
-      $VERBOSE = verbose
-    end
+    template = Tilt::ERBTemplate.new(:outvar=>'@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
+    scope = _MockOutputVariableScope.new
+    template.render(scope)
+    refute_nil scope.exposed_buffer
+    assert_equal scope.exposed_buffer, 'hey'
   end
 
   it "passing a block for yield" do

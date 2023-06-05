@@ -8,23 +8,9 @@ module Tilt
   class ERBTemplate < Template
     SUPPORTS_KVARGS = ::ERB.instance_method(:initialize).parameters.assoc(:key) rescue false
 
-    # Remove in Tilt 2.3
-    @default_output_variable = nil
-    def self._default_output_variable
-      @default_output_variable
-    end
-    def self.default_output_variable
-      warn "#{self}.default_output_variable is deprecated and will be removed in Tilt 2.3.", uplevel: 1
-      @default_output_variable
-    end
-    def self.default_output_variable=(name)
-      warn "#{self}.default_output_variable= is deprecated and will be removed in Tilt 2.3. Switch to using the :outvar option.", uplevel: 1
-      @default_output_variable = name
-    end
-
     def prepare
       @freeze_string_literals = !!@options[:freeze]
-      @outvar = @options[:outvar] || self.class._default_output_variable || '_erbout'
+      @outvar = @options[:outvar] || '_erbout'
       trim = case @options[:trim]
       when false
         nil

@@ -54,19 +54,11 @@ END
   end
 
   it "exposing the buffer to the template by default" do
-    verbose = $VERBOSE
-    begin
-      $VERBOSE = nil
-      Tilt::ErubisTemplate.default_output_variable = '@_out_buf'
-      template = Tilt::ErubisTemplate.new { '<% self.exposed_buffer = @_out_buf %>hey' }
-      scope = MockOutputVariableScope.new
-      template.render(scope)
-      refute_nil scope.exposed_buffer
-      assert_equal scope.exposed_buffer, 'hey'
-    ensure
-      Tilt::ErubisTemplate.default_output_variable = '_erbout'
-      $VERBOSE = verbose
-    end
+    template = Tilt::ErubisTemplate.new(:outvar=>'@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
+    scope = MockOutputVariableScope.new
+    template.render(scope)
+    refute_nil scope.exposed_buffer
+    assert_equal scope.exposed_buffer, 'hey'
   end
 
   it "passing a block for yield" do

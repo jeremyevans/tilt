@@ -1,5 +1,6 @@
 ## master
 
+* Remove deprecated support for CoffeeScriptTemplate.default_no_wrap{,=} (jeremyevans)
 * Remove deprecated support for RedCarpet 1.x (jeremyevans)
 * Remove deprecated support for Tilt.current_template (jeremyevans)
 

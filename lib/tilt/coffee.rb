@@ -15,18 +15,6 @@ module Tilt
       attr_accessor :default_bare
     end
 
-    # :nocov:
-    def self.default_no_wrap
-      warn "#{self.class}.default_no_wrap is deprecated and will be removed in Tilt 2.3.  Switch to #{self.class}.default_bare."
-      default_bare
-    end
-
-    def self.default_no_wrap=(value)
-      warn "#{self.class}.default_no_wrap= is deprecated and will be removed in Tilt 2.3.  Switch to #{self.class}.default_bare=."
-      self.default_bare = value
-    end
-    # :nocov:
-
     def self.literate?
       false
     end

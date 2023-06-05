@@ -1,3 +1,7 @@
+## master
+
+* Remove deprecated support for Tilt.current_template (jeremyevans)
+
 ## 2.2.0 (2023-06-05)
 
 * Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)

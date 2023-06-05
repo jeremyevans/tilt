@@ -80,19 +80,6 @@ module Tilt
     @default_mapping.templates_for(file)
   end
 
-  # @return the template object that is currently rendering.
-  #
-  # @example
-  #   tmpl = Tilt['index.erb'].new { '<%= Tilt.current_template %>' }
-  #   tmpl.render == tmpl.to_s
-  #
-  # @note This is currently an experimental feature and might return nil
-  #   in the future.
-  def self.current_template
-    warn "Tilt.current_template is deprecated and will be removed in Tilt 2.3", uplevel: 1
-    Thread.current[:tilt_current_template]
-  end
-
   class << self
     # @return [Tilt::Mapping] the main mapping object
     attr_reader :default_mapping

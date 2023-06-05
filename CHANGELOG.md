@@ -1,4 +1,4 @@
-## master
+## 2.2.0 (2023-06-05)
 
 * Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
 * Drop support for RDoc < 4 (jeremyevans)

@@ -25,11 +25,6 @@ else
       assert_equal Tilt::PrawnTemplate, Tilt['test.prawn']
     end
 
-    deprecated "can be initialized without a string" do
-      template = Tilt::PrawnTemplate.new{}
-      assert_equal true, template.render.start_with?('%PDF')
-    end
-
     it "renders inline prawn templates" do
       template = Tilt::PrawnTemplate.new { |t| "pdf.text \"Hello PDF!\"" }
       3.times do

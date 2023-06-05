@@ -15,16 +15,9 @@ module Tilt
     
     def evaluate(scope, locals, &block)
       pdf = @engine
-      if @data.respond_to?(:to_str)
-        locals = locals.dup
-        locals[:pdf] = pdf
-        super
-      else
-        warn "Non-string provided as prawn template data. This is no longer supported and support for it will be removed in Tilt 2.3", :uplevel=>2
-        # :nocov:
-        @data.call(pdf) if @data.kind_of?(Proc)
-        # :nocov:
-      end
+      locals = locals.dup
+      locals[:pdf] = pdf
+      super
       pdf.render
     end
     

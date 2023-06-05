@@ -1,5 +1,6 @@
 ## master
 
+* Remove deprecated support for non-string template code in PrawnTemplate (jeremyevans)
 * Remove deprecated support for {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
 * Remove deprecated support for CoffeeScriptTemplate.default_no_wrap{,=} (jeremyevans)
 * Remove deprecated support for RedCarpet 1.x (jeremyevans)

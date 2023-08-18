@@ -162,4 +162,11 @@ describe 'tilt/string (compiled)' do
       assert_equal '6', line
     end
   end
+
+  if RUBY_VERSION >= '2.3'
+    it "uses frozen literal strings if :freeze option is used" do
+      template = Tilt::StringTemplate.new(nil, :freeze => true) { |t| '#{"".frozen?}' }
+      assert_equal "true", template.render
+    end
+  end
 end

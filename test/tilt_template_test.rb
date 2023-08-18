@@ -139,6 +139,12 @@ describe "tilt/template" do
     end
   end
 
+  _FrozenSourceGeneratingMockTemplate = Class.new(_SourceGeneratingMockTemplate) do
+    def freeze_string_literals?
+      true
+    end
+  end
+
   it "template_source with locals" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{name}!' }
     assert_equal "Hey Joe!", inst.render(Object.new, :name => 'Joe')
@@ -267,6 +273,32 @@ describe "tilt/template" do
       content = File.read(tempfile)
       assert_match(/\Aclass Object/, content)
       assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
+    end
+  end
+
+  it "template with compiled_path and freezing string literals option" do
+    Dir.mktmpdir('tilt') do |dir|
+      base = File.join(dir, 'template')
+      inst = _FrozenSourceGeneratingMockTemplate.new { |t| 'Hey' }
+      inst.compiled_path = base
+
+      tempfile = "#{base}.rb"
+      assert_equal false, File.file?(tempfile)
+      assert_equal 'Hey', inst.render
+      assert_equal true, File.file?(tempfile)
+      assert_match(/\A# frozen-string-literal: true\nclass Object/, File.read(tempfile))
+
+      tempfile = "#{base}-1.rb"
+      assert_equal false, File.file?(tempfile)
+      assert_equal 'Hey', inst.render("")
+      assert_equal true, File.file?(tempfile)
+      assert_match(/\A# frozen-string-literal: true\nclass String/, File.read(tempfile))
+
+      tempfile = "#{base}-2.rb"
+      assert_equal false, File.file?(tempfile)
+      assert_equal 'Hey', inst.render(Tilt::Mapping.new)
+      assert_equal true, File.file?(tempfile)
+      assert_match(/\A# frozen-string-literal: true\nclass Tilt::Mapping/, File.read(tempfile))
     end
   end
 

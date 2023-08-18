@@ -351,7 +351,11 @@ module Tilt
         path << ".rb"
 
         # Wrap method source in a class block for the scope, so constant lookup works
-        method_source = "class #{scope_class.name}\n#{method_source}\nend"
+        if freeze_string_literals?
+          method_source_prefix = "# frozen-string-literal: true\n"
+          method_source = method_source.sub(/\A# frozen-string-literal: true\n/, '')
+        end
+        method_source = "#{method_source_prefix}class #{scope_class.name}\n#{method_source}\nend"
 
         load_compiled_method(path, method_source)
       else

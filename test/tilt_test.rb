@@ -85,7 +85,7 @@ describe 'Tilt' do
     frozen = @frozen = []
 
     Tilt.class_eval do
-      define_singleton_method(:freeze){frozen << self}
+      define_singleton_method(:freeze){frozen << self; self}
       @default_mapping = Tilt::Mapping.new
       register(_Stub, 'foo', 'bar')
       register(_Stub2, 'foo', 'baz')
@@ -120,5 +120,13 @@ describe 'Tilt' do
     assert_raises(RuntimeError){Tilt.prefer(Class.new, 'mock')}
     assert_raises(RuntimeError){Tilt.register_lazy(:StringTemplate, 'str2')}
     assert_raises(RuntimeError){Tilt.register_pipeline('str.erb')}
+  end
+
+  it ".finalize! is idempotent" do
+    2.times do
+      assert_equal Tilt, Tilt.finalize!
+      assert Tilt.default_mapping.frozen?
+      assert_equal [Tilt], @frozen
+    end
   end
 end

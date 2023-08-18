@@ -7,6 +7,7 @@
 * Remove deprecated support for Tilt.current_template (jeremyevans)
 * Make Template#freeze_string_literals? work correctly with Template#compiled_path (jeremyevans)
 * Support :freeze option for StringTemplate to support frozen string literals (jeremyevans)
+* Make Tilt.finalize! a no-op if it has already been called (jeremyevans)
 
 ## 2.2.0 (2023-06-05)
 

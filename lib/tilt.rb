@@ -18,6 +18,8 @@ module Tilt
   # is called, all attempts to modify the default mapping will fail.
   # This also freezes Tilt itself.
   def self.finalize!
+    return self if @default_mapping.is_a?(FinalizedMapping)
+
     class << self
       prepend(Module.new do
         def lazy_map(*)

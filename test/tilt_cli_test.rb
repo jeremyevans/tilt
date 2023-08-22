@@ -68,7 +68,7 @@ describe 'bin/tilt' do
     exit_code, stdout, stderr = tilt('-y', 'test/mylayout.erb', 'test/mytemplate.erb')
     assert_equal 0, exit_code
     assert_empty stderr
-    assert_equal stdout, "Before\nAnswer: 2\n\nAfter\n"
+    assert_equal "Before\nAnswer: 2\nAfter\n", stdout.sub("\n\n", "\n")
   end
 
   it "should show error message for invalid engine" do

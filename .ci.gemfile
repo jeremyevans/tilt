@@ -26,6 +26,10 @@ end
 
 gem 'coffee-script' if ENV['COFFEE_SCRIPT']
 
+if RUBY_VERSION < '2.3'
+  gem 'execjs', '< 2.9'
+end
+
 if RUBY_VERSION < '2.1'
   gem 'kramdown', '< 1.1'
 else

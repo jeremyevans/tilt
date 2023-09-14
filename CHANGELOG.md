@@ -1,4 +1,4 @@
-## master
+## 2.3.0 (2023-09-14)
 
 * Remove deprecated support for non-string template code in PrawnTemplate (jeremyevans)
 * Remove deprecated support for {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)

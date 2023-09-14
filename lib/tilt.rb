@@ -5,7 +5,7 @@ require_relative 'tilt/template'
 # Namespace for Tilt. This module is not intended to be included anywhere.
 module Tilt
   # Current version.
-  VERSION = '2.2.0'
+  VERSION = '2.3.0'
 
   EMPTY_HASH = {}.freeze
   private_constant :EMPTY_HASH

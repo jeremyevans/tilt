@@ -10,7 +10,6 @@ gem 'erubi'
 gem 'erubis'
 gem 'liquid'
 gem 'livescript'
-gem 'markaby'
 gem 'nokogiri'
 gem 'pdf-reader'
 gem 'prawn', '>= 2.0.0'
@@ -28,6 +27,12 @@ gem 'coffee-script' if ENV['COFFEE_SCRIPT']
 
 if RUBY_VERSION < '2.3'
   gem 'execjs', '< 2.9'
+end
+
+if RUBY_VERSION < '2.7'
+  gem 'markaby', '< 0.9.1'
+else
+  gem 'markaby'
 end
 
 if RUBY_VERSION < '2.1'

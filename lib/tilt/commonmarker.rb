@@ -36,6 +36,10 @@ module Tilt
     ].freeze
 
     def prepare
+      prepare_pre
+    end
+
+    private def prepare_pre
       extensions = EXTS.select do |extension|
         @options[extension]
       end

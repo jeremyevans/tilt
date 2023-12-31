@@ -35,8 +35,38 @@ module Tilt
       :tasklist,
     ].freeze
 
+    V1_PARSE_OPTS = [
+      :smart,
+      :default_info_string,
+    ].freeze
+    V1_RENDER_OPTS = [
+      :hardbreaks,
+      :github_pre_lang,
+      :width,
+      :unsafe,
+      :escape,
+      :sourcepos,
+    ].freeze
+    V1_EXTS = [
+      :strikethrough,
+      :tagfilter,
+      :table,
+      :autolink,
+      :tasklist,
+      :superscript,
+      :header_ids,
+      :footnotes,
+      :description_lists,
+      :front_matter_delimiter,
+      :shortcodes,
+    ].freeze
+
     def prepare
-      prepare_pre
+      if commonmaker_v1_or_later?
+        prepare_v1
+      else
+        prepare_pre
+      end
     end
 
     private def prepare_pre
@@ -56,6 +86,17 @@ module Tilt
       end
 
       @output = CommonMarker.render_doc(@data, parse_options, extensions).to_html(render_options, extensions)
+    end
+
+    private def prepare_v1
+      parse_options = @options.select { |key, _| V1_PARSE_OPTS.include?(key) }
+      render_options = @options.select { |key, _| V1_RENDER_OPTS.include?(key) }
+      extensions = @options.select { |key, _| V1_EXTS.include?(key) }
+      @output = Commonmarker.to_html(@data, options: { parse: parse_options, render: render_options, extension: extensions })
+    end
+
+    private def commonmaker_v1_or_later?
+      defined?(::Commonmarker) ? true : false
     end
   end
 end

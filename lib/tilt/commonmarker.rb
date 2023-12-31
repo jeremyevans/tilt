@@ -4,47 +4,47 @@ require 'commonmarker'
 
 module Tilt
   class CommonMarkerTemplate < StaticTemplate
-    def prepare
-      aliases = {
-        :smartypants => :SMART
-      }.freeze
-      parse_opts = [
-        :FOOTNOTES,
-        :LIBERAL_HTML_TAG,
-        :SMART,
-        :smartypants,
-        :STRIKETHROUGH_DOUBLE_TILDE,
-        :UNSAFE,
-        :VALIDATE_UTF8,
-      ].freeze
-      render_opts = [
-        :FOOTNOTES,
-        :FULL_INFO_STRING,
-        :GITHUB_PRE_LANG,
-        :HARDBREAKS,
-        :NOBREAKS,
-        :SAFE, # Removed in v0.18.0 (2018-10-17)
-        :SOURCEPOS,
-        :TABLE_PREFER_STYLE_ATTRIBUTES,
-        :UNSAFE,
-      ].freeze
-      exts = [
-        :autolink,
-        :strikethrough,
-        :table,
-        :tagfilter,
-        :tasklist,
-      ].freeze
+    ALIASES = {
+      :smartypants => :SMART
+    }.freeze
+    PARSE_OPTS = [
+      :FOOTNOTES,
+      :LIBERAL_HTML_TAG,
+      :SMART,
+      :smartypants,
+      :STRIKETHROUGH_DOUBLE_TILDE,
+      :UNSAFE,
+      :VALIDATE_UTF8,
+    ].freeze
+    RENDER_OPTS = [
+      :FOOTNOTES,
+      :FULL_INFO_STRING,
+      :GITHUB_PRE_LANG,
+      :HARDBREAKS,
+      :NOBREAKS,
+      :SAFE, # Removed in v0.18.0 (2018-10-17)
+      :SOURCEPOS,
+      :TABLE_PREFER_STYLE_ATTRIBUTES,
+      :UNSAFE,
+    ].freeze
+    EXTS = [
+      :autolink,
+      :strikethrough,
+      :table,
+      :tagfilter,
+      :tasklist,
+    ].freeze
 
-      extensions = exts.select do |extension|
+    def prepare
+      extensions = EXTS.select do |extension|
         @options[extension]
       end
 
-      parse_options, render_options = [parse_opts, render_opts].map do |opts|
+      parse_options, render_options = [PARSE_OPTS, RENDER_OPTS].map do |opts|
         opts = opts.select do |option|
           @options[option]
         end.map! do |option|
-          aliases[option] || option
+          ALIASES[option] || option
         end
 
         opts = :DEFAULT unless opts.any?

@@ -3,6 +3,9 @@ require_relative 'template'
 require 'commonmarker'
 
 if defined?(::Commonmarker)
+  aliases = {
+    :smartypants => :smart
+  }.freeze
   parse_opts = [
     :smart,
     :default_info_string,
@@ -30,9 +33,10 @@ if defined?(::Commonmarker)
   ].freeze
 
   Tilt::CommonMarkerTemplate = Tilt::StaticTemplate.subclass do
-    parse_options = @options.select { |key, _| parse_opts.include?(key) }
-    render_options = @options.select { |key, _| render_opts.include?(key) }
-    extensions = @options.select { |key, _| exts.include?(key) }
+    parse_options = @options.select { |key, _| parse_opts.include?(key.downcase) }.transform_keys(&:downcase)
+    parse_options.merge!(@options.select { |key, _| aliases.has_key?(key) }.transform_keys { |key| aliases[key] })
+    render_options = @options.select { |key, _| render_opts.include?(key.downcase) }.transform_keys(&:downcase)
+    extensions = @options.select { |key, _| exts.include?(key) }.transform_keys(&:downcase)
 
     Commonmarker.to_html(@data, options: { parse: parse_options, render: render_options, extension: extensions })
   end

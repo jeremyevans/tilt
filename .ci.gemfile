@@ -74,12 +74,7 @@ platform :ruby do
   gem 'rinku' # dependency for wikicloth for handling links
 
   gem 'RedCloth'
-
-  if ENV['LATEST_COMMONMARKER'] == 'yes'
-    gem 'commonmarker'
-  else
-    gem 'commonmarker', '< 1'
-  end
+  gem 'commonmarker'
 
   gem 'rdiscount', '>= 2.1.6'
   gem 'redcarpet'

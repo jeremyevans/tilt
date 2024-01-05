@@ -78,13 +78,11 @@ EXPECTED_HTML
 
     it "render markdown with custom prefixed-header id" do
       template = Tilt::CommonMarkerTemplate.new(header_ids: "prefix-") do |t|
-        <<~MARKDOWN
-          # Foo
-        MARKDOWN
+        "# Foo"
       end
-      expected = <<~HTML
-        <h1><a href="#foo" aria-hidden="true" class="anchor" id="prefix-foo"></a>Foo</h1>
-      HTML
+      expected = <<HTML
+<h1><a href="#foo" aria-hidden="true" class="anchor" id="prefix-foo"></a>Foo</h1>
+HTML
       assert_match(expected, template.render)
     end
   end

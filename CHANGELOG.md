@@ -1,3 +1,7 @@
+## master
+
+* Support commonmarker 1.0+ API (unasuke) (#10)
+
 ## 2.3.0 (2023-09-14)
 
 * Remove deprecated support for non-string template code in PrawnTemplate (jeremyevans)

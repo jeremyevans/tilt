@@ -42,10 +42,11 @@ else
   gem 'kramdown'
 end
 
-if RUBY_VERSION < '2.4' && RUBY_ENGINE == 'jruby'
-  # Don't install pandoc or maruku
-else
+unless RUBY_VERSION < '2.4' && RUBY_ENGINE == 'jruby'
   gem 'pandoc-ruby'
+end
+
+unless RUBY_VERSION < '2.6' && RUBY_ENGINE == 'jruby'
   gem 'maruku'
 end
 

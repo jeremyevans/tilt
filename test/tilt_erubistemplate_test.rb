@@ -1,6 +1,8 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/erubis' do
+  include IgnoreVerboseWarnings
+
   data = (<<END).freeze
 <html>
 <body>

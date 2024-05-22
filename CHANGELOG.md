@@ -2,6 +2,7 @@
 
 * Support commonmarker 1.0+ API (unasuke) (#10)
 * Make etanni template work with frozen string literals (jeremyevans)
+* Deprecate erubis, wikicloth, and maruku templates as they require modifying frozen string literals (jeremyevans)
 
 ## 2.3.0 (2023-09-14)
 

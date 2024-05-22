@@ -1,6 +1,8 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/maruku' do
+  include IgnoreVerboseWarnings
+
   it "registered below Kramdown" do
     %w[md mkd markdown].each do |ext|
       lazy = Tilt.lazy_map[ext]

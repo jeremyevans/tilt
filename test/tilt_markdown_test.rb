@@ -130,16 +130,20 @@ markdown_describe.call 'tilt/kramdown', :KramdownTemplate do
   end
 end
 
-markdown_describe.call 'tilt/maruku', :MarukuTemplate do
-  skip_tests = [
-    ':escape_html => true',
-    'smartypants by default',
-    'smartypants if :smartypants => false',
-    'smart quotes by default',
-    'smart quotes if :smartypants => false',
-  ]
-  instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
-    undef_method method
+checked_require('tilt/maruku') do
+  markdown_describe.call 'tilt/maruku', :MarukuTemplate do
+    include IgnoreVerboseWarnings
+
+    skip_tests = [
+      ':escape_html => true',
+      'smartypants by default',
+      'smartypants if :smartypants => false',
+      'smart quotes by default',
+      'smart quotes if :smartypants => false',
+    ]
+    instance_methods.grep(/#{Regexp.union(skip_tests)}\z/).each do |method|
+      undef_method method
+    end
   end
 end
 

@@ -2,6 +2,8 @@
 require_relative 'erb'
 require 'erubis'
 
+warn 'tilt/erubis is deprecated, as erubis requires modifying string literals', uplevel: 1
+
 module Tilt
   # Erubis template implementation. See:
   # http://www.kuwata-lab.com/erubis/

@@ -19,20 +19,35 @@ end
 
 FrozenError = RuntimeError unless defined?(FrozenError)
 
-def self.checked_require(lib)
-  require lib
+def self.checked_require(*libs)
+  verbose, $VERBOSE = $VERBOSE, nil
+  libs.each do |lib|
+    require lib
+  end
 rescue LoadError => e
-  warn "skipping tests of #{lib}: #{e.class}: #{e.message}"
+  $VERBOSE = verbose
+  warn "skipping tests of #{libs.first}: #{e.class}: #{e.message}"
 else
+  $VERBOSE = verbose
   yield
 end
 
-def self.checked_describe(lib, &block)
-  checked_require lib do
-    describe(lib, &block)
+def self.checked_describe(*libs, &block)
+  checked_require(*libs) do
+    describe(libs.first, &block)
   end
 end
 
+module IgnoreVerboseWarnings
+  def setup
+    @_verbose = $VERBOSE
+    $VERBOSE = nil
+  end
+
+  def teardown
+    $VERBOSE = @_verbose
+  end
+end
 
 class Minitest::Spec
   # Returns true if line numbers are reported incorrectly in heredocs.

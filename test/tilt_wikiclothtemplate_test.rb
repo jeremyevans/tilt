@@ -1,6 +1,8 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/wikicloth' do
+  include IgnoreVerboseWarnings
+
   it "is registered for '.mediawiki' files" do
     assert_equal Tilt::WikiClothTemplate, Tilt['test.mediawiki']
   end

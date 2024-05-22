@@ -458,7 +458,7 @@ describe "tilt/template (encoding)" do
 
   it "using provided template data verbatim when given as string" do
     with_default_encoding('Big5') do
-      inst = _MockTemplate.new(@template) { "blah".force_encoding('GBK') }
+      inst = _MockTemplate.new(@template) { "blah".dup.force_encoding('GBK') }
       assert_equal 'GBK', inst.data.encoding.to_s
     end
   end
@@ -525,7 +525,7 @@ describe "tilt/template (encoding)" do
   end
 
   it "uses #default_encoding instead of current encoding" do
-    tmpl = "".force_encoding('Big5')
+    tmpl = "".dup.force_encoding('Big5')
     inst = _UTF8Template.new(@template) { tmpl }
     assert_equal 'UTF-8', inst.data.encoding.to_s
   end

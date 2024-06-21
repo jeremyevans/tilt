@@ -13,6 +13,13 @@ module Tilt
     # :nocov:
       require 'uri'
 
+      ALLOWED_KEYS = (defined?(::Sass::Compiler) ? ::Sass::Compiler : ::Sass::Embedded).
+        instance_method(:compile_string).
+        parameters.
+        map{|k, v| v if k == :key}.
+        compact rescue nil
+      private_constant :ALLOWED_KEYS
+
       private
 
       def _prepare_output
@@ -22,9 +29,11 @@ module Tilt
       def sass_options
         path = File.absolute_path(eval_file)
         path = '/' + path unless path.start_with?('/')
-        @options[:url] = ::URI::File.build([nil, ::URI::DEFAULT_PARSER.escape(path)]).to_s
-        @options[:syntax] = :indented
-        @options
+        opts = @options.dup
+        opts[:url] = ::URI::File.build([nil, ::URI::DEFAULT_PARSER.escape(path)]).to_s
+        opts[:syntax] = :indented
+        opts.delete_if{|k| !ALLOWED_KEYS.include?(k)} if ALLOWED_KEYS
+        opts
       end
     rescue LoadError => err
       begin

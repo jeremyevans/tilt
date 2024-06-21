@@ -22,4 +22,9 @@ checked_describe 'tilt/sass' do
     template = Tilt::ScssTemplate.new({ style: :compressed }) { |t| "#main {\n  background-color: #0000f1;\n}" }
     3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
   end
+
+  it "compiles and evaluates the template on #render with unsupported options" do
+    template = Tilt::ScssTemplate.new({ style: :compressed, outvar: '@a' }) { |t| "#main {\n  background-color: #0000f1;\n}" }
+    3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
+  end
 end

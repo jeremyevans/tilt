@@ -3,6 +3,7 @@
 * Support commonmarker 1.0+ API (unasuke) (#10)
 * Make etanni template work with frozen string literals (jeremyevans)
 * Deprecate erubis, wikicloth, and maruku templates as they require modifying frozen string literals (jeremyevans)
+* Make SassTemplate ignore unsupported options when using sass-embedded (jeremyevans)
 
 ## 2.3.0 (2023-09-14)
 

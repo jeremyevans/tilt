@@ -70,9 +70,9 @@ module Tilt
     private
 
     def sass_options
-      super
-      @options[:syntax] = :scss
-      @options
+      opts = super
+      opts[:syntax] = :scss
+      opts
     end
   end
 end

@@ -9,8 +9,13 @@ checked_describe 'tilt/sass' do
     assert_equal false, Tilt::SassTemplate.new{''}.metadata[:allows_script]
   end
 
-  it "compiles and evaluates the template on #render" do
+  it "compiles and evaluates the sass template on #render" do
     template = Tilt::SassTemplate.new({ style: :compressed }) { |t| "#main\n  background-color: #0000f1" }
+    3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
+  end
+
+  it "compiles and evaluates the sass template on #render with unsupported options" do
+    template = Tilt::SassTemplate.new({ style: :compressed, outvar: '@a' }) { |t| "#main\n  background-color: #0000f1" }
     3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
   end
 
@@ -18,12 +23,12 @@ checked_describe 'tilt/sass' do
     assert_equal Tilt::ScssTemplate, Tilt['test.scss']
   end
 
-  it "compiles and evaluates the template on #render" do
+  it "compiles and evaluates the scss template on #render" do
     template = Tilt::ScssTemplate.new({ style: :compressed }) { |t| "#main {\n  background-color: #0000f1;\n}" }
     3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
   end
 
-  it "compiles and evaluates the template on #render with unsupported options" do
+  it "compiles and evaluates the scss template on #render with unsupported options" do
     template = Tilt::ScssTemplate.new({ style: :compressed, outvar: '@a' }) { |t| "#main {\n  background-color: #0000f1;\n}" }
     3.times { assert_equal "#main{background-color:#0000f1}", template.render.chomp }
   end

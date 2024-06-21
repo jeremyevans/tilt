@@ -4,7 +4,6 @@ gem 'rake'
 gem 'minitest'
 
 gem 'babel-transpiler'
-gem 'builder'
 gem 'creole'
 gem 'erubi'
 gem 'erubis'
@@ -16,6 +15,10 @@ gem 'prawn', '>= 2.0.0'
 gem 'radius'
 gem 'slim'
 gem 'typescript-node'
+
+if RUBY_VERSION > '3.3'
+  gem 'csv'
+end
 
 if RUBY_VERSION < '2.6'
   gem 'rdoc', '< 6.4'
@@ -31,8 +34,10 @@ end
 
 if RUBY_VERSION < '2.7'
   gem 'markaby', '< 0.9.1'
+  gem 'builder', '< 3.3.0'
 else
   gem 'markaby'
+  gem 'builder'
 end
 
 if RUBY_VERSION < '2.1'

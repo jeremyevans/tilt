@@ -1,4 +1,4 @@
-## master
+## 2.4.0 (2024-06-27)
 
 * Support commonmarker 1.0+ API (unasuke) (#10)
 * Make etanni template work with frozen string literals (jeremyevans)

@@ -40,6 +40,7 @@ if defined?(::Commonmarker)
 
     Commonmarker.to_html(@data, options: { parse: parse_options, render: render_options, extension: extensions })
   end
+# :nocov:
 else
   aliases = {
     :smartypants => :SMART
@@ -91,3 +92,4 @@ else
     CommonMarker.render_doc(@data, parse_options, extensions).to_html(render_options, extensions)
   end
 end
+# :nocov:

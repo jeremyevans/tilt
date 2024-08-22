@@ -13,9 +13,6 @@ module Tilt
   # to #to_h it will be ignored.
   #
   # LiquidTemplate does not support yield blocks.
-  #
-  # It's suggested that your program require 'liquid' at load
-  # time when using this template engine.
   class LiquidTemplate < Template
     def prepare
       @options[:line_numbers] = true unless @options.has_key?(:line_numbers)

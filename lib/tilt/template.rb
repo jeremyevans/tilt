@@ -413,6 +413,16 @@ module Tilt
     end
   end
 
+  # Static templates are templates that return the same output for every render
+  #
+  # Instead of inheriting from the StaticTemplate class, you will use the .subclass
+  # method with a block which processes @data and returns the transformed value.
+  #
+  # Basic example which transforms the template to uppercase:
+  #
+  #   UppercaseTemplate = Tilt::StaticTemplate.subclass do
+  #     @data.upcase
+  #   end
   class StaticTemplate < Template
     def self.subclass(mime_type: 'text/html', &block)
       Class.new(self) do

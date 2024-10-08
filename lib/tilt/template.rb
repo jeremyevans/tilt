@@ -83,7 +83,7 @@ module Tilt
 
       if @data.respond_to?(:force_encoding)
         if default_encoding
-          @data = @data.dup if @data.frozen?
+          @data = _dup_string_if_frozen(@data)
           @data.force_encoding(default_encoding)
         end
 
@@ -267,6 +267,18 @@ module Tilt
 
     private
 
+    if RUBY_VERSION >= '2.3'
+      def _dup_string_if_frozen(string)
+        +string
+      end
+    # :nocov:
+    else
+      def _dup_string_if_frozen(string)
+        string.frozen? ? string.dup : string
+      end
+    end
+    # :nocov:
+
     def process_arg(arg)
       if arg
         case
@@ -390,8 +402,10 @@ module Tilt
     end
 
     def extract_magic_comment(script)
-      if script.frozen?
-        script = script.dup
+      was_frozen = script.frozen?
+      script = _dup_string_if_frozen(script)
+
+      if was_frozen
         yield script
       end
 

@@ -13,7 +13,14 @@ if $VERBOSE
     require 'warning'
   rescue LoadError
   else
-    Warning.ignore(%r{lib/pdf/reader/font.rb|lib/creole/parser.rb|lib/commonmarker})
+    Warning.ignore(%r{lib/creole/parser.rb}) # Remove when creole support is removed
+
+    # Ignore spurious frozen string literal errors.  Both of these check
+    # that the string is frozen, and duplicate it.  This results in a
+    # spurious warning on Ruby 3.4, which defaults to chilled strings
+    # You need to use String#+@ to avoid this warning.  However, they
+    # will work when Ruby does decide to actually freeze literal strings.
+    Warning.ignore(%r{lib/radius/utility|lib/temple/filters/encoding})
   end
 end
 

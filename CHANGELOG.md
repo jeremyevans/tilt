@@ -1,5 +1,6 @@
 ## master
 
+* Deprecate creole templates as they require modifying frozen string literals (jeremyevans)
 * Remove deprecated erubis, wikicloth, and maruku templates (jeremyevans)
 * Avoid spurious frozen string literal deprecation warning on Ruby 3.4.0-preview2+ (jeremyevans)
 

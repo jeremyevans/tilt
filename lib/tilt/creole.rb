@@ -2,6 +2,8 @@
 require_relative 'template'
 require 'creole'
 
+warn 'tilt/creole is deprecated, as creole requires modifying string literals', uplevel: 1
+
 allowed_opts = [:allowed_schemes, :extensions, :no_escape].freeze
 
 # Creole implementation. See: http://www.wikicreole.org/

@@ -1,5 +1,6 @@
 ## master
 
+* Remove deprecated erubis, wikicloth, and maruku templates (jeremyevans)
 * Avoid spurious frozen string literal deprecation warning on Ruby 3.4.0-preview2+ (jeremyevans)
 
 ## 2.4.0 (2024-06-27)

@@ -33,14 +33,12 @@ Support for these template engines is included with Tilt:
 | CSV                  | .rcsv                  | csv (ruby stdlib)             |
 | ERB                  | .erb, .rhtml           | erb (ruby stdlib)             |
 | Erubi                | .erb, .rhtml, .erubi   | erubi                         |
-| Erubis               | .erb, .rhtml, .erubis  | erubis                        |
 | Etanni               | .ern, .etanni          | none                          |
 | Haml                 | .haml                  | haml                          |
 | Kramdown             | .markdown, .mkd, .md   | kramdown                      |
 | Liquid               | .liquid                | liquid                        |
 | LiveScript           | .ls                    | livescript (+ javascript)     |
 | Markaby              | .mab                   | markaby                       |
-| Maruku               | .markdown, .mkd, .md   | maruku                        |
 | Nokogiri             | .nokogiri              | nokogiri                      |
 | Pandoc               | .markdown, .mkd, .md   | pandoc                        |
 | Plain                | .html                  | none                          |
@@ -56,7 +54,6 @@ Support for these template engines is included with Tilt:
 | Scss                 | .scss                  | sass-embedded, sassc, or sass |
 | String               | .str                   | none                          |
 | TypeScript           | .ts                    | typescript (+ javascript)     |
-| WikiCloth            | .wiki, .mediawiki, .mw | wikicloth                     |
 | Yajl                 | .yajl                  | yajl-ruby                     |
 
 See [TEMPLATES.md][t] for detailed information on template engine
@@ -277,7 +274,7 @@ it on subsequent template invocations. Benchmarks show this yields a 5x-10x
 performance increase over evaluating the Ruby source on each invocation.
 
 Template compilation is currently supported for these template engines:
-StringTemplate, ERB, Erubis, Erubi, Etanni, Haml, Nokogiri, Builder, CSV,
+StringTemplate, ERB, Erubi, Etanni, Haml, Nokogiri, Builder, CSV,
 Prawn, and Yajl.
 
 LICENSE

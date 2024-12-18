@@ -6,13 +6,13 @@ checked_describe 'tilt/redcarpet' do
     assert_equal ['markdown', 'mkd', 'md'], extensions
   end
 
-  it "registered above Maruku" do
+  it "registered above Kramdown" do
     %w[md mkd markdown].each do |ext|
       lazy = Tilt.lazy_map[ext]
-      maruku_idx = lazy.index { |klass, file| klass == 'Tilt::MarukuTemplate' }
+      kd_idx = lazy.index { |klass, file| klass == 'Tilt::KramdownTemplate' }
       redc_idx = lazy.index { |klass, file| klass == 'Tilt::RedcarpetTemplate' }
-      assert redc_idx < maruku_idx,
-        "#{redc_idx} should be lower than #{maruku_idx}"
+      assert redc_idx < kd_idx,
+        "#{redc_idx} should be lower than #{kd_idx}"
     end
   end
 

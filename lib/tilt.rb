@@ -139,11 +139,9 @@ module Tilt
 
   # ERB
   register_lazy :ERBTemplate,    'tilt/erb',    'erb', 'rhtml'
-  register_lazy :ErubisTemplate, 'tilt/erubis', 'erb', 'rhtml', 'erubis'
   register_lazy :ErubiTemplate,  'tilt/erubi',  'erb', 'rhtml', 'erubi'
 
   # Markdown
-  register_lazy :MarukuTemplate,       'tilt/maruku',       'markdown', 'mkd', 'md'
   register_lazy :KramdownTemplate,     'tilt/kramdown',     'markdown', 'mkd', 'md'
   register_lazy :RDiscountTemplate,    'tilt/rdiscount',    'markdown', 'mkd', 'md'
   register_lazy :RedcarpetTemplate,    'tilt/redcarpet',    'markdown', 'mkd', 'md'
@@ -175,7 +173,6 @@ module Tilt
   register_lazy :SlimTemplate,         'tilt/slim',      'slim'
   register_lazy :StringTemplate,       'tilt/string',    'str'
   register_lazy :TypeScriptTemplate,   'tilt/typescript', 'ts', 'tsx'
-  register_lazy :WikiClothTemplate,    'tilt/wikicloth', 'wiki', 'mediawiki', 'mw'
   register_lazy :YajlTemplate,         'tilt/yajl',      'yajl'
 
   # TILT3: Remove

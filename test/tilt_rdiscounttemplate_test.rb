@@ -1,13 +1,13 @@
 require_relative 'test_helper'
 
 checked_describe 'tilt/rdiscount' do
-  it "registered above Maruku" do
+  it "registered above Kramdown" do
     %w[md mkd markdown].each do |ext|
       lazy = Tilt.lazy_map[ext]
       rdis_idx = lazy.index { |klass, file| klass == 'Tilt::RDiscountTemplate' }
-      maruku_idx = lazy.index { |klass, file| klass == 'Tilt::MarukuTemplate' }
-      assert rdis_idx < maruku_idx,
-        "#{rdis_idx} should be lower than #{maruku_idx}"
+      kd_idx = lazy.index { |klass, file| klass == 'Tilt::KramdownTemplate' }
+      assert rdis_idx < kd_idx,
+        "#{rdis_idx} should be lower than #{kd_idx}"
     end
   end
 

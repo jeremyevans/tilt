@@ -23,9 +23,8 @@ jobs:
       COFFEE_SCRIPT: use
     steps:
     - uses: actions/checkout@v4
-    # WikiCloth needs IDN
     # Pandoc needs Pandoc
-    - run: sudo apt-get install -y libidn11-dev pandoc
+    - run: sudo apt-get install -y pandoc
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}

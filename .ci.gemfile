@@ -6,7 +6,6 @@ gem 'minitest'
 gem 'babel-transpiler'
 gem 'creole'
 gem 'erubi'
-gem 'erubis'
 gem 'liquid'
 gem 'livescript'
 gem 'nokogiri'
@@ -51,10 +50,6 @@ unless RUBY_VERSION < '2.4' && RUBY_ENGINE == 'jruby'
   gem 'pandoc-ruby'
 end
 
-unless RUBY_VERSION < '2.6' && RUBY_ENGINE == 'jruby'
-  gem 'maruku'
-end
-
 if RUBY_ENGINE == 'jruby'
   gem 'haml', '< 6'
 else
@@ -78,9 +73,6 @@ if RUBY_VERSION >= '3.1'
 end
 
 platform :ruby do
-  gem 'wikicloth'
-  gem 'rinku' # dependency for wikicloth for handling links
-
   gem 'RedCloth'
   gem 'commonmarker'
 
@@ -93,9 +85,5 @@ platform :ruby do
     # a dependency on ruby-enum, which requires Ruby 2.3
     # without specifying required_ruby_version
     gem 'ruby-enum', '< 0.6'
-
-    # i18n is pulled in by wikicloth. This avoids errors
-    # on Ruby 2.0.
-    gem 'i18n', '<1.3'
   end
 end

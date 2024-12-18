@@ -17,14 +17,11 @@ END
     assert_equal Tilt::ErubiTemplate, Tilt['test.html.erubi']
   end
 
-  it "registered above ERB and Erubis" do
+  it "registered above ERB" do
     %w[erb rhtml].each do |ext|
       lazy = Tilt.lazy_map[ext]
       erubi_idx = lazy.index { |klass, file| klass == 'Tilt::ErubiTemplate' }
-      erubis_idx = lazy.index { |klass, file| klass == 'Tilt::ErubisTemplate' }
       erb_idx = lazy.index { |klass, file| klass == 'Tilt::ERBTemplate' }
-      assert erubi_idx < erubis_idx,
-        "#{erubi_idx} should be lower than #{erubis_idx}"
       assert erubi_idx < erb_idx,
         "#{erubi_idx} should be lower than #{erb_idx}"
     end
@@ -69,21 +66,21 @@ END
   end
 
   it "backtrace file and line reporting without locals" do
-    template = Tilt::ErubiTemplate.new('test.erubis', 11) { data }
+    template = Tilt::ErubiTemplate.new('test.erubi', 11) { data }
     begin
       template.render
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/\Atest\.erubis:/).first
-      assert line, "Backtrace didn't contain test.erubis"
+      line = boom.backtrace.grep(/\Atest\.erubi:/).first
+      assert line, "Backtrace didn't contain test.erubi"
       _file, line, _meth = line.split(":")
       assert_equal '13', line
     end
   end
 
   it "backtrace file and line reporting with locals" do
-    template = Tilt::ErubiTemplate.new('test.erubis', 1) { data }
+    template = Tilt::ErubiTemplate.new('test.erubi', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
       fail 'should have raised an exception'
@@ -91,12 +88,12 @@ END
       assert_kind_of RuntimeError, boom
       line = boom.backtrace.first
       file, line, _meth = line.split(":")
-      assert_equal 'test.erubis', file
+      assert_equal 'test.erubi', file
       assert_equal '6', line
     end
   end
 
-  it "erubis template options" do
+  it "erubi template options" do
     template = Tilt::ErubiTemplate.new(nil, :escapefunc=> 'h') { 'Hey <%== @name %>!' }
     scope = Object.new
     def scope.h(s) s * 2 end

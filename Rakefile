@@ -2,7 +2,7 @@ task :default => [:test]
 
 desc "Run tests"
 task :test do
-  sh "#{FileUtils::RUBY} #{"-w" if RUBY_VERSION >= '3'} test/all.rb"
+  sh "#{FileUtils::RUBY} #{"-w" if RUBY_VERSION >= '3'} #{'-W:strict_unused_block' if RUBY_VERSION >= '3.4'} test/all.rb"
 end
 
 desc "Run tests with coverage"

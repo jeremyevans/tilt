@@ -1,4 +1,4 @@
-## master
+## 2.5.0 (2024-12-20)
 
 * Deprecate creole templates as they require modifying frozen string literals (jeremyevans)
 * Remove deprecated erubis, wikicloth, and maruku templates (jeremyevans)

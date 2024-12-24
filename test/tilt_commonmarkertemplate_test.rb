@@ -3,14 +3,12 @@ require_relative 'test_helper'
 checked_describe 'tilt/commonmarker' do
   it "preparing and evaluating templates on #render" do
     template = Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }
-    res = template.render
     assert_includes ["<h1>Hello World!</h1>\n", "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"], template.render
   end
 
   it "can be rendered more than once" do
     template = Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }
     3.times do
-      res = template.render
       assert_includes ["<h1>Hello World!</h1>\n", "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"], template.render
     end
   end

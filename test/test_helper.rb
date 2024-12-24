@@ -20,7 +20,7 @@ if $VERBOSE
     # spurious warning on Ruby 3.4, which defaults to chilled strings
     # You need to use String#+@ to avoid this warning.  However, they
     # will work when Ruby does decide to actually freeze literal strings.
-    Warning.ignore(%r{lib/radius/utility|lib/temple/filters/encoding})
+    Warning.ignore(%r{lib/temple/filters/encoding})
   end
 end
 

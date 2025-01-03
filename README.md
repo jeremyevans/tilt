@@ -132,6 +132,118 @@ template.render { 'Joe' }
 # => "Hey Joe!"
 ~~~
 
+Fixed Locals
+------------
+
+By default, Tilt templates that support local variables can be called with
+any locals, and a separate template method is compiled for each combination
+of local variable names.  This causes multiple issues:
+
+* It is inefficient, especially for large templates that are called with
+  many combinations of locals.
+* It hides issues if unused local variable names are passed to the template
+* It does not support default values for local variables
+* It does not support required local variables
+* It does not support cases where you want to pass values via a keyword splat
+* It does not support named blocks
+
+You can pass the `:fixed_locals` option when creating the template to fix the
+local variables.  This will only compile a single template method per template.
+The value of the `:fixed_locals` option is a Ruby method parameter string, which
+should start and end with parentheses. For example, if the template does not
+use local variables, you can set it to `"()"`.  This will cause an ArgumentError
+to be raised if you call the template with locals:
+
+~~~ruby
+template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "()")
+output = template.render(Object.new) # No ArgumentError
+output = template.render(Object.new, x: 1) # ArgumentError
+~~~
+
+If the template must be passed the `x` local variable to work correctly, and
+optionally can be provided the `y` local variable:
+
+~~~ruby
+template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(x:, y: nil)")
+output = template.render(Object.new) # ArgumentError
+output = template.render(Object.new, x: 1) # No ArgumentError
+output = template.render(Object.new, x: 1, y: 2) # No ArgumentError
+output = template.render(Object.new, x: 1, y: 2, z: 3) # ArgumentError
+~~~
+
+If the template wants to accept arbitrary local variables, in order to pass
+the variables to a method inside the template, you can provide a keyword splat
+or a single positional argument (with an optional empty hash value if you want
+to support being called with no local variables):
+
+~~~ruby
+template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(**args)") # or "(args={})"
+~~~
+
+If you would like to name the block passed to the template, so you can pass
+it to a method inside the template:
+
+~~~ruby
+template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(&block)")
+~~~
+
+Embedded Fixed Locals
+---------------------
+
+In many cases, Tilt is used in situations where you do not have direct control
+over the options passed when creating each separate template.  In these cases
+and others, it can be helpful to embed the fixed locals inside the template
+using a magic comment.  This can be enabled using the `:extract_fixed_locals`
+template option.  It can also be enabled globally via:
+
+~~~ruby
+Tilt.extract_fixed_locals = true
+~~~
+
+If `:extract_fixed_locals` option is given, or extraction is globally enabled,
+and the `:fixed_locals` option is not provided when creating the template,
+Tilt will scan the template code looking for a magic comment of
+the form (whitespace around `locals:` is optional but recommended):
+
+```
+# locals: ()
+```
+
+In ERB templates, you can use the following comment format:
+
+```
+<%# locals: () %>
+```
+
+In string templates, it is a little ackward, but still possible (note that the
+closing `}` goes on a separate line:
+
+```
+#{# locals: ()
+}
+```
+
+If Tilt finds the magic comment, it will use it as fixed locals.  To disable
+the scanning for fixed locals even if `Tilt.extract_fixed_locals = true` is
+set, pass the `fixed_locals: false` or `extract_fixed_locals: false` option.
+
+When embedded fixed locals are supported, it can be useful to support a
+default for fixed locals if they are not specified in the template.  This
+is useful mostly to default templates to not supporting local variables
+without having to specify that in each template.  Tilt support this via the
+`:default_fixed_locals` option.
+
+To recap, in order of preference, Tilt will use fixed locals from the
+following sources:
+
+* `:fixed_locals` template option
+* embedded fixed locals magic comment (if `:extract_fixed_locals` template
+  option is given or `Tilt.extract_fixed_locals = true`)
+* `:default_fixed_locals` template option
+
+It is expected that embedded fixed locals magic comments will be supported
+by default in Tilt 3 (i.e. `Tilt.extract_fixed_locals` will default to `true`).
+
 Template Mappings
 -----------------
 

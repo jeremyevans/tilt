@@ -133,6 +133,11 @@ describe "tilt/template" do
     assert inst.prepared?
   end
 
+  it "#fixed_locals? returns whether the template uses fixed locals" do
+    assert_equal false, _MockTemplate.new{}.fixed_locals?
+    assert_equal true, _MockTemplate.new(fixed_locals: "()"){}.fixed_locals?
+  end
+
   _SourceGeneratingMockTemplate = Class.new(_PreparingMockTemplate) do
     def precompiled_template(locals)
       "foo = [] ; foo << %Q{#{data}} ; foo.join"

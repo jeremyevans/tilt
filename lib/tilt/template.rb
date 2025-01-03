@@ -69,8 +69,6 @@ module Tilt
 
       @options ||= {}
 
-      set_compiled_method_cache
-
       # Force the encoding of the input data
       @default_encoding = @options.delete :default_encoding
 
@@ -92,6 +90,8 @@ module Tilt
         end
       end
 
+      set_fixed_locals
+      set_compiled_method_cache
       prepare
     end
 
@@ -117,6 +117,11 @@ module Tilt
     # The filename used in backtraces to describe the template.
     def eval_file
       @file || '(__TEMPLATE__)'
+    end
+
+    # Whether the template uses fixed locals.
+    def fixed_locals?
+      @fixed_locals ? true : false
     end
 
     # An empty Hash that the template engine can populate with various
@@ -145,7 +150,12 @@ module Tilt
     # directly on the scope class, which are much faster to call than
     # Tilt's normal rendering.
     def compiled_method(locals_keys, scope_class=nil)
-      key = [scope_class, locals_keys].freeze
+      key = if @fixed_locals
+        scope_class
+      else
+        [scope_class, locals_keys].freeze
+      end
+
       LOCK.synchronize do
         if meth = @compiled_method[key]
           return meth
@@ -181,7 +191,7 @@ module Tilt
     end
 
     CLASS_METHOD = Kernel.instance_method(:class)
-    USE_BIND_CALL = RUBY_VERSION >= '2.7'
+    USE_BIND_CALL = RUBY_VERSION >= '3'
 
     # Execute the compiled template and return the result string. Template
     # evaluation is guaranteed to be performed in the scope object with the
@@ -190,8 +200,12 @@ module Tilt
     # This method is only used by source generating templates. Subclasses that
     # override render() may not support all features.
     def evaluate(scope, locals, &block)
-      locals_keys = locals.keys
-      locals_keys.sort!{|x, y| x.to_s <=> y.to_s}
+      if @fixed_locals
+        locals_keys = EMPTY_ARRAY
+      else
+        locals_keys = locals.keys
+        locals_keys.sort!{|x, y| x.to_s <=> y.to_s}
+      end
 
       case scope
       when Object
@@ -201,15 +215,8 @@ module Tilt
         scope_class = USE_BIND_CALL ? CLASS_METHOD.bind_call(scope) : CLASS_METHOD.bind(scope).call
         # :nocov:
       end
-      method = compiled_method(locals_keys, scope_class)
 
-      if USE_BIND_CALL
-        method.bind_call(scope, locals, &block)
-      # :nocov:
-      else
-        method.bind(scope).call(locals, &block)
-      # :nocov:
-      end
+      evaluate_method(compiled_method(locals_keys, scope_class), scope, locals, &block)
     end
 
     # Generates all template source by combining the preamble, template, and
@@ -327,9 +334,39 @@ module Tilt
       assignments.join("\n")
     end
 
+    if USE_BIND_CALL
+      def evaluate_method(method, scope, locals, &block)
+        if @fixed_locals
+          method.bind_call(scope, **locals, &block)
+        else
+          method.bind_call(scope, locals, &block)
+        end
+      end
+    # :nocov:
+    else
+      def evaluate_method(method, scope, locals, &block)
+        if @fixed_locals
+          if locals.empty?
+            # Empty keyword splat on Ruby 2.0-2.6 passes empty hash
+            method.bind(scope).call(&block)
+          else
+            method.bind(scope).call(**locals, &block)
+          end
+        else
+          method.bind(scope).call(locals, &block)
+        end
+      end
+    end
+    # :nocov:
+
     def compile_template_method(local_keys, scope_class=nil)
       source, offset = precompiled(local_keys)
-      local_code = local_extraction(local_keys)
+      if @fixed_locals
+        method_args = @fixed_locals
+      else
+        method_args = "(locals)"
+        local_code = local_extraction(local_keys)
+      end
 
       method_name = "__tilt_#{Thread.current.object_id.abs}"
       method_source = String.new
@@ -340,7 +377,7 @@ module Tilt
       end
 
       # Don't indent method source, to avoid indentation warnings when using compiled paths
-      method_source << "::Tilt::TOPOBJECT.class_eval do\ndef #{method_name}(locals)\n#{local_code}\n"
+      method_source << "::Tilt::TOPOBJECT.class_eval do\ndef #{method_name}#{method_args}\n#{local_code}\n"
 
       offset += method_source.count("\n")
       method_source << source
@@ -395,6 +432,40 @@ module Tilt
       method = TOPOBJECT.instance_method(method_name)
       TOPOBJECT.class_eval { remove_method(method_name) }
       method
+    end
+
+    # Set the fixed locals for the template, which may be nil if no fixed locals can
+    # be determined.
+    def set_fixed_locals
+      fixed_locals = @options.delete(:fixed_locals)
+      extract_fixed_locals = @options.delete(:extract_fixed_locals)
+      default_fixed_locals = @options.delete(:default_fixed_locals)
+
+      if fixed_locals.nil?
+        if extract_fixed_locals.nil?
+          extract_fixed_locals = Tilt.extract_fixed_locals
+        end
+
+        if extract_fixed_locals
+          fixed_locals = extract_fixed_locals()
+        end
+
+        if fixed_locals.nil?
+          fixed_locals = default_fixed_locals
+        end
+      end
+
+      @fixed_locals = fixed_locals
+    end
+
+    # Extract fixed locals from the template code string. Should return nil
+    # if there are no fixed locals specified, or a method argument string
+    # surrounded by parentheses if there are fixed locals.  The method
+    # argument string will be used when defining the template method if given.
+    def extract_fixed_locals
+      if @data.is_a?(String) && (match = /\#\s*locals:\s*(\(.*\))/.match(@data))
+        match[1]
+      end
     end
 
     def extract_encoding(script, &block)
@@ -474,6 +545,10 @@ module Tilt
 
     # Do nothing, since compiled method cache is not used.
     def set_compiled_method_cache
+    end
+
+    # Do nothing, since fixed locals are not used.
+    def set_fixed_locals
     end
   end
 end

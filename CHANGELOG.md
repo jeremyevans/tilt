@@ -1,3 +1,9 @@
+## master
+
+* Support fallback fixed locals for templates via :default_fixed_locals option (jeremyevans)
+* Support embedded fixed locals for templates via magic comments, if Tilt.extract_fixed_locals is set (jeremyevans)
+* Support fixed locals for templates via :fixed_locals option (jeremyevans)
+
 ## 2.5.0 (2024-12-20)
 
 * Deprecate creole templates as they require modifying frozen string literals (jeremyevans)

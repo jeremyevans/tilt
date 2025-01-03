@@ -163,6 +163,120 @@ describe 'tilt/string (compiled)' do
     end
   end
 
+  it "respects embedded fixed locals that are empty" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1\n", template.render(nil)
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  it "respects embedded fixed locals with optional keyword argument" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: (name: "foo")
+name}
+DATA
+    assert_equal "foo\n", template.render(nil)
+    assert_equal "bar\n", template.render(nil, :name => "bar")
+  end
+
+  it "respects embedded fixed locals with required keyword argument" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: (name:)
+name}
+DATA
+    assert_raises(ArgumentError) { template.render(nil) }
+    assert_equal "bar\n", template.render(nil, :name => "bar")
+  end if RUBY_VERSION >= '2.1'
+
+  it "respects embedded fixed locals with optional keyword argument and keyword splat" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: (name: "foo", **args)
+name + args[:bar].to_s}
+DATA
+    assert_equal "foo\n", template.render(nil)
+    assert_equal "barbaz\n", template.render(nil, :name => "bar", :bar=>"baz")
+  end
+
+  it "respects embedded fixed locals with positional argument" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: (args)
+args[:name]}
+DATA
+    assert_raises(ArgumentError) { template.render(nil) }
+    assert_equal "bar\n", template.render(nil, :name => "bar")
+  end
+
+  it "respects embedded fixed locals with block argument" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: (name: "foo", &block)
+block.call(name)}
+DATA
+    assert_equal "FOO\n", template.render(nil, &:upcase)
+    assert_equal "BAR\n", template.render(nil, :name => "bar", &:upcase)
+  end
+
+  it "respects :fixed_locals option" do
+    template = Tilt::StringTemplate.new(fixed_locals: '(name: "foo")') { '#{name}\n' }
+    assert_equal "foo\n", template.render(nil)
+    assert_equal "bar\n", template.render(nil, :name => "bar")
+  end
+
+  it "respects :fixed_locals option in preference to :default_fixed_locals option" do
+    template = Tilt::StringTemplate.new(fixed_locals: '(name: "foo")', default_fixed_locals: '(name: "baz")') { '#{name}\n' }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects :default_fixed_locals option if there are no embedded fixed locals" do
+    template = Tilt::StringTemplate.new(default_fixed_locals: '(name: "foo")') { '#{name}\n' }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects embedded fixed locals in preference to :default_fixed_locals option" do
+    template = Tilt::StringTemplate.new(default_fixed_locals: '(name: "foo")') { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  it "ignores embedded fixed locals when Tilt.extract_fixed_locals is true and extract_fixed_locals: false option is given" do
+    template = Tilt::StringTemplate.new(extract_fixed_locals: false) { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_equal "1", template.render(nil, :something=>true).strip
+  end
+
+  without_extract_fixed_locals "ignores embedded fixed locals when Tilt.extract_fixed_locals is false" do
+    template = Tilt::StringTemplate.new { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_equal "1", template.render(nil, :something=>true).strip
+  end
+
+  without_extract_fixed_locals "respects embedded fixed locals when Tilt.extract_fixed_locals is false and :extract_fixed_locals option is given" do
+    template = Tilt::StringTemplate.new(extract_fixed_locals: true) { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  without_extract_fixed_locals "respects :fixed_locals option when Tilt.extract_fixed_locals is false" do
+    template = Tilt::StringTemplate.new(fixed_locals: '(name: "foo")') { '#{name}\n' }
+    assert_equal "foo\n", template.render(nil)
+    assert_equal "bar\n", template.render(nil, :name => "bar")
+  end
+
   if RUBY_VERSION >= '2.3'
     it "uses frozen literal strings if :freeze option is used" do
       template = Tilt::StringTemplate.new(nil, :freeze => true) { |t| '#{"".frozen?}' }

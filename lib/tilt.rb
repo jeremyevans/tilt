@@ -7,10 +7,14 @@ module Tilt
   # Current version.
   VERSION = '2.5.0'
 
+  EMPTY_ARRAY = [].freeze
+  private_constant :EMPTY_ARRAY
+
   EMPTY_HASH = {}.freeze
   private_constant :EMPTY_HASH
 
   @default_mapping = Mapping.new
+  @extract_fixed_locals = false
 
   # Replace the default mapping with a finalized version of the default
   # mapping. This can be done to improve performance after the template
@@ -85,6 +89,10 @@ module Tilt
   class << self
     # @return [Tilt::Mapping] the main mapping object
     attr_reader :default_mapping
+
+    # Whether to extract fixed locals from templates by scanning the
+    # template content.
+    attr_accessor :extract_fixed_locals
 
     # Alias register as prefer for Tilt 1.x compatibility.
     alias prefer register

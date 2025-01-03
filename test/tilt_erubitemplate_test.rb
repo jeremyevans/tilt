@@ -93,6 +93,129 @@ END
     end
   end
 
+  it "respects embedded fixed locals that are empty" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  it "respects embedded fixed locals with optional keyword argument" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: (name: "foo") %>
+<%= name %>
+DATA
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects embedded fixed locals with required keyword argument" do
+    template = Tilt::ErubiTemplate.new{ <<DATA }
+<%# locals: (name:) %>
+<%= name %>
+DATA
+    assert_raises(ArgumentError) { template.render(nil) }
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end if RUBY_VERSION >= '2.1'
+
+  it "respects embedded fixed locals with optional keyword argument and keyword splat" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: (name: "foo", **args) %>
+<%= name + args[:bar].to_s %>
+DATA
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "barbaz", template.render(nil, :name => "bar", :bar=>"baz").strip
+  end
+
+  it "respects embedded fixed locals with positional argument" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: (args) %>
+<%= args[:name] %>
+DATA
+    assert_raises(ArgumentError) { template.render(nil) }
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects embedded fixed locals with block argument" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: (name: "foo", &block) %>
+<%= block.call(name) %>
+DATA
+    assert_equal "FOO", template.render(nil, &:upcase).strip
+    assert_equal "BAR", template.render(nil, :name => "bar", &:upcase).strip
+  end
+
+  it "respects :fixed_locals option" do
+    template = Tilt::ErubiTemplate.new(fixed_locals: '(name: "foo")') { "<%= name %>" }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects :fixed_locals option in preference to embedded fixed locals" do
+    template = Tilt::ErubiTemplate.new(fixed_locals: '(name: "foo")') { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_equal "1", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects :fixed_locals option in preference to :default_fixed_locals option" do
+    template = Tilt::ErubiTemplate.new(fixed_locals: '(name: "foo")', default_fixed_locals: '(name: "baz")') { "<%= name %>" }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects :default_fixed_locals option if there are no embedded fixed locals" do
+    template = Tilt::ErubiTemplate.new(default_fixed_locals: '(name: "foo")') { "<%= name %>" }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
+  it "respects embedded fixed locals in preference to :default_fixed_locals option" do
+    template = Tilt::ErubiTemplate.new(default_fixed_locals: '(name: "foo")') { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  it "ignores embedded fixed locals when Tilt.extract_fixed_locals is true and extract_fixed_locals: false option is given" do
+    template = Tilt::ErubiTemplate.new(extract_fixed_locals: false) { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_equal "1", template.render(nil, :something=>true).strip
+  end
+
+  without_extract_fixed_locals "ignores embedded fixed locals when Tilt.extract_fixed_locals is false" do
+    template = Tilt::ErubiTemplate.new { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_equal "1", template.render(nil, :something=>true).strip
+  end
+
+  without_extract_fixed_locals "respects embedded fixed locals when Tilt.extract_fixed_locals is false and :extract_fixed_locals option is given" do
+    template = Tilt::ErubiTemplate.new(extract_fixed_locals: true) { <<DATA }
+<%# locals: () %>
+1
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
+  without_extract_fixed_locals "respects :fixed_locals option when Tilt.extract_fixed_locals is false" do
+    template = Tilt::ErubiTemplate.new(fixed_locals: '(name: "foo")') { "<%= name %>" }
+    assert_equal "foo", template.render(nil).strip
+    assert_equal "bar", template.render(nil, :name => "bar").strip
+  end
+
   it "erubi template options" do
     template = Tilt::ErubiTemplate.new(nil, :escapefunc=> 'h') { 'Hey <%== @name %>!' }
     scope = Object.new

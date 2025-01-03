@@ -3,6 +3,7 @@ require_relative 'coverage_helper'
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require_relative  '../lib/tilt'
+Tilt.extract_fixed_locals = true
 
 ENV['MT_NO_PLUGINS'] = '1' # Work around stupid autoloading of plugins
 require 'minitest/autorun'
@@ -88,5 +89,18 @@ class Minitest::Spec
     yield
   ensure
     $VERBOSE = verbose
+  end
+
+  def self.without_extract_fixed_locals(*a, &block)
+    it(*a){without_extract_fixed_locals{instance_exec(&block)}}
+  end
+
+  def without_extract_fixed_locals
+    begin
+      Tilt.extract_fixed_locals = false
+      yield
+    ensure
+      Tilt.extract_fixed_locals = true
+    end
   end
 end

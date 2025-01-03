@@ -355,6 +355,16 @@ describe "tilt/template" do
     assert_equal "Hey Bob!", inst.render(_Person.new("Joe"))
   end
 
+  it "supports :scope_class option" do
+    inst = _SourceGeneratingMockTemplate.new(scope_class: _Person) { |t| 'Hey #{CONSTANT}!' }
+    assert_equal "Hey Bob!", inst.render
+  end
+
+  it "supports :scope_class and fixed_locals options provided together" do
+    inst = _SourceGeneratingMockTemplate.new(scope_class: _Person, fixed_locals: "()") { |t| 'Hey #{CONSTANT}!' }
+    assert_equal "Hey Bob!", inst.render
+  end
+
   it "template which accesses a constant using scope class" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{CONSTANT}!' }
     assert_equal "Hey Bob!", inst.render(_Person)

@@ -69,6 +69,10 @@ module Tilt
 
       @options ||= {}
 
+      # Force a specific scope class, instead of using the class of the provided
+      # scope as the scope class.
+      @scope_class = @options.delete :scope_class
+
       # Force the encoding of the input data
       @default_encoding = @options.delete :default_encoding
 
@@ -91,8 +95,8 @@ module Tilt
       end
 
       set_fixed_locals
-      set_compiled_method_cache
       prepare
+      set_compiled_method_cache
     end
 
     # Render the template in the given scope with the locals specified. If a
@@ -150,10 +154,14 @@ module Tilt
     # directly on the scope class, which are much faster to call than
     # Tilt's normal rendering.
     def compiled_method(locals_keys, scope_class=nil)
-      key = if @fixed_locals
-        scope_class
+      if @fixed_locals
+        if @scope_class
+          return @compiled_method
+        else
+          key = scope_class
+        end
       else
-        [scope_class, locals_keys].freeze
+        key = [scope_class, locals_keys].freeze
       end
 
       LOCK.synchronize do
@@ -207,13 +215,15 @@ module Tilt
         locals_keys.sort!{|x, y| x.to_s <=> y.to_s}
       end
 
-      case scope
-      when Object
-        scope_class = Module === scope ? scope : scope.class
-      else
-        # :nocov:
-        scope_class = USE_BIND_CALL ? CLASS_METHOD.bind_call(scope) : CLASS_METHOD.bind(scope).call
-        # :nocov:
+      unless scope_class = @scope_class
+        scope_class = case scope
+        when Object
+          Module === scope ? scope : scope.class
+        else
+          # :nocov:
+          USE_BIND_CALL ? CLASS_METHOD.bind_call(scope) : CLASS_METHOD.bind(scope).call
+          # :nocov:
+        end
       end
 
       evaluate_method(compiled_method(locals_keys, scope_class), scope, locals, &block)
@@ -310,7 +320,12 @@ module Tilt
     end
 
     def set_compiled_method_cache
-      @compiled_method = {}
+      @compiled_method = if @fixed_locals && @scope_class
+        # No hash needed, only a single compiled method per template.
+        compile_template_method(EMPTY_ARRAY, @scope_class)
+      else
+        {}
+      end
     end
 
     def local_extraction(local_keys)

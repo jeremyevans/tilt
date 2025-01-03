@@ -253,6 +253,15 @@ DATA
     assert_equal "1", template.render(nil, :something=>true).strip
   end
 
+  it "handles eager compiling when embedded fixed locals and :scope_class are present" do
+    template = Tilt::StringTemplate.new(scope_class: Object) { <<'DATA' }
+#{# locals: ()
+1}
+DATA
+    assert_equal "1", template.render(nil).strip
+    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+  end
+
   without_extract_fixed_locals "ignores embedded fixed locals when Tilt.extract_fixed_locals is false" do
     template = Tilt::StringTemplate.new { <<'DATA' }
 #{# locals: ()

@@ -57,7 +57,28 @@ module Tilt
     # it should read template data and return as a String. When file is nil,
     # a block is required.
     #
-    # All arguments are optional.
+    # All arguments are optional. The following options are respected and
+    # are used by Tilt::Template itself and not the underlying template
+    # libraries:
+    #
+    # :default_encoding :: Force the encoding of the template to the given
+    #                      encoding.
+    # :skip_compiled_encoding_detection :: Do not scan template code for
+    #                                      an encoding magic comment.
+    # :fixed_locals :: Force a specific method parameter signature, and call
+    #                  the method with a splat of locals, instead of passing
+    #                  the locals hash as a positional argument, and
+    #                  extracting locals from that. Should be a string
+    #                  containing the parameters for the compiled method,
+    #                  surrounded by parentheses.  Can be set to false to
+    #                  disable the scan for embedded fixed locals.
+    # :extract_fixed_locals :: Whether embedded fixed locals should be scanned for
+    #                          and extracted from the template code.
+    # :default_fixed_locals :: Similar to fixed_locals, but lowest priority,
+    #                          only used if :fixed_locals is not provided
+    #                          and no embedded locals are found (or scanned for).
+    # :scope_class :: Force the scope class used for the method.  By default,
+    #                 uses the class of the scope provided to render.
     def initialize(file=nil, line=nil, options=nil)
       @file, @line, @options = nil, 1, nil
 

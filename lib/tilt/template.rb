@@ -195,6 +195,8 @@ module Tilt
         else
           key = scope_class
         end
+      elsif @scope_class
+        key = locals_keys.dup.freeze
       else
         key = [scope_class, locals_keys].freeze
       end

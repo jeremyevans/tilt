@@ -212,98 +212,135 @@ describe "tilt/template" do
     assert inst.prepared?
   end
 
-  it "template with nil compiled_path" do
-    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-    inst.compiled_path = nil
-    assert_nil inst.compiled_path
-  end
+  {:method=>"compiled_path= method", :option=>":compiled_path option"}.each do |check_type, desc|
+    if check_type == :option
+      with_compiled_path = lambda do |path, &block|
+        _SourceGeneratingMockTemplate.new(compiled_path: path, &block)
+      end
+    else
+      with_compiled_path = lambda do |path, &block|
+        inst = _SourceGeneratingMockTemplate.new(&block)
+        inst.compiled_path = path
+        inst
+      end
+    end
 
-  it "template with compiled_path" do
-    Dir.mktmpdir('tilt') do |dir|
-      base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base
+    it "template without #{desc} " do
+      inst = with_compiled_path.(nil) { |t| 'Hey' }
+      assert_nil inst.compiled_path
+    end
 
-      tempfile = "#{base}.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass Object/, File.read(tempfile))
+    it "template with #{desc}" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base) { |t| 'Hey' }
 
-      tempfile = "#{base}-1.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render("")
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass String/, File.read(tempfile))
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass Object/, File.read(tempfile))
 
-      tempfile = "#{base}-2.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Tilt::Mapping.new)
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass Tilt::Mapping/, File.read(tempfile))
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render("")
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass String/, File.read(tempfile))
+
+        tempfile = "#{base}-2.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render(Tilt::Mapping.new)
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass Tilt::Mapping/, File.read(tempfile))
+      end
+    end
+
+    it "template with #{desc} and with anonymous scope_class" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base) { |t| 'Hey' }
+
+        message = nil
+        inst.define_singleton_method(:warn) { |msg| message = msg }
+        scope_class = Class.new
+        assert_equal 'Hey', inst.render(scope_class.new)
+        assert_equal "compiled_path (#{base.inspect}) ignored on template with anonymous scope_class (#{scope_class.inspect})", message
+        assert_equal [], Dir["#{dir}/*"]
+      end
+    end
+
+    it "template with #{desc} and with locals" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base + '.rb') { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
+
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey local-variable ', inst.render(Object.new, 'a' => 1)
+        content = File.read(tempfile)
+        assert_match(/\Aclass Object/, content)
+        assert_includes(content, "\na = locals[\"a\"]\n")
+
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey local-variable local-variable', inst.render(Object.new, 'b' => 1, 'a' => 1)
+        content = File.read(tempfile)
+        assert_match(/\Aclass Object/, content)
+        assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
+      end
+    end
+
+    it "template with compiled_path and freezing string literals option" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        if check_type == :option
+          inst = _FrozenSourceGeneratingMockTemplate.new(compiled_path: base) { |t| 'Hey' }
+        else
+          inst = _FrozenSourceGeneratingMockTemplate.new { |t| 'Hey' }
+          inst.compiled_path = base
+        end
+
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass Object/, File.read(tempfile))
+
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render("")
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass String/, File.read(tempfile))
+
+        tempfile = "#{base}-2.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render(Tilt::Mapping.new)
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass Tilt::Mapping/, File.read(tempfile))
+      end
     end
   end
 
-  it "template with compiled_path and with anonymous scope_class" do
+  it "template with :compiled_path option and with :scope_class and fixed locals" do
     Dir.mktmpdir('tilt') do |dir|
       base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base
-
-      message = nil
-      inst.define_singleton_method(:warn) { |msg| message = msg }
-      scope_class = Class.new
-      assert_equal 'Hey', inst.render(scope_class.new)
-      assert_equal "compiled_path (#{base.inspect}) ignored on template with anonymous scope_class (#{scope_class.inspect})", message
-      assert_equal [], Dir["#{dir}/*"]
-    end
-  end
-
-  it "template with compiled_path with locals" do
-    Dir.mktmpdir('tilt') do |dir|
-      base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
-      inst.compiled_path = base + '.rb'
-
       tempfile = "#{base}.rb"
       assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey local-variable ', inst.render(Object.new, 'a' => 1)
+      inst =  _SourceGeneratingMockTemplate.new(compiled_path: base + '.rb', scope_class: Array, fixed_locals: '(a: nil, b: nil)') { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
+
+      assert_equal true, File.file?(tempfile)
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new)
       content = File.read(tempfile)
-      assert_match(/\Aclass Object/, content)
-      assert_includes(content, "\na = locals[\"a\"]\n")
+      assert_match(/\Aclass Array/, content)
+      assert_includes(content, "(a: nil, b: nil)")
 
-      tempfile = "#{base}-1.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, 'b' => 1, 'a' => 1)
-      content = File.read(tempfile)
-      assert_match(/\Aclass Object/, content)
-      assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
-    end
-  end
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, :a => 1)
+      assert_equal content, File.read(tempfile)
 
-  it "template with compiled_path and freezing string literals option" do
-    Dir.mktmpdir('tilt') do |dir|
-      base = File.join(dir, 'template')
-      inst = _FrozenSourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, :b => 1, :a => 1)
+      assert_equal content, File.read(tempfile)
 
-      tempfile = "#{base}.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\A# frozen-string-literal: true\nclass Object/, File.read(tempfile))
-
-      tempfile = "#{base}-1.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render("")
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\A# frozen-string-literal: true\nclass String/, File.read(tempfile))
-
-      tempfile = "#{base}-2.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Tilt::Mapping.new)
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\A# frozen-string-literal: true\nclass Tilt::Mapping/, File.read(tempfile))
+      assert_equal false, File.file?("#{base}-1.rb")
     end
   end
 

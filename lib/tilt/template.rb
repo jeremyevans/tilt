@@ -101,6 +101,13 @@ module Tilt
       # for compiled templates
       @skip_compiled_encoding_detection = @options.delete :skip_compiled_encoding_detection
 
+      # Compiled path to use.  This must be specified as an option if
+      # providing the :scope_class option and using fixed locals,
+      # since template compilation occurs during initialization in that case.
+      if compiled_path = @options.delete(:compiled_path)
+        self.compiled_path = compiled_path
+      end
+
       # load template data and prepare (uses binread to avoid encoding issues)
       @data = block_given? ? yield(self) : read_template_file
 
@@ -159,7 +166,14 @@ module Tilt
       end
     end
 
-    # Set the prefix to use for compiled paths.
+    # Set the prefix to use for compiled paths, similar to using the
+    # :compiled_path template option. Note that this only
+    # has affect for future template compilations.  When using the
+    # :scope_class template option, and using fixed_locals, calling
+    # this after the template is created has no effect, since the
+    # template is compiled during initialization in that case. It
+    # is recommended to use the :compiled_path template option
+    # instead of this method in new code.
     def compiled_path=(path)
       if path
         # Use expanded paths when loading, since that is helpful

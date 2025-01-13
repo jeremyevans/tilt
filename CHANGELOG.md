@@ -1,4 +1,4 @@
-## master
+## 2.6.0 (2025-01-13)
 
 * Support :compiled_path option, needed for compiled paths when using :scope_class and fixed locals (jeremyevans)
 * Support :scope_class option to force a specific scope class, instead of using the class of the provided scope (jeremyevans)

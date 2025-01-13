@@ -148,7 +148,8 @@ of local variable names.  This causes multiple issues:
 * It does not support named blocks
 
 You can pass the `:fixed_locals` option when creating the template to fix the
-local variables.  This will only compile a single template method per template.
+local variables.  This will only compile a single template method per template
+(per scope class, see below).
 The value of the `:fixed_locals` option is a Ruby method parameter string, which
 should start and end with parentheses. For example, if the template does not
 use local variables, you can set it to `"()"`.  This will cause an ArgumentError
@@ -243,6 +244,15 @@ following sources:
 
 It is expected that embedded fixed locals magic comments will be supported
 by default in Tilt 3 (i.e. `Tilt.extract_fixed_locals` will default to `true`).
+
+# `:scope_class` option
+
+You can now specify the `:scope_class` option when creating the template, which
+will fix the scope class for the template.  By default, Tilt uses the class
+of the provide scope, and will compile a separate method per scope class. By
+using the `:scope_class` option to fix the scope class, and using fixed locals,
+you can ensure only a single template method is compiled per Tilt::Template
+instance.
 
 Template Mappings
 -----------------

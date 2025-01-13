@@ -2,8 +2,9 @@
 
 * Support :compiled_path option, needed for compiled paths when using :scope_class and fixed locals (jeremyevans)
 * Support :scope_class option to force a specific scope class, instead of using the class of the provided scope (jeremyevans)
-* Support fallback fixed locals for templates via :default_fixed_locals option (jeremyevans)
-* Support embedded fixed locals for templates via magic comments, if Tilt.extract_fixed_locals is set (jeremyevans)
+* Support fallback fixed locals for templates without extracted locals via :default_fixed_locals option (jeremyevans)
+* Add Tilt.extract_fixed_locals accessor for enabling :extract_fixed_locals globally (jeremyevans)
+* Support embedded fixed locals for templates via magic comments via :extract_fixed_locals option (jeremyevans)
 * Support fixed locals for templates via :fixed_locals option (jeremyevans)
 
 ## 2.5.0 (2024-12-20)

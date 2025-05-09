@@ -83,10 +83,15 @@ end
 platform :ruby do
   gem 'RedCloth'
   gem 'commonmarker'
+  gem 'yajl-ruby'
 
   gem 'rdiscount', '>= 2.1.6'
-  gem 'redcarpet'
-  gem 'yajl-ruby'
+
+  if RUBY_VERSION < '2.1'
+    gem 'redcarpet', '< 3.6.1'
+  else
+    gem 'redcarpet'
+  end
 
   if RUBY_VERSION < '2.3'
     # CommonMarker versions that support Ruby <2.3 have

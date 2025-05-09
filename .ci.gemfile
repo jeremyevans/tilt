@@ -16,8 +16,15 @@ gem 'slim'
 gem 'typescript-node'
 gem 'pandoc-ruby'
 
-if RUBY_VERSION > '3.3'
+if RUBY_VERSION >= '3.3'
   gem 'csv'
+
+  # liquid dependency
+  gem 'base64'
+end
+if RUBY_VERSION >= '3.4'
+  # asciidoc dependency
+  gem 'logger'
 end
 
 if RUBY_VERSION < '2.6'

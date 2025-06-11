@@ -1,4 +1,8 @@
 # frozen_string_literal: true
+
+# = Builder
+#
+
 require_relative 'template'
 require 'builder'
 

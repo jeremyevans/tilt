@@ -1,34 +1,44 @@
 # frozen_string_literal: true
+
+# = CSV
+#
+# CSV Template implementation.
+#
+# === Example
+#
+#    # Example of csv template
+#    tpl = <<-EOS
+#      # header
+#      csv << ['NAME', 'ID']
+#
+#      # data rows
+#      @people.each do |person|
+#        csv << [person[:name], person[:id]]
+#      end
+#    EOS
+#
+#    @people = [
+#      {:name => "Joshua Peek", :id => 1},
+#      {:name => "Ryan Tomayko", :id => 2},
+#      {:name => "Simone Carletti", :id => 3}
+#    ]
+#
+#    template = Tilt::CSVTemplate.new { tpl }
+#    template.render(self)
+#
+# === See also
+#
+# * http://ruby-doc.org/stdlib/libdoc/csv/rdoc/CSV.html
+#
+# === Related module
+#
+# * Tilt::CSVTemplate
+
 require_relative 'template'
 require 'csv'
 
 module Tilt
 
-  # CSV Template implementation. See:
-  # http://ruby-doc.org/stdlib/libdoc/csv/rdoc/CSV.html
-  #
-  # == Example
-  #
-  #    # Example of csv template
-  #    tpl = <<-EOS
-  #      # header
-  #      csv << ['NAME', 'ID']
-  #
-  #      # data rows
-  #      @people.each do |person|
-  #        csv << [person[:name], person[:id]]
-  #      end
-  #    EOS
-  #
-  #    @people = [
-  #      {:name => "Joshua Peek", :id => 1},
-  #      {:name => "Ryan Tomayko", :id => 2},
-  #      {:name => "Simone Carletti", :id => 3}
-  #    ]
-  #
-  #    template = Tilt::CSVTemplate.new { tpl }
-  #    template.render(self)
-  #
   class CSVTemplate < Template
     self.default_mime_type = 'text/csv'
 

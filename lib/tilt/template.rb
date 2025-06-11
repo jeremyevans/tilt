@@ -41,12 +41,12 @@ module Tilt
         @metadata ||= {}
       end
 
-      # Use `.metadata[:mime_type]` instead.
+      # Use <tt>.metadata[:mime_type]</tt> instead.
       def default_mime_type
         metadata[:mime_type]
       end
 
-      # Use `.metadata[:mime_type] = val` instead.
+      # Use <tt>.metadata[:mime_type] = val</tt> instead.
       def default_mime_type=(value)
         metadata[:mime_type] = value
       end
@@ -376,10 +376,10 @@ module Tilt
 
       s = "locals = locals[:locals]"
       if assignments.delete(s)
-        # If there is a locals key itself named `locals`, delete it from the ordered keys so we can
+        # If there is a locals key itself named <tt>locals</tt>, delete it from the ordered keys so we can
         # assign it last. This is important because the assignment of all other locals depends on the
-        # `locals` local variable still matching the `locals` method argument given to the method
-        # created in `#compile_template_method`.
+        # <tt>locals</tt> local variable still matching the <tt>locals</tt> method argument given to the method
+        # created in <tt>#compile_template_method</tt>.
         assignments << s
       end
 

@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+
+# = Babel
+#
+#
+
 require_relative 'template'
 require 'babel/transpiler'
 

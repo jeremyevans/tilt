@@ -1,12 +1,21 @@
 # frozen_string_literal: true
+
+# CoffeeScript template implementation.
+#
+# CoffeeScript templates do not support object scopes, locals, or yield.
+#
+# === See also
+#
+# * http://coffeescript.org
+#
+# === Related module
+#
+# * Tilt::CoffeeScriptTemplate
+
 require_relative 'template'
 require 'coffee_script'
 
 module Tilt
-  # CoffeeScript template implementation. See:
-  # http://coffeescript.org/
-  #
-  # CoffeeScript templates do not support object scopes, locals, or yield.
   class CoffeeScriptTemplate < StaticTemplate
     self.default_mime_type = 'application/javascript'
 

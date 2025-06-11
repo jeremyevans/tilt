@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+
+# = Typescript
+#
+# TypeScript implementation.
+
 require_relative 'template'
 require 'typescript-node'
 

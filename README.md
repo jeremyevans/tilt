@@ -21,60 +21,57 @@ template engines included in the distribution.
 
 Support for these template engines is included with Tilt:
 
-| Engine               | File Extensions        | Required Libraries            |
-| ---------------------| -----------------------| ------------------------------|
-| Asciidoctor          | .ad, .adoc, .asciidoc  | asciidoctor                   |
-| Babel                | .es6, .babel, .jsx     | babel-transpiler              |
-| Builder              | .builder               | builder                       |
-| CoffeeScript         | .coffee                | coffee-script (+ javascript)  |
-| CoffeeScriptLiterate | .litcoffee             | coffee-script (+ javascript)  |
-| CommonMarker         | .markdown, .mkd, .md   | commonmarker                  |
-| Creole               | .wiki, .creole         | creole                        |
-| CSV                  | .rcsv                  | csv (ruby stdlib)             |
-| ERB                  | .erb, .rhtml           | erb (ruby stdlib)             |
-| Erubi                | .erb, .rhtml, .erubi   | erubi                         |
-| Etanni               | .ern, .etanni          | none                          |
-| Haml                 | .haml                  | haml                          |
-| Kramdown             | .markdown, .mkd, .md   | kramdown                      |
-| Liquid               | .liquid                | liquid                        |
-| LiveScript           | .ls                    | livescript (+ javascript)     |
-| Markaby              | .mab                   | markaby                       |
-| Nokogiri             | .nokogiri              | nokogiri                      |
-| Pandoc               | .markdown, .mkd, .md   | pandoc                        |
-| Plain                | .html                  | none                          |
-| Prawn                | .prawn                 | prawn                         |
-| Radius               | .radius                | radius                        |
-| RDiscount            | .markdown, .mkd, .md   | rdiscount                     |
-| RDoc                 | .rdoc                  | rdoc                          |
-| Redcarpet            | .markdown, .mkd, .md   | redcarpet                     |
-| RedCloth             | .textile               | redcloth                      |
-| RstPandoc            | .rst                   | pandoc                        |
-| Slim                 | .slim                  | slim                          |
-| Sass                 | .sass                  | sass-embedded, sassc, or sass |
-| Scss                 | .scss                  | sass-embedded, sassc, or sass |
-| String               | .str                   | none                          |
-| TypeScript           | .ts                    | typescript (+ javascript)     |
-| Yajl                 | .yajl                  | yajl-ruby                     |
+| Engine                                            | File Extensions         | Required Libraries             |
+| ------------------------------------------------- | ----------------------- | ------------------------------ |
+| {Asciidoctor}[rdoc-ref:lib/tilt/asciidoc.rb]      | .ad, .adoc, .asciidoc   | asciidoctor                    |
+| {Babel}[rdoc-ref:lib/tilt/babel.rb]               | .es6, .babel, .jsx      | babel-transpiler               |
+| {Builder}[rdoc-ref:lib/tilt/builder.rb]           | .builder                | builder                        |
+| {CoffeeScript}[rdoc-ref:lib/tilt/coffee.rb]       | .coffee                 | coffee-script (+ javascript)   |
+| CoffeeScriptLiterate                              | .litcoffee              | coffee-script (+ javascript)   |
+| {CommonMarker}[rdoc-ref:lib/tilt/commonmarker.rb] | .markdown, .mkd, .md    | commonmarker                   |
+| {Creole}[rdoc-ref:lib/tilt/creole.rb]             | .wiki, .creole          | creole                         |
+| {CSV}[rdoc-ref:lib/tilt/csv.rb]                   | .rcsv                   | csv (ruby stdlib)              |
+| {ERB}[rdoc-ref:lib/tilt/erb.rb]                   | .erb, .rhtml            | erb (ruby stdlib)              |
+| {Erubi}[rdoc-ref:lib/tilt/erubi.rb]               | .erb, .rhtml, .erubi    | erubi                          |
+| {Etanni}[rdoc-ref:lib/tilt/etanni.rb]             | .ern, .etanni           | none                           |
+| {Haml}[rdoc-ref:lib/tilt/haml.rb]                 | .haml                   | haml                           |
+| {Kramdown}[rdoc-ref:lib/tilt/kramdown.rb]         | .markdown, .mkd, .md    | kramdown                       |
+| {Liquid}[rdoc-ref:lib/tilt/liquid.rb]             | .liquid                 | liquid                         |
+| {LiveScript}[rdoc-ref:lib/tilt/livescript.rb]     | .ls                     | livescript (+ javascript)      |
+| {Markaby}[rdoc-ref:lib/tilt/markaby.rb]           | .mab                    | markaby                        |
+| {Nokogiri}[rdoc-ref:lib/tilt/nokogiri.rb]         | .nokogiri               | nokogiri                       |
+| {Pandoc}[rdoc-ref:lib/tilt/pandoc.rb]             | .markdown, .mkd, .md    | pandoc                         |
+| {Plain}[rdoc-ref:lib/tilt/plain.rb]               | .html                   | none                           |
+| {Prawn}[rdoc-ref:lib/tilt/prawn.rb]               | .prawn                  | prawn                          |
+| {Radius}[rdoc-ref:lib/tilt/radius.rb]             | .radius                 | radius                         |
+| {RDiscount}[rdoc-ref:lib/tilt/rdiscount.rb]       | .markdown, .mkd, .md    | rdiscount                      |
+| {RDoc}[rdoc-ref:lib/tilt/rdoc.rb]                 | .rdoc                   | rdoc                           |
+| {Redcarpet}[rdoc-ref:lib/tilt/redcarpet.rb]       | .markdown, .mkd, .md    | redcarpet                      |
+| {RedCloth}[rdoc-ref:lib/tilt/redcloth.rb]         | .textile                | redcloth                       |
+| {RstPandoc}[rdoc-ref:lib/tilt/rst-pandoc.rb]      | .rst                    | pandoc                         |
+| {Slim}[rdoc-ref:lib/tilt/slim.rb]                 | .slim                   | slim                           |
+| {Sass}[rdoc-ref:lib/tilt/sass.rb]                 | .sass                   | sass-embedded, sassc, or sass  |
+| Scss                                              | .scss                   | sass-embedded, sassc, or sass  |
+| {String}[rdoc-ref:lib/tilt/string.rb]             | .str                    | none                           |
+| {TypeScript}[rdoc-ref:lib/tilt/typescript.rb]     | .ts                     | typescript (+ javascript)      |
+| {Yajl}[rdoc-ref:lib/tilt/yajl.rb]                 | .yajl                   | yajl-ruby                      |
 
-See [TEMPLATES.md][t] for detailed information on template engine
+See the linked files under `./lib/tilt/*.rb` for detailed information on template engine
 options and supported features.
-
-[t]: http://github.com/jeremyevans/tilt/blob/master/docs/TEMPLATES.md
-   "Tilt Template Engine Documentation"
 
 Basic Usage
 -----------
 
 Instant gratification:
 
-~~~ruby
+``` ruby
 require 'tilt'
 require 'tilt/erb'
 template = Tilt.new('templates/foo.erb')
 => #<Tilt::ERBTemplate @file="templates/foo.erb" ...>
 output = template.render
 => "Hello world!"
-~~~
+```
 
 It's recommended that calling programs explicitly require the Tilt template
 engine libraries (like 'tilt/erb' above) at load time. Tilt attempts to
@@ -87,22 +84,22 @@ creation and rendering. In the instant gratification example, we let Tilt
 determine the template implementation class based on the filename, but
 Tilt::Template implementations can also be used directly:
 
-~~~ruby
+``` ruby
 require 'tilt/haml'
 template = Tilt::HamlTemplate.new('templates/foo.haml')
 output = template.render
-~~~
+```
 
 The `render` method takes an optional evaluation scope and locals hash
 arguments. Here, the template is evaluated within the context of the
 `Person` object with locals `x` and `y`:
 
-~~~ruby
+``` ruby
 require 'tilt/erb'
 template = Tilt::ERBTemplate.new('templates/foo.erb')
 joe = Person.find('joe')
 output = template.render(joe, :x => 35, :y => 42)
-~~~
+```
 
 If no scope is provided, the template is evaluated within the context of an
 object created with `Object.new`.
@@ -111,26 +108,26 @@ A single `Template` instance's `render` method may be called multiple times
 with different scope and locals arguments. Continuing the previous example,
 we render the same compiled template but this time in jane's scope:
 
-~~~ruby
+``` ruby
 jane = Person.find('jane')
 output = template.render(jane, :x => 22, :y => nil)
-~~~
+```
 
 Blocks can be passed to `render` for templates that support running
 arbitrary ruby code (usually with some form of `yield`). For instance,
 assuming the following in `foo.erb`:
 
-~~~ruby
+``` ruby
 Hey <%= yield %>!
-~~~
+```
 
 The block passed to `render` is called on `yield`:
 
-~~~ruby
+``` ruby
 template = Tilt::ERBTemplate.new('foo.erb')
 template.render { 'Joe' }
 # => "Hey Joe!"
-~~~
+```
 
 Fixed Locals
 ------------
@@ -155,38 +152,38 @@ should start and end with parentheses. For example, if the template does not
 use local variables, you can set it to `"()"`.  This will cause an ArgumentError
 to be raised if you call the template with locals:
 
-~~~ruby
+``` ruby
 template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "()")
 output = template.render(Object.new) # No ArgumentError
 output = template.render(Object.new, x: 1) # ArgumentError
-~~~
+```
 
 If the template must be passed the `x` local variable to work correctly, and
 optionally can be provided the `y` local variable:
 
-~~~ruby
+``` ruby
 template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(x:, y: nil)")
 output = template.render(Object.new) # ArgumentError
 output = template.render(Object.new, x: 1) # No ArgumentError
 output = template.render(Object.new, x: 1, y: 2) # No ArgumentError
 output = template.render(Object.new, x: 1, y: 2, z: 3) # ArgumentError
-~~~
+```
 
 If the template wants to accept arbitrary local variables, in order to pass
 the variables to a method inside the template, you can provide a keyword splat
 or a single positional argument (with an optional empty hash value if you want
 to support being called with no local variables):
 
-~~~ruby
+``` ruby
 template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(**args)") # or "(args={})"
-~~~
+```
 
 If you would like to name the block passed to the template, so you can pass
 it to a method inside the template:
 
-~~~ruby
+``` ruby
 template = Tilt::ERBTemplate.new('templates/foo.erb', fixed_locals: "(&block)")
-~~~
+```
 
 Embedded Fixed Locals
 ---------------------
@@ -197,9 +194,9 @@ and others, it can be helpful to embed the fixed locals inside the template
 using a magic comment.  This can be enabled using the `:extract_fixed_locals`
 template option.  It can also be enabled globally via:
 
-~~~ruby
+``` ruby
 Tilt.extract_fixed_locals = true
-~~~
+```
 
 If `:extract_fixed_locals` option is given, or extraction is globally enabled,
 and the `:fixed_locals` option is not provided when creating the template,
@@ -214,6 +211,12 @@ In ERB templates, you can use the following comment format:
 
 ```
 <%# locals: () %>
+```
+
+In slim templates, the comment format looks like this:
+
+```
+//# locals: ()
 ```
 
 In string templates, it is a little ackward, but still possible (note that the
@@ -267,29 +270,29 @@ table of template engines above.
 The Tilt.register method associates a filename pattern with a specific
 template implementation. To use ERB for files ending in a `.bar` extension:
 
-~~~ruby
+``` ruby
 >> Tilt.register Tilt::ERBTemplate, 'bar'
 >> Tilt.new('views/foo.bar')
 => #<Tilt::ERBTemplate @file="views/foo.bar" ...>
-~~~
+```
 
 Retrieving the template class for a file or file extension:
 
-~~~ruby
+``` ruby
 >> Tilt['foo.bar']
 => Tilt::ERBTemplate
 >> Tilt['haml']
 => Tilt::HamlTemplate
-~~~
+```
 
 Retrieving a list of template classes for a file:
 
-~~~ruby
+``` ruby
 >> Tilt.templates_for('foo.bar')
 => [Tilt::ERBTemplate]
 >> Tilt.templates_for('foo.haml.bar')
 => [Tilt::ERBTemplate, Tilt::HamlTemplate]
-~~~
+```
 
 The template class is determined by searching for a series of decreasingly
 specific name patterns. When creating a new template with
@@ -311,7 +314,7 @@ want to customize the output per different locals.  For example, let's
 say you have an scss file that you want to allow customization with
 erb, such as:
 
-~~~scss
+```scss
 .foo {
   .bar {
     .<%= hide_class %> {
@@ -319,27 +322,27 @@ erb, such as:
     }
   }
 }
-~~~
+```
 
 You can do this manually:
 
-~~~ruby
+``` ruby
 scss = Tilt.new("file.scss.erb").render(nil, hide_class: 'baz')
 css = Tilt.new("scss"){scss}.render
-~~~
+```
 
 A more automated way to handle it is to register a template pipeline:
 
-~~~ruby
+``` ruby
   Tilt.register_pipeline("scss.erb")
-~~~
+```
 
 Then Tilt will automatically take the output of the erb engine,
 and pass it to the scss engine, automating the above code.
 
-~~~ruby
+``` ruby
   css = Tilt.new("file.scss.erb").render(nil, hide_class: 'baz')
-~~~
+```
 
 Finalizing Mappings
 -------------------
@@ -356,7 +359,7 @@ and then freeze the mappings. Tilt.finalize! will replace Tilt's default
 mapping with a finalized versions, as well as freeze Tilt so that no
 further changes can be made.
 
-~~~ruby
+``` ruby
 require 'tilt/erubi'
 require 'tilt/string'
 require 'tilt/sass'
@@ -365,7 +368,7 @@ Tilt['erb'] # => Tilt::ErubiTemplate
 Tilt['str'] # => Tilt::StringTemplate
 Tilt['scss'] # => Tilt::ScssTemplate
 Tilt['haml'] # => nil # even if haml is installed
-~~~
+```
 
 Encodings
 ---------
@@ -380,9 +383,9 @@ recommend setting this option. When providing a custom reader block (`Tilt.new
 Most of the template engines in Tilt also allows you to override the encoding
 using the `:default_encoding`-option:
 
-~~~ruby
+``` ruby
 tmpl = Tilt.new('hello.erb', :default_encoding => 'Big5')
-~~~
+```
 
 Ultimately it's up to the template engine how to handle the encoding: It might
 respect `:default_encoding`, it might always assume it's UTF-8 (like

@@ -1,10 +1,21 @@
 # frozen_string_literal: true
+
+# = Nokogiri
+#
+# Nokogiri template implementation.
+#
+# === See also
+#
+# * http://nokogiri.org/
+#
+# === Related module
+#
+# * Tilt::NokogiriTemplate
+
 require_relative 'template'
 require 'nokogiri'
 
 module Tilt
-  # Nokogiri template implementation. See:
-  # http://nokogiri.org/
   class NokogiriTemplate < Template
     DOCUMENT_HEADER = /\A<\?xml version=\"1\.0\"\?>\n?/
     self.default_mime_type = 'text/xml'

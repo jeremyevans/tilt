@@ -1,10 +1,19 @@
 # frozen_string_literal: true
+
+# = Markaby
+#
+# === See also
+#
+# * http://github.com/markaby/markaby
+#
+# === Related module
+#
+# * Tilt::MarkabyTemplate
+
 require_relative 'template'
 require 'markaby'
 
 module Tilt
-  # Markaby
-  # http://github.com/markaby/markaby
   class MarkabyTemplate < Template
     def self.builder_class
       @builder_class ||= Class.new(Markaby::Builder) do

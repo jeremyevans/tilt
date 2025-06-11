@@ -1,9 +1,17 @@
 # frozen_string_literal: true
+
+# = String
+#
+# The template source is evaluated as a Ruby string. The #{} interpolation
+# syntax can be used to generated dynamic output.
+#
+# === Related module
+#
+# * Tilt::StringTemplate
+
 require_relative 'template'
 
 module Tilt
-  # The template source is evaluated as a Ruby string. The #{} interpolation
-  # syntax can be used to generated dynamic output.
   class StringTemplate < Template
     def prepare
       hash = "TILT#{@data.hash.abs}"

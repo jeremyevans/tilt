@@ -1,4 +1,11 @@
 # frozen_string_literal: true
+
+# = Etanni
+#
+# === Related module
+#
+# * Tilt::EtanniTemplate
+
 require_relative 'template'
 
 module Tilt

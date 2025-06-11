@@ -1,16 +1,49 @@
 # frozen_string_literal: true
+
+# = Erubi (<tt>erb</tt>, <tt>rhtml</tt>, <tt>erubi</tt>)
+#
+# {Erubi}[https://github.com/jeremyevans/erubi] is an ERB implementation that uses the same algorithm as
+# the erubis gem, but is maintained and offers numerous improvements.
+#
+# All the documentation of {ERB}[rdoc-ref:lib/tilt/erb.rb] applies in addition to the following:
+#
+# === Usage
+#
+# The <tt>Tilt::ErubiTemplate</tt> class is registered for all files ending in <tt>.erb</tt> or
+# <tt>.rhtml</tt> by default, with the *highest* priority.
+#
+# __NOTE:__ It's suggested that your program <tt>require 'erubi'</tt> at load time when
+# using this template engine within a threaded environment.
+#
+# === Options
+#
+# ==== <tt>:engine_class => Erubi::Engine</tt>
+#
+# Allows you to specify a custom engine class to use instead of the
+# default which is <tt>Erubi::Engine</tt>.
+#
+# ==== Other
+#
+# Other options are passed to the constructor of the engine class.
+#
+# ErubiTemplate supports the following additional options, in addition
+# to the options supported by the Erubi engine:
+#
+# :engine_class :: allows you to specify a custom engine class to use
+#                  instead of the default (which is ::Erubi::Engine).
+#
+# === See also
+#
+# * {Erubi Home}[https://github.com/jeremyevans/erubi]
+#
+# === Related module
+#
+# * Tilt::ErubiTemplate
+
 require_relative 'template'
 require 'erubi'
 
 module Tilt
-  # Erubi (a simplified version of Erubis) template implementation.
-  # See https://github.com/jeremyevans/erubi
-  #
-  # ErubiTemplate supports the following additional options, in addition
-  # to the options supported by the Erubi engine:
-  #
-  # :engine_class :: allows you to specify a custom engine class to use
-  #                  instead of the default (which is ::Erubi::Engine).
   class ErubiTemplate < Template
     def prepare
       @options[:preamble] = false

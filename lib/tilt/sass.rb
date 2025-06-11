@@ -1,10 +1,22 @@
 # frozen_string_literal: true
+
+# = Sass
+#
+# Sass template implementation for generating CSS.
+#
+# Sass templates do not support object scopes, locals, or yield.
+#
+# === See also
+#
+# * https://sass-lang.com/
+#
+# === Related module
+#
+# * Tilt::SassTemplate
+
 require_relative 'template'
 
 module Tilt
-  # Sass template implementation for generating CSS. See: https://sass-lang.com/
-  #
-  # Sass templates do not support object scopes, locals, or yield.
   class SassTemplate < StaticTemplate
     self.default_mime_type = 'text/css'
 

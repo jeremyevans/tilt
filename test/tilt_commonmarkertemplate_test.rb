@@ -3,13 +3,21 @@ require_relative 'test_helper'
 checked_describe 'tilt/commonmarker' do
   it "preparing and evaluating templates on #render" do
     template = Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }
-    assert_includes ["<h1>Hello World!</h1>\n", "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"], template.render
+    assert_includes [
+      "<h1>Hello World!</h1>\n",
+      "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n",
+      "<h1><a inert href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"
+    ], template.render
   end
 
   it "can be rendered more than once" do
     template = Tilt::CommonMarkerTemplate.new { |t| "# Hello World!" }
     3.times do
-      assert_includes ["<h1>Hello World!</h1>\n", "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"], template.render
+      assert_includes [
+        "<h1>Hello World!</h1>\n",
+        "<h1><a href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n",
+        "<h1><a inert href=\"#hello-world\" aria-hidden=\"true\" class=\"anchor\" id=\"hello-world\"></a>Hello World!</h1>\n"
+      ], template.render
     end
   end
 
@@ -82,10 +90,9 @@ EXPECTED_HTML
       template = Tilt::CommonMarkerTemplate.new(header_ids: "prefix-") do |t|
         "# Foo"
       end
-      expected = <<HTML
+      assert_match(<<HTML, template.render.sub(" inert", ""))
 <h1><a href="#foo" aria-hidden="true" class="anchor" id="prefix-foo"></a>Foo</h1>
 HTML
-      assert_match(expected, template.render)
     end
   end
 end

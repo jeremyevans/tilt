@@ -473,7 +473,12 @@ module Tilt
     end
 
     def load_compiled_method(path, method_source)
-      File.binwrite(path, method_source)
+      # Write to a temporary path specific to the current process, and
+      # rename after writing. This prevents issues during parallel
+      # coverage testing.
+      tmp_path = "#{path}-#{$$}"
+      File.binwrite(tmp_path, method_source)
+      File.rename(tmp_path, path)
 
       # Use load and not require, so unbind_compiled_method does not
       # break if the same path is used more than once.

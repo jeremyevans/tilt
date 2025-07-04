@@ -1,3 +1,7 @@
+## master
+
+* Fix race condition during parallel coverage testing using Template compiled_path option/method (jeremyevans)
+
 ## 2.6.0 (2025-01-13)
 
 * Support :compiled_path option, needed for compiled paths when using :scope_class and fixed locals (jeremyevans)

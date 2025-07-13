@@ -10,11 +10,10 @@ module Tilt
     def prepare
       @options[:page_size] = 'A4' unless @options.has_key?(:page_size)
       @options[:page_layout] = :portrait unless @options.has_key?(:page_layout)
-      @engine = ::Prawn::Document.new(@options)
     end
     
     def evaluate(scope, locals, &block)
-      pdf = @engine
+      pdf = ::Prawn::Document.new(@options)
       locals = locals.dup
       locals[:pdf] = pdf
       super

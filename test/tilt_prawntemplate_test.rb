@@ -9,6 +9,10 @@ checked_describe('tilt/prawn', 'pdf-reader') do
     def text
       @reader.pages.map(&:text).join
     end
+
+    def page_count
+      @reader.page_count
+    end
     
     def page_attributes(page_num=1)
       @reader.page(page_num).attributes
@@ -39,7 +43,8 @@ checked_describe('tilt/prawn', 'pdf-reader') do
     template = Tilt::PrawnTemplate.new("test/tilt_prawntemplate.prawn")
     3.times do
       output   = _PdfOutput.new(template.render)
-      assert_includes output.text, "Hello Template!"
+      assert_equal 2, output.page_count
+      assert_equal output.text, "Hello Template!"
     end
   end
   

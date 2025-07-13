@@ -1,3 +1,7 @@
+## master
+
+* Make the rendering of Prawn templates idempotent (rickenharp) (#20)
+
 ## 2.6.1 (2025-07-07)
 
 * Fix race condition during parallel coverage testing using Template compiled_path option/method (jeremyevans)

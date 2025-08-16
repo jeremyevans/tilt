@@ -28,6 +28,7 @@ Support for these template engines is included with the package:
 | InterpolatedString      | .str                   | none (included ruby core)                  | Tilt team   |
 | Erubi                   | .erb, .rhtml, .erubi   | erubi                                      | Community   |
 | Erubis                  | .erb, .rhtml, .erubis  | erubis                                     | Tilt team   |
+| Herb                    | .erb, .herb            | herb                                       | Community   |
 | Haml                    | .haml                  | haml                                       | Tilt team   |
 | Sass                    | .sass                  | sass-embedded (>= 1.0) or sassc (>=2.0)    | Tilt team   |
 | Scss                    | .scss                  | sass-embedded (>= 1.0) or sassc (>=2.0)    | Tilt team   |

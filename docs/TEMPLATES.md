@@ -17,6 +17,7 @@ cross-implementation features.
  * [ERB](#erb) - Generic ERB implementation (backed by erb.rb or Erubis)
  * [erb.rb](#erbrb) - `Tilt::ERBTemplate`
  * [Erubis](#erubis) - `Tilt::ErubisTemplate`
+ * [Herb](#herb) - `Tilt::HerbTemplate`
  * [Haml](#haml) - `Tilt::HamlTemplate`
  * [Liquid](#liquid) - `Tilt::LiquidTemplate`
  * Nokogiri - `Tilt::NokogiriTemplate`
@@ -190,6 +191,75 @@ Delete spaces around `<% %>`. (But, spaces around `<%= %>` are preserved.)
 
   * [Erubis Home][erubis]
   * [Erubis User's Guide](http://www.kuwata-lab.com/erubis/users-guide.html)
+
+
+<a name='herb'></a>
+Herb (`herb`)
+-------------
+
+[Herb][herb] is a powerful HTML-aware ERB template engine that provides
+advanced parsing capabilities, better error messages, and strict HTML+ERB
+validation. It's designed to catch template errors at compile time and
+provide helpful diagnostics.
+
+### Example
+
+    <div class="container">
+      <% if logged_in? %>
+        <h1>Welcome <%= user.name %>!</h1>
+        <% items.each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      <% end %>
+    </div>
+
+### Usage
+
+The `Tilt::HerbTemplate` class is registered for all files ending in `.herb`:
+
+    require 'herb'
+    template = Tilt.new('hello.herb')
+    template.render(self, user: current_user)
+
+Or use the `Tilt::HerbTemplate` class directly:
+
+    template = Tilt::HerbTemplate.new { "<%= greeting %>" }
+    template.render(self, greeting: 'Hello!')
+
+### Options
+
+#### `escape: false`
+
+When `true`, all content within `<%= %>` blocks will be automatically
+HTML escaped to prevent XSS attacks. This is equivalent to using `<%== %>`
+in other template engines.
+
+#### `bufvar: '_buf'`
+
+The name of the variable used to accumulate template output. This can be
+any valid Ruby expression but must be assignable.
+
+#### `freeze: false`
+
+When `true`, adds frozen string literal pragma to the compiled template
+and freezes all string literals for better performance.
+
+#### `engine_class: Herb::Engine`
+
+Allows you to specify a custom engine class to use instead of the
+default which is `Herb::Engine`.
+
+### Features
+
+- **HTML-aware parsing**: Understands HTML structure and validates it
+- **Better error messages**: Provides syntax highlighting and context in errors
+- **Strict validation**: Catches common ERB mistakes at compile time
+- **Performance**: Optimized compilation and runtime performance
+- **Safety**: Built-in XSS protection with automatic escaping
+
+### See also
+
+  * [Herb GitHub](https://github.com/marcoroth/herb)
 
 
 <a name='haml'></a>
@@ -539,6 +609,8 @@ using this template engine within a threaded environment.
 [sass]: http://sass-lang.com/ "Sass"
 [coffee-script]: http://jashkenas.github.com/coffee-script/ "Coffee Script"
 [erubis]: http://www.kuwata-lab.com/erubis/ "Erubis"
+[erubi]: https://github.com/jeremyevans/erubi "Erubi"
+[herb]: https://github.com/marcoroth/herb "Herb"
 [haml]: http://haml.info/ "Haml"
 [liquid]: http://www.liquidmarkup.org/ "Liquid"
 [radius]: http://radius.rubyforge.org/ "Radius"

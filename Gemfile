@@ -14,6 +14,7 @@ group :primary do
   gem 'builder'
   gem 'haml', '>= 4'
   gem 'erubi'
+  gem 'herb'
   gem 'markaby'
 
   case ENV['SASS_IMPLEMENTATION']

@@ -3,7 +3,7 @@
 /vendor
 /.bundle
 /.yardoc
-/doc
+/rdoc
 .sass-cache
 /tilt-*.gem
 /coverage

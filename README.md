@@ -73,9 +73,10 @@ output = template.render
 ```
 
 It's recommended that calling programs explicitly require the Tilt template
-engine libraries (like 'tilt/erb' above) at load time. Tilt attempts to
-lazy require the template engine library the first time a template is
-created, but this is prone to error in threaded environments.
+engine libraries (like 'tilt/erb' above) at load time, or finalize the
+mapping (see section below). Tilt attempts to lazy require the template engine
+library the first time a template is created, but this is prone to error in
+threaded environments.
 
 The Tilt module contains generic implementation classes for all supported
 template engines. Each template class adheres to the same interface for

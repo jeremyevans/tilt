@@ -11,7 +11,7 @@
 # === Related modules
 #
 # * Tilt::CoffeeScriptTemplate
-# * Tilt::CoffeeScriptLiteralTemplate
+# * Tilt::CoffeeScriptLiterateTemplate
 
 require_relative 'template'
 require 'coffee_script'

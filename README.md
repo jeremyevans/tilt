@@ -56,6 +56,8 @@ Support for these template engines is included with Tilt:
 | {TypeScript}[rdoc-ref:lib/tilt/typescript.rb]       | .ts                     | typescript (+ javascript)      |
 | {Yajl}[rdoc-ref:lib/tilt/yajl.rb]                   | .yajl                   | yajl-ruby                      |
 
+See https://tilt.jeremyevans.net for formatted documentation for Tilt.
+
 Basic Usage
 -----------
 

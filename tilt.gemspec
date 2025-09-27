@@ -24,5 +24,6 @@ Gem::Specification.new do |s|
     'changelog_uri'     => 'https://github.com/jeremyevans/tilt/blob/master/CHANGELOG.md',
     'mailing_list_uri'  => 'https://github.com/jeremyevans/tilt/discussions',
     'source_code_uri'   => 'https://github.com/jeremyevans/tilt',
+    'documentation_uri' => 'https://tilt.jeremyevans.net',
   }
 end

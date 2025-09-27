@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Tilt::CSVTemplate</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Tilt::CSVTemplate
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/tilt/csv_rb.html">lib/tilt/csv.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Template</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-precompiled">precompiled</a></li>
+<li><a href="#method-i-precompiled_template">precompiled_template</a></li>
+<li><a href="#method-i-prepare">prepare</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-precompiled'>
+<a name='method-i-precompiled'></a>
+<div class='synopsis'>
+<span class='name'>precompiled</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled-source'>   <span class="ruby-comment"># File lib/tilt/csv.rb</span>
+<span class="line-num">57</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">58</span>   <span class="ruby-identifier">source</span>, <span class="ruby-identifier">offset</span> = <span class="ruby-keyword">super</span>
+<span class="line-num">59</span>   [<span class="ruby-identifier">source</span>, <span class="ruby-identifier">offset</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>]
+<span class="line-num">60</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_template'>
+<a name='method-i-precompiled_template'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_template</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_template-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_template-source'>   <span class="ruby-comment"># File lib/tilt/csv.rb</span>
+<span class="line-num">49</span>     <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_template</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">50</span>       <span class="ruby-identifier">&lt;&lt;-RUBY</span>
+<span class="line-num">51</span> <span class="ruby-value">        #{@outvar} = CSV.generate(**#{@options}) do |csv|
+<span class="line-num">52</span>           #{@data}
+<span class="line-num">53</span>         end
+<span class="line-num">54</span> </span><span class="ruby-identifier">      RUBY</span>
+<span class="line-num">55</span>     <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-prepare'>
+<a name='method-i-prepare'></a>
+<div class='synopsis'>
+<span class='name'>prepare</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-prepare-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-prepare-source'>   <span class="ruby-comment"># File lib/tilt/csv.rb</span>
+<span class="line-num">45</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepare</span>
+<span class="line-num">46</span>   <span class="ruby-ivar">@outvar</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:outvar</span>) <span class="ruby-operator">||</span> <span class="ruby-string">&#39;_csvout&#39;</span>
+<span class="line-num">47</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

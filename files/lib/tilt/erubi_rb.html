@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>erubi.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>erubi.rb
+</h1>
+<div class='paths'>
+lib/tilt/erubi.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Erubi+-28erb-2C+rhtml-2C+erubi-29">Erubi (<code>erb</code>, <code>rhtml</code>, <code>erubi</code>)<span><a href="#label-Erubi+-28erb-2C+rhtml-2C+erubi-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p><a target="_top" href="https://github.com/jeremyevans/erubi">Erubi</a> is an ERB implementation that uses the same algorithm as the erubis gem, but is maintained and offers numerous improvements.</p>
+
+<p>All the documentation of <a href="erb_rb.html">ERB</a> applies in addition to the following:</p>
+
+<h3 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <a href="../../../classes/Tilt/ErubiTemplate.html"><code>Tilt::ErubiTemplate</code></a> class is registered for all files ending in <code>.erb</code> or <code>.rhtml</code> by default, with the <strong>highest</strong> priority.</p>
+
+<p><em>NOTE:</em> It’s suggested that your program <code>require &#39;erubi&#39;</code> at load time when using this template engine within a threaded environment.</p>
+
+<h3 id="label-Options">Options<span><a href="#label-Options">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<h4 id="label-3Aengine_class+-3D-3E+Erubi-3A-3AEngine"><code>:engine_class =&gt; Erubi::Engine</code><span><a href="#label-3Aengine_class+-3D-3E+Erubi-3A-3AEngine">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>Allows you to specify a custom engine class to use instead of the default which is <code>Erubi::Engine</code>.</p>
+
+<h4 id="label-Other">Other<span><a href="#label-Other">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>Other options are passed to the constructor of the engine class.</p>
+
+<p>ErubiTemplate supports the following additional options, in addition to the options supported by the Erubi engine:</p>
+<table class="rdoc-list note-list"><tbody><tr><td class='label'>:engine_class </td><td>
+<p>allows you to specify a custom engine class to use instead of the default (which is ::Erubi::Engine).</p>
+</td></tr></tbody></table>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="https://github.com/jeremyevans/erubi">Erubi Home</a></p>
+</li></ul>
+
+<h3 id="label-Related+module">Related module<span><a href="#label-Related+module">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a href="../../../classes/Tilt/ErubiTemplate.html"><code>Tilt::ErubiTemplate</code></a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>erubi</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

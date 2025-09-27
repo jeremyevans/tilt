@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>liquid.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>liquid.rb
+</h1>
+<div class='paths'>
+lib/tilt/liquid.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Liquid+-28liquid-29">Liquid (<code>liquid</code>)<span><a href="#label-Liquid+-28liquid-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Liquid is designed to be a <strong>safe</strong> template system and therefore does not provide direct access to execuatable scopes. In order to support a <code>scope</code>, the <code>scope</code> must be able to represent itself as a hash by responding to to_h. If the <code>scope</code> does not respond to to_h it will be ignored.</p>
+
+<p>LiquidTemplate does not support yield blocks.</p>
+
+<h3 id="label-Example">Example<span><a href="#label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;{{ title }}&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello {{ world }}!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h3 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p><a href="../../../classes/Tilt/LiquidTemplate.html"><code>Tilt::LiquidTemplate</code></a> is registered for all files ending in <code>.liquid</code> by default. Liquid templates support locals and objects that respond to to_h as scopes:</p>
+
+<pre>&gt;&gt; require &#39;liquid&#39;
+&gt;&gt; require &#39;tilt&#39;
+&gt;&gt; template = Tilt.new(&#39;hello.liquid&#39;)
+=&gt; #&lt;Tilt::LiquidTemplate @file=&#39;hello.liquid&#39;&gt;
+&gt;&gt; scope = { :title =&gt; &quot;Hello Liquid Templates&quot; }
+&gt;&gt; template.render(nil, :world =&gt; &quot;Liquid&quot;)
+=&gt; &quot;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello Liquid Templates&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello Liquid!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;&quot;</pre>
+
+<p>Or, use <a href="../../../classes/Tilt/LiquidTemplate.html"><code>Tilt::LiquidTemplate</code></a> directly to process strings:</p>
+
+<pre>&gt;&gt; require &#39;liquid&#39;
+&gt;&gt; template = Tilt::LiquidTemplate.new { &quot;&lt;h1&gt;Hello Liquid!&lt;/h1&gt;&quot; }
+=&gt; #&lt;Tilt::LiquidTemplate @file=nil ...&gt;
+&gt;&gt; template.render
+=&gt; &quot;&lt;h1&gt;Hello Liquid!&lt;/h1&gt;&quot;</pre>
+
+<p><em>NOTE:</em> It’s suggested that your program <code>require &#39;liquid&#39;</code> at load time when using this template engine within a threaded environment.</p>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="http://liquidmarkup.org">Liquid</a></p>
+</li><li>
+<p><a target="_top" href="https://wiki.github.com/Shopify/liquid/liquid-for-programmers">Liquid for Programmers</a></p>
+</li><li>
+<p><a target="_top" href="http://liquid.rubyforge.org/">Liquid Docs</a></p>
+</li><li>
+<p>GitHub: <a target="_top" href="https://github.com/Shopify/liquid/">Shopify/liquid</a></p>
+</li></ul>
+
+<h3 id="label-Related+module">Related module<span><a href="#label-Related+module">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a href="../../../classes/Tilt/LiquidTemplate.html"><code>Tilt::LiquidTemplate</code></a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>liquid</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

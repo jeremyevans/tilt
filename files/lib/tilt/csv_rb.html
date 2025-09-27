@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>csv.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>csv.rb
+</h1>
+<div class='paths'>
+lib/tilt/csv.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-CSV">CSV<span><a href="#label-CSV">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>CSV Template implementation.</p>
+
+<h3 id="label-Example">Example<span><a href="#label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-comment"># Example of csv template</span>
+<span class="ruby-identifier">tpl</span> = <span class="ruby-identifier">&lt;&lt;-EOS</span>
+<span class="ruby-value">  # header
+  csv &lt;&lt; [&#39;NAME&#39;, &#39;ID&#39;]
+
+  # data rows
+  @people.each do |person|
+    csv &lt;&lt; [person[:name], person[:id]]
+  end
+</span><span class="ruby-identifier">EOS</span>
+
+<span class="ruby-ivar">@people</span> = [
+  {<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;Joshua Peek&quot;</span>, <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">1</span>},
+  {<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;Ryan Tomayko&quot;</span>, <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">2</span>},
+  {<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;Simone Carletti&quot;</span>, <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">3</span>}
+]
+
+<span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">CSVTemplate</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">tpl</span> }
+<span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-keyword">self</span>)
+</pre>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="http://ruby-doc.org/stdlib/libdoc/csv/rdoc/CSV.html">ruby-doc.org/stdlib/libdoc/csv/rdoc/CSV.html</a></p>
+</li></ul>
+
+<h3 id="label-Related+module">Related module<span><a href="#label-Related+module">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a href="../../../classes/Tilt/CSVTemplate.html"><code>Tilt::CSVTemplate</code></a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>csv</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

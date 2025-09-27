@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Tilt::Cache</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Tilt::Cache
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/tilt_rb.html">lib/tilt.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Object</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Extremely simple template cache implementation. Calling applications create a <a href="Cache.html"><code>Tilt::Cache</code></a> instance and use <a href="Cache.html#method-i-fetch"><code>fetch</code></a> with any set of hashable arguments (such as those to <a href="../Tilt.html#method-c-new"><code>Tilt.new</code></a>):</p>
+
+<pre class="ruby"><span class="ruby-identifier">cache</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">Cache</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span>, <span class="ruby-identifier">options</span>) { <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span>, <span class="ruby-identifier">options</span>) }
+</pre>
+
+<p>Subsequent invocations return the already loaded template object.</p>
+
+<p>@note</p>
+
+<pre>Tilt::Cache is a thin wrapper around Hash.  It has the following
+limitations:
+* Not thread-safe.
+* Size is unbounded.
+* Keys are not copied defensively, and should not be modified after
+  being passed to #fetch.  More specifically, the values returned by
+  key#hash and key#eql? should not change.
+If this is too limiting for you, use a different cache implementation.</pre>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-clear">clear</a></li>
+<li><a href="#method-i-fetch">fetch</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'>    <span class="ruby-comment"># File lib/tilt.rb</span>
+<span class="line-num">120</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+<span class="line-num">121</span>   <span class="ruby-ivar">@cache</span> = {}
+<span class="line-num">122</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-clear'>
+<a name='method-i-clear'></a>
+<div class='synopsis'>
+<span class='name'>clear</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Clears the cache.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-clear-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-clear-source'>    <span class="ruby-comment"># File lib/tilt.rb</span>
+<span class="line-num">137</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">clear</span>
+<span class="line-num">138</span>   <span class="ruby-ivar">@cache</span> = {}
+<span class="line-num">139</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-fetch'>
+<a name='method-i-fetch'></a>
+<div class='synopsis'>
+<span class='name'>fetch</span><span class='arguments'>(*key)</span>
+
+</div>
+<div class='description'>
+
+<p>Caches a value for key, or returns the previously cached value. If a value has been previously cached for key then it is returned. Otherwise, block is yielded to and its return value which may be nil, is cached under key and returned. @yield @yieldreturn the value to cache for key</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-fetch-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-fetch-source'>    <span class="ruby-comment"># File lib/tilt.rb</span>
+<span class="line-num">130</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fetch</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">key</span>)
+<span class="line-num">131</span>   <span class="ruby-ivar">@cache</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-identifier">key</span>) <span class="ruby-keyword">do</span>
+<span class="line-num">132</span>     <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-keyword">yield</span>
+<span class="line-num">133</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">134</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

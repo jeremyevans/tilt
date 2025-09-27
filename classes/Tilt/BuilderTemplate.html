@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Tilt::BuilderTemplate</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Tilt::BuilderTemplate
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/tilt/builder_rb.html">lib/tilt/builder.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Template</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Builder template implementation.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-evaluate">evaluate</a></li>
+<li><a href="#method-i-precompiled_postamble">precompiled_postamble</a></li>
+<li><a href="#method-i-precompiled_template">precompiled_template</a></li>
+<li><a href="#method-i-prepare">prepare</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-evaluate'>
+<a name='method-i-evaluate'></a>
+<div class='synopsis'>
+<span class='name'>evaluate</span><span class='arguments'>(scope, locals, &block)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-evaluate-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-evaluate-source'>   <span class="ruby-comment"># File lib/tilt/builder.rb</span>
+<span class="line-num">18</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">evaluate</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">locals</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">19</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:to_str</span>)
+<span class="line-num">20</span>     <span class="ruby-keyword">unless</span> <span class="ruby-identifier">locals</span>[<span class="ruby-value">:xml</span>]
+<span class="line-num">21</span>       <span class="ruby-identifier">locals</span> = <span class="ruby-constant">Hash</span>[<span class="ruby-identifier">locals</span>]
+<span class="line-num">22</span>       <span class="ruby-identifier">locals</span>[<span class="ruby-value">:xml</span>] = <span class="ruby-identifier">xml_builder</span>
+<span class="line-num">23</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">24</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span>
+<span class="line-num">25</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">26</span> 
+<span class="line-num">27</span>   <span class="ruby-identifier">xml</span> = <span class="ruby-identifier">locals</span>[<span class="ruby-value">:xml</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">xml_builder</span>
+<span class="line-num">28</span>   <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">xml</span>)
+<span class="line-num">29</span>   <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">target!</span>
+<span class="line-num">30</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_postamble'>
+<a name='method-i-precompiled_postamble'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_postamble</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_postamble-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_postamble-source'>   <span class="ruby-comment"># File lib/tilt/builder.rb</span>
+<span class="line-num">32</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_postamble</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">33</span>   <span class="ruby-string">&quot;xml.target!&quot;</span>
+<span class="line-num">34</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_template'>
+<a name='method-i-precompiled_template'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_template</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_template-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_template-source'>   <span class="ruby-comment"># File lib/tilt/builder.rb</span>
+<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_template</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">37</span>   <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">to_str</span>
+<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-prepare'>
+<a name='method-i-prepare'></a>
+<div class='synopsis'>
+<span class='name'>prepare</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-prepare-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-prepare-source'>   <span class="ruby-comment"># File lib/tilt/builder.rb</span>
+<span class="line-num">14</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepare</span>
+<span class="line-num">15</span>   <span class="ruby-ivar">@options</span>[<span class="ruby-value">:indent</span>] <span class="ruby-operator">||=</span> <span class="ruby-value">2</span>
+<span class="line-num">16</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

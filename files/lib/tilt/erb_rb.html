@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>erb.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>erb.rb
+</h1>
+<div class='paths'>
+lib/tilt/erb.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-ERB+-28erb-2C+rhtml-29">ERB (<code>erb</code>, <code>rhtml</code>)<span><a href="#label-ERB+-28erb-2C+rhtml-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>ERB is a simple but powerful template languge for Ruby. In <a href="../../../classes/Tilt.html"><code>Tilt</code></a> it’s backed by <a href="erubi_rb.html">Erubi</a> (if installed on your system] or by <a href="erb_rb.html">erb.rb</a> (which is included in Ruby’s standard library]. This documentation applies to all three implementations.</p>
+
+<h3 id="label-Example">Example<span><a href="#label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>Hello &lt;%= world %&gt;!</pre>
+
+<h3 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>ERB templates support custom evaluation scopes and locals:</p>
+
+<pre>&gt;&gt; require &#39;erb&#39;
+&gt;&gt; template = Tilt.new(&#39;hello.html.erb&#39;)
+&gt;&gt; template.render(self, :world =&gt; &#39;World!&#39;)
+=&gt; &quot;Hello World!&quot;</pre>
+
+<p>Or, use <code>Tilt[&#39;erb&#39;]</code> directly to process strings:</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;erb&#39;</span>].<span class="ruby-identifier">new</span> { <span class="ruby-string">&quot;Hello &lt;%= world %&gt;!&quot;</span> }
+<span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-keyword">self</span>, <span class="ruby-value">:world</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;World!&#39;</span>)
+</pre>
+
+<p>The <a href="../../../classes/Tilt/ERBTemplate.html"><code>Tilt::ERBTemplate</code></a> class is registered for all files ending in <code>.erb</code> or <code>.rhtml</code> by default, but with a <strong>lower</strong> priority than ErubiTemplate. If you specifically want to use ERB, it’s recommended to use prefer:</p>
+
+<pre class="ruby"><span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">prefer</span> <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>
+</pre>
+
+<p><em>NOTE:</em> It’s suggested that your program <code>require &#39;erb&#39;</code> at load time when using this template engine within a threaded environment.</p>
+
+<h3 id="label-Options">Options<span><a href="#label-Options">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<h4 id="label-3Atrim+-3D-3E+trim"><code>:trim =&gt; trim</code><span><a href="#label-3Atrim+-3D-3E+trim">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>The ERB trim mode flags. This is a string consisting of any combination of the following characters:</p>
+<ul><li>
+<p><code>&#39;&gt;&#39;</code>  omits newlines for lines ending in <code>&gt;</code></p>
+</li><li>
+<p><code>&#39;&lt;&gt;&#39;</code> omits newlines for lines starting with <code>&lt;%</code> and ending in <code>%&gt;</code></p>
+</li><li>
+<p><code>&#39;%&#39;</code>  enables processing of lines beginning with <code>%</code></p>
+</li><li>
+<p><code>true</code> is an alias of <code>&lt;&gt;</code></p>
+</li></ul>
+
+<h4 id="label-3Aoutvar+-3D-3E+-27_erbout-27"><code>:outvar =&gt; &#39;_erbout&#39;</code><span><a href="#label-3Aoutvar+-3D-3E+-27_erbout-27">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>The name of the variable used to accumulate template output. This can be any valid Ruby expression but must be assignable. By default a local variable named <code>_erbout</code> is used.</p>
+
+<h4 id="label-3Afreeze+-3D-3E+false"><code>:freeze =&gt; false</code><span><a href="#label-3Afreeze+-3D-3E+false">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>If set to true, will set the <code>frozen_string_literal</code> flag in the compiled template code, so that string literals inside the templates will be frozen.</p>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html">www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html</a></p>
+</li></ul>
+
+<h3 id="label-Related+module">Related module<span><a href="#label-Related+module">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a href="../../../classes/Tilt/ERBTemplate.html"><code>Tilt::ERBTemplate</code></a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>erb</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

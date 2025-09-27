@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Tilt::NokogiriTemplate</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Tilt::NokogiriTemplate
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/tilt/nokogiri_rb.html">lib/tilt/nokogiri.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Template</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-evaluate">evaluate</a></li>
+<li><a href="#method-i-precompiled_postamble">precompiled_postamble</a></li>
+<li><a href="#method-i-precompiled_preamble">precompiled_preamble</a></li>
+<li><a href="#method-i-precompiled_template">precompiled_template</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>DOCUMENT_HEADER</td>
+<td>=</td>
+<td class='context-item-value'>/\A<\?xml version=\"1\.0\"\?>\n?/</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-evaluate'>
+<a name='method-i-evaluate'></a>
+<div class='synopsis'>
+<span class='name'>evaluate</span><span class='arguments'>(scope, locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-evaluate-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-evaluate-source'>   <span class="ruby-comment"># File lib/tilt/nokogiri.rb</span>
+<span class="line-num">23</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">evaluate</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">locals</span>)
+<span class="line-num">24</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:to_str</span>)
+<span class="line-num">25</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+<span class="line-num">26</span>       <span class="ruby-keyword">super</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">locals</span>){<span class="ruby-keyword">yield</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-constant">DOCUMENT_HEADER</span>, <span class="ruby-string">&quot;&quot;</span>)}
+<span class="line-num">27</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">28</span>       <span class="ruby-keyword">super</span>
+<span class="line-num">29</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">30</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">31</span>     <span class="ruby-operator">::</span><span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Builder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@data</span>).<span class="ruby-identifier">to_xml</span>
+<span class="line-num">32</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">33</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_postamble'>
+<a name='method-i-precompiled_postamble'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_postamble</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_postamble-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_postamble-source'>   <span class="ruby-comment"># File lib/tilt/nokogiri.rb</span>
+<span class="line-num">40</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_postamble</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">41</span>   <span class="ruby-string">&quot;xml.to_xml&quot;</span>
+<span class="line-num">42</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_preamble'>
+<a name='method-i-precompiled_preamble'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_preamble</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_preamble-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_preamble-source'>   <span class="ruby-comment"># File lib/tilt/nokogiri.rb</span>
+<span class="line-num">35</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_preamble</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">36</span>   <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">locals</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value">:xml</span>
+<span class="line-num">37</span>   <span class="ruby-node">&quot;xml = ::Nokogiri::XML::Builder.new { |xml| }\n#{super}&quot;</span>
+<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-precompiled_template'>
+<a name='method-i-precompiled_template'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_template</span><span class='arguments'>(locals)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_template-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_template-source'>   <span class="ruby-comment"># File lib/tilt/nokogiri.rb</span>
+<span class="line-num">44</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_template</span>(<span class="ruby-identifier">locals</span>)
+<span class="line-num">45</span>   <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">to_str</span>
+<span class="line-num">46</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

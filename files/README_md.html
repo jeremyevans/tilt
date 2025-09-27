@@ -1,0 +1,482 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>README.md</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>README.md
+</h1>
+<div class='paths'>
+README.md
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Tilt"><a href="../classes/Tilt.html"><code>Tilt</code></a><span><a href="#label-Tilt">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p><a href="../classes/Tilt.html"><code>Tilt</code></a> is a thin interface over a bunch of different Ruby template engines in an attempt to make their usage as generic as possible. This is useful for web frameworks, static site generators, and other systems that support multiple template engines but don’t want to code for each of them individually.</p>
+
+<p>The following features are supported for all template engines (assuming the feature is relevant to the engine):</p>
+<ul><li>
+<p>Custom template evaluation scopes / bindings</p>
+</li><li>
+<p>Ability to pass locals to template evaluation</p>
+</li><li>
+<p>Support for passing a block to template evaluation for “yield”</p>
+</li><li>
+<p>Backtraces with correct filenames and line numbers</p>
+</li><li>
+<p>Template file caching and reloading</p>
+</li><li>
+<p>Fast, method-based template source compilation</p>
+</li></ul>
+
+<p>The primary goal is to get all of the things listed above right for all template engines included in the distribution.</p>
+
+<p>Support for these template engines is included with Tilt:</p>
+
+<table role="table">
+<thead>
+<tr>
+<th>Engine</th>
+<th>File Extensions</th>
+<th>Required Libraries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="lib/tilt/asciidoc_rb.html">Asciidoctor</a></td>
+<td>.ad, .adoc, .asciidoc</td>
+<td>asciidoctor</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/babel_rb.html">Babel</a></td>
+<td>.es6, .babel, .jsx</td>
+<td>babel-transpiler</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/builder_rb.html">Builder</a></td>
+<td>.builder</td>
+<td>builder</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/coffee_rb.html">CoffeeScript</a></td>
+<td>.coffee</td>
+<td>coffee-script (+ javascript)</td>
+</tr>
+<tr>
+<td>CoffeeScriptLiterate</td>
+<td>.litcoffee</td>
+<td>coffee-script (+ javascript)</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/commonmarker_rb.html">CommonMarker</a></td>
+<td>.markdown, .mkd, .md</td>
+<td>commonmarker</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/creole_rb.html">Creole</a></td>
+<td>.wiki, .creole</td>
+<td>creole</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/csv_rb.html">CSV</a></td>
+<td>.rcsv</td>
+<td>csv (ruby stdlib)</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/erb_rb.html">ERB</a></td>
+<td>.erb, .rhtml</td>
+<td>erb (ruby stdlib)</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/erubi_rb.html">Erubi</a></td>
+<td>.erb, .rhtml, .erubi</td>
+<td>erubi</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/etanni_rb.html">Etanni</a></td>
+<td>.ern, .etanni</td>
+<td>none</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/haml_rb.html">Haml</a></td>
+<td>.haml</td>
+<td>haml</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/kramdown_rb.html">Kramdown</a></td>
+<td>.markdown, .mkd, .md</td>
+<td>kramdown</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/liquid_rb.html">Liquid</a></td>
+<td>.liquid</td>
+<td>liquid</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/livescript_rb.html">LiveScript</a></td>
+<td>.ls</td>
+<td>livescript (+ javascript)</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/markaby_rb.html">Markaby</a></td>
+<td>.mab</td>
+<td>markaby</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/nokogiri_rb.html">Nokogiri</a></td>
+<td>.nokogiri</td>
+<td>nokogiri</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/pandoc_rb.html">Pandoc</a></td>
+<td>.markdown, .mkd, .md</td>
+<td>pandoc</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/plain_rb.html">Plain</a></td>
+<td>.html</td>
+<td>none</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/prawn_rb.html">Prawn</a></td>
+<td>.prawn</td>
+<td>prawn</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/radius_rb.html">Radius</a></td>
+<td>.radius</td>
+<td>radius</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/rdiscount_rb.html">RDiscount</a></td>
+<td>.markdown, .mkd, .md</td>
+<td>rdiscount</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/rdoc_rb.html">RDoc</a></td>
+<td>.rdoc</td>
+<td>rdoc</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/redcarpet_rb.html">Redcarpet</a></td>
+<td>.markdown, .mkd, .md</td>
+<td>redcarpet</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/redcloth_rb.html">RedCloth</a></td>
+<td>.textile</td>
+<td>redcloth</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/rst-pandoc_rb.html">RstPandoc</a></td>
+<td>.rst</td>
+<td>pandoc</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/slim_rb.html">Slim</a></td>
+<td>.slim</td>
+<td>slim</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/sass_rb.html">Sass</a></td>
+<td>.sass</td>
+<td>sass-embedded, sassc, or sass</td>
+</tr>
+<tr>
+<td>Scss</td>
+<td>.scss</td>
+<td>sass-embedded, sassc, or sass</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/string_rb.html">String</a></td>
+<td>.str</td>
+<td>none</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/typescript_rb.html">TypeScript</a></td>
+<td>.ts</td>
+<td>typescript (+ javascript)</td>
+</tr>
+<tr>
+<td><a href="lib/tilt/yajl_rb.html">Yajl</a></td>
+<td>.yajl</td>
+<td>yajl-ruby</td>
+</tr>
+</tbody>
+</table>
+
+<p>See the linked files under <code>./lib/tilt/*.rb</code> for detailed information on template engine options and supported features.</p>
+
+<h2 id="label-Basic+Usage">Basic Usage<span><a href="#label-Basic+Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Instant gratification:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt&#39;</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/erb&#39;</span>
+<span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>)
+<span class="ruby-operator">=&gt;</span> <span class="ruby-comment">#&lt;Tilt::ERBTemplate @file=&quot;templates/foo.erb&quot; ...&gt;</span>
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>
+<span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;Hello world!&quot;</span>
+</pre>
+
+<p>It’s recommended that calling programs explicitly require the <a href="../classes/Tilt.html"><code>Tilt</code></a> template engine libraries (like ‘tilt/erb’ above) at load time. <a href="../classes/Tilt.html"><code>Tilt</code></a> attempts to lazy require the template engine library the first time a template is created, but this is prone to error in threaded environments.</p>
+
+<p>The <a href="../classes/Tilt.html"><code>Tilt</code></a> module contains generic implementation classes for all supported template engines. Each template class adheres to the same interface for creation and rendering. In the instant gratification example, we let <a href="../classes/Tilt.html"><code>Tilt</code></a> determine the template implementation class based on the filename, but <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a> implementations can also be used directly:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/haml&#39;</span>
+<span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">HamlTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.haml&#39;</span>)
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>
+</pre>
+
+<p>The <code>render</code> method takes an optional evaluation scope and locals hash arguments. Here, the template is evaluated within the context of the <code>Person</code> object with locals <code>x</code> and <code>y</code>:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/erb&#39;</span>
+<span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>)
+<span class="ruby-identifier">joe</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-string">&#39;joe&#39;</span>)
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-identifier">joe</span>, <span class="ruby-value">:x</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">35</span>, <span class="ruby-value">:y</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">42</span>)
+</pre>
+
+<p>If no scope is provided, the template is evaluated within the context of an object created with <code>Object.new</code>.</p>
+
+<p>A single <code>Template</code> instance’s <code>render</code> method may be called multiple times with different scope and locals arguments. Continuing the previous example, we render the same compiled template but this time in jane’s scope:</p>
+
+<pre class="ruby"><span class="ruby-identifier">jane</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-string">&#39;jane&#39;</span>)
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-identifier">jane</span>, <span class="ruby-value">:x</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">22</span>, <span class="ruby-value">:y</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-keyword">nil</span>)
+</pre>
+
+<p>Blocks can be passed to <code>render</code> for templates that support running arbitrary ruby code (usually with some form of <code>yield</code>). For instance, assuming the following in <code>foo.erb</code>:</p>
+
+<pre class="ruby"><span class="ruby-constant">Hey</span> <span class="ruby-operator">&lt;</span><span class="ruby-string">%= yield %&gt;!</span>
+</pre>
+
+<p>The block passed to <code>render</code> is called on <code>yield</code>:</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;foo.erb&#39;</span>)
+<span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span> { <span class="ruby-string">&#39;Joe&#39;</span> }
+<span class="ruby-comment"># =&gt; &quot;Hey Joe!&quot;</span>
+</pre>
+
+<h2 id="label-Fixed+Locals">Fixed Locals<span><a href="#label-Fixed+Locals">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>By default, <a href="../classes/Tilt.html"><code>Tilt</code></a> templates that support local variables can be called with any locals, and a separate template method is compiled for each combination of local variable names. This causes multiple issues:</p>
+<ul><li>
+<p>It is inefficient, especially for large templates that are called with many combinations of locals.</p>
+</li><li>
+<p>It hides issues if unused local variable names are passed to the template</p>
+</li><li>
+<p>It does not support default values for local variables</p>
+</li><li>
+<p>It does not support required local variables</p>
+</li><li>
+<p>It does not support cases where you want to pass values via a keyword splat</p>
+</li><li>
+<p>It does not support named blocks</p>
+</li></ul>
+
+<p>You can pass the <code>:fixed_locals</code> option when creating the template to fix the local variables. This will only compile a single template method per template (per scope class, see below). The value of the <code>:fixed_locals</code> option is a Ruby method parameter string, which should start and end with parentheses. For example, if the template does not use local variables, you can set it to <code>&quot;()&quot;</code>. This will cause an ArgumentError to be raised if you call the template with locals:</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>, <span class="ruby-value">fixed_locals:</span> <span class="ruby-string">&quot;()&quot;</span>)
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>) <span class="ruby-comment"># No ArgumentError</span>
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>, <span class="ruby-value">x:</span> <span class="ruby-value">1</span>) <span class="ruby-comment"># ArgumentError</span>
+</pre>
+
+<p>If the template must be passed the <code>x</code> local variable to work correctly, and optionally can be provided the <code>y</code> local variable:</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>, <span class="ruby-value">fixed_locals:</span> <span class="ruby-string">&quot;(x:, y: nil)&quot;</span>)
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>) <span class="ruby-comment"># ArgumentError</span>
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>, <span class="ruby-value">x:</span> <span class="ruby-value">1</span>) <span class="ruby-comment"># No ArgumentError</span>
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>, <span class="ruby-value">x:</span> <span class="ruby-value">1</span>, <span class="ruby-value">y:</span> <span class="ruby-value">2</span>) <span class="ruby-comment"># No ArgumentError</span>
+<span class="ruby-identifier">output</span> = <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>, <span class="ruby-value">x:</span> <span class="ruby-value">1</span>, <span class="ruby-value">y:</span> <span class="ruby-value">2</span>, <span class="ruby-value">z:</span> <span class="ruby-value">3</span>) <span class="ruby-comment"># ArgumentError</span>
+</pre>
+
+<p>If the template wants to accept arbitrary local variables, in order to pass the variables to a method inside the template, you can provide a keyword splat or a single positional argument (with an optional empty hash value if you want to support being called with no local variables):</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>, <span class="ruby-value">fixed_locals:</span> <span class="ruby-string">&quot;(**args)&quot;</span>) <span class="ruby-comment"># or &quot;(args={})&quot;</span>
+</pre>
+
+<p>If you would like to name the block passed to the template, so you can pass it to a method inside the template:</p>
+
+<pre class="ruby"><span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.erb&#39;</span>, <span class="ruby-value">fixed_locals:</span> <span class="ruby-string">&quot;(&amp;block)&quot;</span>)
+</pre>
+
+<h2 id="label-Embedded+Fixed+Locals">Embedded Fixed Locals<span><a href="#label-Embedded+Fixed+Locals">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>In many cases, <a href="../classes/Tilt.html"><code>Tilt</code></a> is used in situations where you do not have direct control over the options passed when creating each separate template. In these cases and others, it can be helpful to embed the fixed locals inside the template using a magic comment. This can be enabled using the <code>:extract_fixed_locals</code> template option. It can also be enabled globally via:</p>
+
+<pre class="ruby"><span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">extract_fixed_locals</span> = <span class="ruby-keyword">true</span>
+</pre>
+
+<p>If <code>:extract_fixed_locals</code> option is given, or extraction is globally enabled, and the <code>:fixed_locals</code> option is not provided when creating the template, <a href="../classes/Tilt.html"><code>Tilt</code></a> will scan the template code looking for a magic comment of the form (whitespace around <code>locals:</code> is optional but recommended):</p>
+
+<pre class="ruby"><span class="ruby-comment"># locals: ()</span>
+</pre>
+
+<p>In ERB templates, you can use the following comment format:</p>
+
+<pre>&lt;%# locals: () %&gt;</pre>
+
+<p>In string templates, it is a little ackward, but still possible (note that the closing <code>}</code> goes on a separate line:</p>
+
+<pre>#{# locals: ()
+}</pre>
+
+<p>If <a href="../classes/Tilt.html"><code>Tilt</code></a> finds the magic comment, it will use it as fixed locals. To disable the scanning for fixed locals even if <a href="../classes/Tilt.html#attribute-c-extract_fixed_locals"><code>Tilt.extract_fixed_locals = true</code></a> is set, pass the <code>fixed_locals: false</code> or <code>extract_fixed_locals: false</code> option.</p>
+
+<p>When embedded fixed locals are supported, it can be useful to support a default for fixed locals if they are not specified in the template. This is useful mostly to default templates to not supporting local variables without having to specify that in each template. <a href="../classes/Tilt.html"><code>Tilt</code></a> support this via the <code>:default_fixed_locals</code> option.</p>
+
+<p>To recap, in order of preference, <a href="../classes/Tilt.html"><code>Tilt</code></a> will use fixed locals from the following sources:</p>
+<ul><li>
+<p><code>:fixed_locals</code> template option</p>
+</li><li>
+<p>embedded fixed locals magic comment (if <code>:extract_fixed_locals</code> template option is given or <a href="../classes/Tilt.html#attribute-c-extract_fixed_locals"><code>Tilt.extract_fixed_locals = true</code></a>)</p>
+</li><li>
+<p><code>:default_fixed_locals</code> template option</p>
+</li></ul>
+
+<p>It is expected that embedded fixed locals magic comments will be supported by default in <a href="../classes/Tilt.html"><code>Tilt</code></a> 3 (i.e. <a href="../classes/Tilt.html#attribute-c-extract_fixed_locals"><code>Tilt.extract_fixed_locals</code></a> will default to <code>true</code>).</p>
+
+<h1 id="label-3Ascope_class+option"><code>:scope_class</code> option<span><a href="#label-3Ascope_class+option">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>You can now specify the <code>:scope_class</code> option when creating the template, which will fix the scope class for the template. By default, <a href="../classes/Tilt.html"><code>Tilt</code></a> uses the class of the provide scope, and will compile a separate method per scope class. By using the <code>:scope_class</code> option to fix the scope class, and using fixed locals, you can ensure only a single template method is compiled per <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a> instance.</p>
+
+<h2 id="label-Template+Mappings">Template Mappings<span><a href="#label-Template+Mappings">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>The <a href="../classes/Tilt/Mapping.html"><code>Tilt::Mapping</code></a> class includes methods for associating template implementation classes with filename patterns and for locating/instantiating template classes based on those associations.</p>
+
+<p>The <a href="../classes/Tilt.html"><code>Tilt</code></a> module has a global instance of <code>Mapping</code> that is populated with the table of template engines above.</p>
+
+<p>The <a href="../classes/Tilt.html#method-c-register"><code>Tilt.register</code></a> method associates a filename pattern with a specific template implementation. To use ERB for files ending in a <code>.bar</code> extension:</p>
+
+<pre class="ruby"><span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">register</span> <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>, <span class="ruby-string">&#39;bar&#39;</span>
+<span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;views/foo.bar&#39;</span>)
+<span class="ruby-operator">=&gt;</span> <span class="ruby-comment">#&lt;Tilt::ERBTemplate @file=&quot;views/foo.bar&quot; ...&gt;</span>
+</pre>
+
+<p>Retrieving the template class for a file or file extension:</p>
+
+<pre class="ruby"><span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;foo.bar&#39;</span>]
+<span class="ruby-operator">=&gt;</span> <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>
+<span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;haml&#39;</span>]
+<span class="ruby-operator">=&gt;</span> <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">HamlTemplate</span>
+</pre>
+
+<p>Retrieving a list of template classes for a file:</p>
+
+<pre class="ruby"><span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">templates_for</span>(<span class="ruby-string">&#39;foo.bar&#39;</span>)
+<span class="ruby-operator">=&gt;</span> [<span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>]
+<span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">templates_for</span>(<span class="ruby-string">&#39;foo.haml.bar&#39;</span>)
+<span class="ruby-operator">=&gt;</span> [<span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">ERBTemplate</span>, <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">HamlTemplate</span>]
+</pre>
+
+<p>The template class is determined by searching for a series of decreasingly specific name patterns. When creating a new template with <a href="../classes/Tilt.html#method-c-new"><code>Tilt.new(&#39;views/foo.html.erb&#39;)</code></a>, we check for the following template mappings:</p>
+<ol><li>
+<p><code>views/foo.html.erb</code></p>
+</li><li>
+<p><code>foo.html.erb</code></p>
+</li><li>
+<p><code>html.erb</code></p>
+</li><li>
+<p><code>erb</code></p>
+</li></ol>
+
+<h2 id="label-Template+Pipelines">Template Pipelines<span><a href="#label-Template+Pipelines">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>In some cases, it is useful to take the output of one template engine, and use it as input to another template engine. This can be useful when a template engine does not support locals or a scope, and you want to customize the output per different locals. For example, let’s say you have an scss file that you want to allow customization with erb, such as:</p>
+
+<pre>.foo {
+  .bar {
+    .&lt;%= hide_class %&gt; {
+      display: none;
+    }
+  }
+}</pre>
+
+<p>You can do this manually:</p>
+
+<pre class="ruby"><span class="ruby-identifier">scss</span> = <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;file.scss.erb&quot;</span>).<span class="ruby-identifier">render</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-value">hide_class:</span> <span class="ruby-string">&#39;baz&#39;</span>)
+<span class="ruby-identifier">css</span> = <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;scss&quot;</span>){<span class="ruby-identifier">scss</span>}.<span class="ruby-identifier">render</span>
+</pre>
+
+<p>A more automated way to handle it is to register a template pipeline:</p>
+
+<pre class="ruby"><span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">register_pipeline</span>(<span class="ruby-string">&quot;scss.erb&quot;</span>)
+</pre>
+
+<p>Then <a href="../classes/Tilt.html"><code>Tilt</code></a> will automatically take the output of the erb engine, and pass it to the scss engine, automating the above code.</p>
+
+<pre class="ruby"><span class="ruby-identifier">css</span> = <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;file.scss.erb&quot;</span>).<span class="ruby-identifier">render</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-value">hide_class:</span> <span class="ruby-string">&#39;baz&#39;</span>)
+</pre>
+
+<h2 id="label-Finalizing+Mappings">Finalizing Mappings<span><a href="#label-Finalizing+Mappings">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>By default, <a href="../classes/Tilt/Mapping.html"><code>Tilt::Mapping</code></a> instances will lazy load files for template classes, and will allow for registering an unregistering template classes. To make sure this is safe in a multithreaded environment, a mutex is used to synchronize access. To improve performance, and prevent additional lazy loading of template classes, you can finalize mappings. Finalizing a mapping returns a new finalized mapping that is frozen, cannot be modified, and will not lazy load template classes not already loaded. Users of <a href="../classes/Tilt.html"><code>Tilt</code></a> are encouraged to manually require the template libraries they desire to use, and then freeze the mappings. <a href="../classes/Tilt.html#method-c-finalize-21"><code>Tilt.finalize!</code></a> will replace Tilt’s default mapping with a finalized versions, as well as freeze <a href="../classes/Tilt.html"><code>Tilt</code></a> so that no further changes can be made.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/erubi&#39;</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/string&#39;</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/sass&#39;</span>
+<span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">finalize!</span>
+<span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;erb&#39;</span>] <span class="ruby-comment"># =&gt; Tilt::ErubiTemplate</span>
+<span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;str&#39;</span>] <span class="ruby-comment"># =&gt; Tilt::StringTemplate</span>
+<span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;scss&#39;</span>] <span class="ruby-comment"># =&gt; Tilt::ScssTemplate</span>
+<span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;haml&#39;</span>] <span class="ruby-comment"># =&gt; nil # even if haml is installed</span>
+</pre>
+
+<h2 id="label-Encodings">Encodings<span><a href="#label-Encodings">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../classes/Tilt.html"><code>Tilt</code></a> needs to know the encoding of the template in order to work properly:</p>
+
+<p><a href="../classes/Tilt.html"><code>Tilt</code></a> will use <code>Encoding.default_external</code> as the encoding when reading external files. If you’re mostly working with one encoding (e.g. UTF-8) we <em>highly</em> recommend setting this option. When providing a custom reader block (<a href="../classes/Tilt.html#method-c-new"><code>Tilt.new { custom_string }</code></a>) you’ll have ensure the string is properly encoded yourself.</p>
+
+<p>Most of the template engines in <a href="../classes/Tilt.html"><code>Tilt</code></a> also allows you to override the encoding using the <code>:default_encoding</code>-option:</p>
+
+<pre class="ruby"><span class="ruby-identifier">tmpl</span> = <span class="ruby-constant">Tilt</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;hello.erb&#39;</span>, <span class="ruby-value">:default_encoding</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;Big5&#39;</span>)
+</pre>
+
+<p>Ultimately it’s up to the template engine how to handle the encoding: It might respect <code>:default_encoding</code>, it might always assume it’s UTF-8 (like CoffeeScript), or it can do its own encoding detection.</p>
+
+<h2 id="label-Template+Compilation">Template Compilation<span><a href="#label-Template+Compilation">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../classes/Tilt.html"><code>Tilt</code></a> compiles generated Ruby source code produced by template engines and reuses it on subsequent template invocations. Benchmarks show this yields a 5x-10x performance increase over evaluating the Ruby source on each invocation.</p>
+
+<p>Template compilation is currently supported for these template engines: StringTemplate, ERB, Erubi, Etanni, Haml, Nokogiri, Builder, CSV, Prawn, and Yajl.</p>
+
+<h2 id="label-LICENSE">LICENSE<span><a href="#label-LICENSE">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../classes/Tilt.html"><code>Tilt</code></a> is distributed under the MIT license. See the <a href="COPYING.html">COPYING</a> file for more info.</p>
+</div>
+<div id='context'>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

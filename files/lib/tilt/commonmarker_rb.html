@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>commonmarker.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>commonmarker.rb
+</h1>
+<div class='paths'>
+lib/tilt/commonmarker.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Markdown+-28markdown-2C+md-2C+mkd-29">Markdown (<code>markdown</code>, <code>md</code>, <code>mkd</code>)<span><a href="#label-Markdown+-28markdown-2C+md-2C+mkd-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Markdown is a lightweight markup language, created by John Gruber and Aaron Swartz. For any markup that is not covered by Markdown’s syntax, HTML is used.  Marking up plain text with Markdown markup is easy and Markdown formatted texts are readable.</p>
+
+<h3 id="label-Example">Example<span><a href="#label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>Hello Markdown Templates
+========================
+
+Hello World. This is a paragraph.</pre>
+
+<h3 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>To wrap a Markdown formatted document with a layout:</p>
+
+<pre class="ruby"><span class="ruby-identifier">layout</span> = <span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;erb&#39;</span>].<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+  <span class="ruby-string">&quot;&lt;!doctype html&gt;&lt;title&gt;&lt;/title&gt;&lt;%= yield %&gt;&quot;</span>
+<span class="ruby-keyword">end</span>
+<span class="ruby-identifier">data</span> = <span class="ruby-constant">Tilt</span>[<span class="ruby-string">&#39;md&#39;</span>].<span class="ruby-identifier">new</span> { <span class="ruby-string">&quot;# hello tilt&quot;</span> }
+<span class="ruby-identifier">layout</span>.<span class="ruby-identifier">render</span> { <span class="ruby-identifier">data</span>.<span class="ruby-identifier">render</span> }
+<span class="ruby-comment"># =&gt; &quot;&lt;!doctype html&gt;&lt;title&gt;&lt;/title&gt;&lt;h1&gt;hello tilt&lt;/h1&gt;\n&quot;</span>
+</pre>
+
+<h3 id="label-Options">Options<span><a href="#label-Options">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<h4 id="label-3Asmartypants+-3D-3E+true-7Cfalse"><code>:smartypants =&gt; true|false</code><span><a href="#label-3Asmartypants+-3D-3E+true-7Cfalse">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>Set <code>true</code> to enable [Smarty <a href="smartypants">Pants]</a> style punctuation replacement.</p>
+
+<h4 id="label-3Aescape_html+-3D-3E+true-7Cfalse"><code>:escape_html =&gt; true|false</code><span><a href="#label-3Aescape_html+-3D-3E+true-7Cfalse">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>Set <code>true</code> disallow raw HTML in Markdown contents. HTML is converted to literal text by escaping <code>&lt;</code> characters.</p>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax Documentation</a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>commonmarker</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

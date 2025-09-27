@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>radius.rb</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>radius.rb
+</h1>
+<div class='paths'>
+lib/tilt/radius.rb
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Radius+-28radius-29">Radius (<code>radius</code>)<span><a href="#label-Radius+-28radius-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p><a target="_top" href="http://radius.rubyforge.org">Radius</a> is the template language used by <a target="_top" href="http://radiantcms.org">Radiant CMS</a>. It is a tag language designed to be valid XML/HTML.</p>
+
+<h3 id="label-Example">Example<span><a href="#label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;&lt;r:title /&gt;&lt;/h1&gt;
+  &lt;ul class=&quot;&lt;r:type /&gt;&quot;&gt;
+  &lt;r:repeat times=&quot;3&quot;&gt;
+    &lt;li&gt;&lt;r:hello /&gt;!&lt;/li&gt;
+  &lt;/r:repeat&gt;
+  &lt;/ul&gt;
+  &lt;r:yield /&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h3 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>To render a template such as the one above.</p>
+
+<pre class="ruby"><span class="ruby-identifier">scope</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">scope</span>.<span class="ruby-identifier">title</span> = <span class="ruby-string">&quot;Radius Example&quot;</span>
+<span class="ruby-identifier">scope</span>.<span class="ruby-identifier">hello</span> = <span class="ruby-string">&quot;Hello, World!&quot;</span>
+
+<span class="ruby-identifier">require</span> <span class="ruby-string">&#39;radius&#39;</span>
+<span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">RadiusTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;example.radius&#39;</span>, <span class="ruby-value">:tag_prefix</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;r&#39;</span>)
+<span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-value">:type</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;hlist&#39;</span>){ <span class="ruby-string">&quot;Jackpot!&quot;</span> }
+</pre>
+
+<p>The result will be:</p>
+
+<pre>&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;Radius Example&lt;/h1&gt;
+  &lt;ul class=&quot;hlist&quot;&gt;
+    &lt;li&gt;Hello, World!&lt;/li&gt;
+    &lt;li&gt;Hello, World!&lt;/li&gt;
+    &lt;li&gt;Hello, World!&lt;/li&gt;
+  &lt;/ul&gt;
+  Jackpot!
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h3 id="label-See+also">See also<span><a href="#label-See+also">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a target="_top" href="http://radius.rubyforge.org">Radius</a></p>
+</li><li>
+<p><a target="_top" href="http://radiantcms.org">Radiant CMS</a></p>
+</li></ul>
+
+<h3 id="label-Related+module">Related module<span><a href="#label-Related+module">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><a href="../../../classes/Tilt/RadiusTemplate.html"><code>Tilt::RadiusTemplate</code></a></p>
+</li></ul>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>radius</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

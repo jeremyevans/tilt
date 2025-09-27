@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>CHANGELOG.md</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>CHANGELOG.md
+</h1>
+<div class='paths'>
+CHANGELOG.md
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h2 id="label-master">master<span><a href="#label-master">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Make the rendering of Prawn templates idempotent (rickenharp) (#20)</p>
+</li></ul>
+
+<h2 id="label-2.6.1+-282025-07-07-29">2.6.1 (2025-07-07)<span><a href="#label-2.6.1+-282025-07-07-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Fix race condition during parallel coverage testing using Template compiled_path option/method (jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.6.0+-282025-01-13-29">2.6.0 (2025-01-13)<span><a href="#label-2.6.0+-282025-01-13-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Support :compiled_path option, needed for compiled paths when using :scope_class and fixed locals (jeremyevans)</p>
+</li><li>
+<p>Support :scope_class option to force a specific scope class, instead of using the class of the provided scope (jeremyevans)</p>
+</li><li>
+<p>Support fallback fixed locals for templates without extracted locals via :default_fixed_locals option (jeremyevans)</p>
+</li><li>
+<p>Add <a href="../classes/Tilt.html#attribute-c-extract_fixed_locals"><code>Tilt.extract_fixed_locals</code></a> accessor for enabling :extract_fixed_locals globally (jeremyevans)</p>
+</li><li>
+<p>Support embedded fixed locals for templates via magic comments via :extract_fixed_locals option (jeremyevans)</p>
+</li><li>
+<p>Support fixed locals for templates via :fixed_locals option (jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.5.0+-282024-12-20-29">2.5.0 (2024-12-20)<span><a href="#label-2.5.0+-282024-12-20-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Deprecate creole templates as they require modifying frozen string literals (jeremyevans)</p>
+</li><li>
+<p>Remove deprecated erubis, wikicloth, and maruku templates (jeremyevans)</p>
+</li><li>
+<p>Avoid spurious frozen string literal warnings for chilled strings when using Ruby 3.4 (jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.4.0+-282024-06-27-29">2.4.0 (2024-06-27)<span><a href="#label-2.4.0+-282024-06-27-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Support commonmarker 1.0+ API (unasuke) (#10)</p>
+</li><li>
+<p>Make etanni template work with frozen string literals (jeremyevans)</p>
+</li><li>
+<p>Deprecate erubis, wikicloth, and maruku templates as they require modifying frozen string literals (jeremyevans)</p>
+</li><li>
+<p>Make SassTemplate ignore unsupported options when using sass-embedded (jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.3.0+-282023-09-14-29">2.3.0 (2023-09-14)<span><a href="#label-2.3.0+-282023-09-14-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Remove deprecated support for non-string template code in PrawnTemplate (jeremyevans)</p>
+</li><li>
+<p>Remove deprecated support for {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)</p>
+</li><li>
+<p>Remove deprecated support for CoffeeScriptTemplate.default_no_wrap{,=} (jeremyevans)</p>
+</li><li>
+<p>Remove deprecated support for RedCarpet 1.x (jeremyevans)</p>
+</li><li>
+<p>Remove deprecated support for Tilt.current_template (jeremyevans)</p>
+</li><li>
+<p>Make Template#freeze_string_literals? work correctly with Template#compiled_path (jeremyevans)</p>
+</li><li>
+<p>Support :freeze option for StringTemplate to support frozen string literals (jeremyevans)</p>
+</li><li>
+<p>Make <a href="../classes/Tilt.html#method-c-finalize-21"><code>Tilt.finalize!</code></a> a no-op if it has already been called (jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.2.0+-282023-06-05-29">2.2.0 (2023-06-05)<span><a href="#label-2.2.0+-282023-06-05-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)</p>
+</li><li>
+<p>Drop support for RDoc &lt; 4 (jeremyevans)</p>
+</li><li>
+<p>Deprecate <a href="../classes/Tilt/Cache.html"><code>Tilt::Cache</code></a> (jeremyevans)</p>
+</li><li>
+<p>Deprecate Tilt.current_template (jeremyevans)</p>
+</li><li>
+<p>Deprecate support for RedCarpet 1.x (jeremyevans)</p>
+</li><li>
+<p>Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)</p>
+</li><li>
+<p>Deprecate {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)</p>
+</li><li>
+<p>Deprecate non-string template code in PrawnTemplate (jeremyevans)</p>
+</li><li>
+<p>Deprecate default lazy loading of handlebars/org/emacs_org/jbuilder external template engines (jeremyevans)</p>
+</li><li>
+<p>Handle <code>locals</code> as a local variable in templates (timriley) (#3)</p>
+</li><li>
+<p>Do not cache output in PrawnTemplate#evaluate (jeremyevans)</p>
+</li><li>
+<p>Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)</p>
+</li><li>
+<p>Remove Redcarpet1Template and Redcarpet2Template from the RedCarpet support (jeremyevans)</p>
+</li><li>
+<p>Separate CoffeeScriptTemplate.default_bare and CoffeeScriptLiterateTemplate.default_bare (jeremyevans)</p>
+</li><li>
+<p>Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)</p>
+</li><li>
+<p>Do not define yield tag for RadiusTemplate if no block is given to render (jeremyevans)</p>
+</li><li>
+<p>Avoid holding mutex while compiling template methods (jeremyevans)</p>
+</li><li>
+<p>Template#prepare no longer needs to be overridden if no preparation work is needed (jeremyevans)</p>
+</li><li>
+<p>Fix potential concurrency issues in Mapping (jeremyevans)</p>
+</li><li>
+<p>Stop modifying given locals hash in tilt/prawn (jeremyevans)</p>
+</li><li>
+<p>Change visibility of Template#compiled_method to public (jeremyevans)</p>
+</li><li>
+<p>Add <a href="../classes/Tilt/StaticTemplate.html"><code>Tilt::StaticTemplate</code></a> for templates that return the same output for every render (jeremyevans)</p>
+</li><li>
+<p>Add <a href="../classes/Tilt/Mapping.html#method-i-finalized"><code>Tilt::Mapping#finalized</code></a> and <a href="../classes/Tilt.html#method-c-finalize-21"><code>Tilt.finalize!</code></a> for finalized mappings that do not require mutex synchronization (jeremyevans)</p>
+</li><li>
+<p>Add frozen_string_literal magic comment to all source files (jeremyevans)</p>
+</li><li>
+<p>Support templates with frozen compiled source code (jeremyevans)</p>
+</li><li>
+<p>Support :skip_compiled_encoding_detection template option to not scan compiled source code for encoding lines (jeremyevans)</p>
+</li><li>
+<p>Ship slim template support with tilt (minad) (#4)</p>
+</li><li>
+<p>Template#extract_{encoding,magic_comment} private methods now require a block (jeremyevans)</p>
+</li></ul>
+
+<p>The repository switched to <a target="_top" href="https://github.com/jeremyevans/tilt">github.com/jeremyevans/tilt</a>, so issue references above are for that repository, and issue references below are for the previous repository (<a target="_top" href="https://github.com/rtomayko/tilt">github.com/rtomayko/tilt</a>).</p>
+
+<h2 id="label-2.1.0+-282023-02-17-29">2.1.0 (2023-02-17)<span><a href="#label-2.1.0+-282023-02-17-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Use UnboundMethod#bind_call on Ruby 2.7+ for better performance (#380, jeremyevans)</p>
+</li><li>
+<p>Add Tilt::Template#freeze_string_literals? for freezing string literals in compiled templates (#301, jeremyevans)</p>
+</li><li>
+<p>Use Haml::Template for <a href="../classes/Tilt/HamlTemplate.html"><code>Tilt::HamlTemplate</code></a> if available (Haml 6+) (#391, ntkme)</p>
+</li><li>
+<p>Deprecate BlueCloth, Less, and Sigil support (#382, jeremyevans)</p>
+</li><li>
+<p>Add Template#compiled_path accessor to save compiled template output to file (#369, jeremyevans)</p>
+</li><li>
+<p>Add Mapping#unregister to remove registered extensions (#376, jeremyevans)</p>
+</li><li>
+<p>Add Mapping#register_pipeline to register template pipelines (#259, jeremyevans)</p>
+</li><li>
+<p>Remove Tilt::Dummy (#364, jeremyevans)</p>
+</li><li>
+<p>Ensure Mapping#extensions_for returns unique values (#342, mojavelinux)</p>
+</li><li>
+<p>Remove opal support, since the the opal API changed (#374, jeremyevans)</p>
+</li><li>
+<p>Remove .livescript extension for LiveScript (#374, jeremyevans)</p>
+</li><li>
+<p>Set required_ruby_version in gemspec (#371, jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.0.11+-282022-07-22-29">2.0.11 (2022-07-22)<span><a href="#label-2.0.11+-282022-07-22-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Fix extensions_for for RedcarpetTemplate (judofyr)</p>
+</li><li>
+<p>Support the new sass-embedded gem (#367, ntkme)</p>
+</li><li>
+<p>Add Tilt::EmacsOrg support (#366, hacktivista)</p>
+</li><li>
+<p>Improve rendering of BasicObject instances (#348, jeremyevans)</p>
+</li><li>
+<p>Fix Ruby 3.0 compatibility (#360, voxik)</p>
+</li></ul>
+
+<h2 id="label-2.0.10+-282019-09-23-29">2.0.10 (2019-09-23)<span><a href="#label-2.0.10+-282019-09-23-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Remove test files from bundled gem (#339, greysteil)</p>
+</li><li>
+<p>Fix warning when using yield in templates on ruby 2.7 (#343, jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.0.9+-282018-11-28-29">2.0.9 (2018-11-28)<span><a href="#label-2.0.9+-282018-11-28-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Use new ERB API in Ruby 2.6 (#329, koic)</p>
+</li><li>
+<p>Support the new sassc gem (#336, jdickey, judofyr)</p>
+</li></ul>
+
+<h2 id="label-2.0.8+-282017-07-24-29">2.0.8 (2017-07-24)<span><a href="#label-2.0.8+-282017-07-24-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Register .tsx for TypeScript (#315, backus)</p>
+</li><li>
+<p>Use Haml 5’s new API (#312, k0kubun)</p>
+</li><li>
+<p>Use correct parser options for CommonMarker (#320, rewritten)</p>
+</li><li>
+<p>Suppress warnings when no locals are used (#304, amatsuda)</p>
+</li><li>
+<p>Haml: Accept <code>outvar</code> (#317, k0kubun)</p>
+</li></ul>
+
+<h2 id="label-2.0.7+-282017-03-19-29">2.0.7 (2017-03-19)<span><a href="#label-2.0.7+-282017-03-19-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Do not modify BasicObject during template compilation on ruby 2.0+ (#309, jeremyevans)</p>
+</li></ul>
+
+<h2 id="label-2.0.6+-282017-01-26-29">2.0.6 (2017-01-26)<span><a href="#label-2.0.6+-282017-01-26-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Add support for LiveScript (#286, @Announcement Jacob Francis Powers)</p>
+</li><li>
+<p>Add support for Sigil (#302, winebarrel)</p>
+</li><li>
+<p>Add support for Erubi (#308, jeremyevans)</p>
+</li><li>
+<p>Add support for options in Liquid (#298, #299, laCour)</p>
+</li><li>
+<p>Always sort locals by strings (#307, jeremyevans)</p>
+</li><li>
+<p>Fix test warnings (#305, amatsuda)</p>
+</li><li>
+<p>Fix indentation (#293, yui-knk)</p>
+</li><li>
+<p>Use SVG badges in <a href="README_md.html">README</a> (#294, vasinov)</p>
+</li><li>
+<p>Fix typo and trailing space (#295, #296, karloescota)</p>
+</li></ul>
+
+<h2 id="label-2.0.5+-282016-06-02-29">2.0.5 (2016-06-02)<span><a href="#label-2.0.5+-282016-06-02-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Add support for reST using Pandoc (#284, mfenner)</p>
+</li><li>
+<p>Make lazy loading thread-safe; remove warning (judofyr)</p>
+</li></ul>
+
+<h2 id="label-2.0.4+-282016-05-16-29">2.0.4 (2016-05-16)<span><a href="#label-2.0.4+-282016-05-16-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Fix regression in BuilderTemplate (#283, judofyr)</p>
+</li></ul>
+
+<h2 id="label-2.0.3+-282016-05-12-29">2.0.3 (2016-05-12)<span><a href="#label-2.0.3+-282016-05-12-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Add Pandoc support (#276, jmuheim)</p>
+</li><li>
+<p>Add CommonMark support (#282, raphink)</p>
+</li><li>
+<p>Add TypeScript support (#278, nghitran)</p>
+</li><li>
+<p>Work with frozen string literal (#274, jeremyevans)</p>
+</li><li>
+<p>Add MIME type for Babel (#273, SaitoWu)</p>
+</li></ul>
+
+<h2 id="label-2.0.2+-282016-01-06-29">2.0.2 (2016-01-06)<span><a href="#label-2.0.2+-282016-01-06-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Pass options to Redcarpet (#250, hughbien)</p>
+</li><li>
+<p>Haml: Improve error message on frozen self (judofyr)</p>
+</li><li>
+<p>Add basic support for Babel (judofyr)</p>
+</li><li>
+<p>Add support for .litcoffee (#243, judofyr, mr-vinn)</p>
+</li><li>
+<p>Document <a href="../classes/Tilt/Cache.html"><code>Tilt::Cache</code></a> (#266, tommay)</p>
+</li><li>
+<p>Sort local keys for better caching (#257, jeremyevans)</p>
+</li><li>
+<p>Add more CSV options (#256, Juanmcuello)</p>
+</li><li>
+<p>Add Prawn template (kematzy)</p>
+</li><li>
+<p>Improve cache-miss performance in <a href="../classes/Tilt/Cache.html"><code>Tilt::Cache</code></a> (#251, tommay)</p>
+</li><li>
+<p>Add man page (#241, josephholsten)</p>
+</li><li>
+<p>Support YAML/JSON data in bin/tilt (#241, josephholsten)</p>
+</li></ul>
+
+<h2 id="label-2.0.1+-282014-03-21-29">2.0.1 (2014-03-21)<span><a href="#label-2.0.1+-282014-03-21-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Fix <a href="../classes/Tilt/Mapping.html"><code>Tilt::Mapping</code></a> bug in Ruby 2.1.0 (9589652c569760298f2647f7a0f9ed4f85129f20)</p>
+</li><li>
+<p>Fix <code>tilt --list</code> (#223, Achrome)</p>
+</li><li>
+<p>Fix circular require (#221, amarshall)</p>
+</li></ul>
+
+<h2 id="label-2.0.0+-282013-11-30-29">2.0.0 (2013-11-30)<span><a href="#label-2.0.0+-282013-11-30-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Support Pathname in Template#new (#219, kabturek)</p>
+</li><li>
+<p>Add Mapping#templates_for (judofyr)</p>
+</li><li>
+<p>Support old-style register (judofyr)</p>
+</li><li>
+<p>Add Handlebars as external template engine (#204, judofyr, jimothyGator)</p>
+</li><li>
+<p>Add org-ruby as external template engine (#207, judofyr, minad)</p>
+</li><li>
+<p>Documentation typo (#208, elgalu)</p>
+</li></ul>
+
+<h2 id="label-2.0.0.beta1+-282013-07-16-29">2.0.0.beta1 (2013-07-16)<span><a href="#label-2.0.0.beta1+-282013-07-16-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Documentation typo (#202, chip)</p>
+</li><li>
+<p>Use YARD for documentation (#189, judofyr)</p>
+</li><li>
+<p>Add Slim as an external template engine (judofyr)</p>
+</li><li>
+<p>Add <a href="../classes/Tilt.html#method-c-templates_for"><code>Tilt.templates_for</code></a> (#121, judofyr)</p>
+</li><li>
+<p>Add Tilt.current_template (#151, judofyr)</p>
+</li><li>
+<p>Avoid loading all files in <a href="lib/tilt_rb.html">tilt.rb</a> (#160, #187, judofyr)</p>
+</li><li>
+<p>Implement lazily required templates classes (#178, #187, judofyr)</p>
+</li><li>
+<p>Move allows_script and default_mime_type to metadata (#187, judofyr)</p>
+</li><li>
+<p>Introduce <a href="../classes/Tilt/Mapping.html"><code>Tilt::Mapping</code></a> (#187, judofyr)</p>
+</li><li>
+<p>Make template compilation thread-safe (#191, judofyr)</p>
+</li></ul>
+
+<h2 id="label-1.4.1+-282013-05-08-29">1.4.1 (2013-05-08)<span><a href="#label-1.4.1+-282013-05-08-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Support Arrays in pre/postambles (#193, jbwiv)</p>
+</li></ul>
+
+<h2 id="label-1.4.0+-282013-05-01-29">1.4.0 (2013-05-01)<span><a href="#label-1.4.0+-282013-05-01-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Better encoding support</p>
+</li></ul>
+
+<h2 id="label-1.3.7+-282013-04-09-29">1.3.7 (2013-04-09)<span><a href="#label-1.3.7+-282013-04-09-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Erubis: Check for the correct constant (#183, mattwildig)</p>
+</li><li>
+<p>Don’t fail when BasicObject is defined in 1.8 (#182, technobrat, judofyr)</p>
+</li></ul>
+
+<h2 id="label-1.3.6+-282013-03-17-29">1.3.6 (2013-03-17)<span><a href="#label-1.3.6+-282013-03-17-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Accept Hash that implements path as options (#180, lawso017)</p>
+</li><li>
+<p>Changed extension for CsvTemplate from ‘.csv’ to ‘.rcsv’ (#177, alexgb)</p>
+</li></ul>
+
+<h2 id="label-1.3.5+-282013-03-06-29">1.3.5 (2013-03-06)<span><a href="#label-1.3.5+-282013-03-06-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Fixed extension for PlainTemplate (judofyr)</p>
+</li><li>
+<p>Improved local variables regexp (#174, razorinc)</p>
+</li><li>
+<p>Added <a href="CHANGELOG_md.html">CHANGELOG.md</a></p>
+</li></ul>
+
+<h2 id="label-1.3.4+-282013-02-28-29">1.3.4 (2013-02-28)<span><a href="#label-1.3.4+-282013-02-28-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Support RDoc 4.0 (#168, judofyr)</p>
+</li><li>
+<p>Add mention of Org-Mode support (#165, aslakknutsen)</p>
+</li><li>
+<p>Add AsciiDoctorTemplate (#163, #164, aslakknutsen)</p>
+</li><li>
+<p>Add PlainTextTemplate (nathanaeljones)</p>
+</li><li>
+<p>Restrict locals to valid variable names (#158, thinkerbot)</p>
+</li><li>
+<p>ERB: Improve trim mode support (#156, ssimeonov)</p>
+</li><li>
+<p>Add CSVTemplate (#153, alexgb)</p>
+</li><li>
+<p>Remove special case for 1.9.1 (#147, guilleiguaran)</p>
+</li><li>
+<p>Add allows_script? method to Template (#143, bhollis)</p>
+</li><li>
+<p>Default to using Redcarpet2 (#139, DAddYE)</p>
+</li><li>
+<p>Allow File/Tempfile as filenames (#134, jamesotron)</p>
+</li><li>
+<p>Add EtanniTemplate (#131, manveru)</p>
+</li><li>
+<p>Support RDoc 3.10 (#112, timfel)</p>
+</li><li>
+<p>Always compile templates; remove old source evaluator (rtomayko)</p>
+</li><li>
+<p>Less: Options are now being passed to the parser (#106, cowboyd)</p>
+</li></ul>
+</div>
+<div id='context'>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Tilt::Template</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Tilt::Template
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/tilt/template_rb.html">lib/tilt/template.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Object</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Base class for template implementations. Subclasses must implement the <a href="Template.html#method-i-prepare"><code>prepare</code></a> method and one of the <a href="Template.html#method-i-evaluate"><code>evaluate</code></a> or <a href="Template.html#method-i-precompiled_template"><code>precompiled_template</code></a> methods.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-default_mime_type">default_mime_type</a></li>
+<li><a href="#method-c-default_mime_type-3D">default_mime_type=</a></li>
+<li><a href="#method-c-metadata">metadata</a></li>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-basename">basename</a></li>
+<li><a href="#method-i-compiled_method">compiled_method</a></li>
+<li><a href="#attribute-i-compiled_path">compiled_path</a></li>
+<li><a href="#method-i-compiled_path-3D">compiled_path=</a></li>
+<li><a href="#attribute-i-data">data</a></li>
+<li><a href="#method-i-eval_file">eval_file</a></li>
+<li><a href="#attribute-i-file">file</a></li>
+<li><a href="#method-i-fixed_locals-3F">fixed_locals?</a></li>
+<li><a href="#attribute-i-line">line</a></li>
+<li><a href="#method-i-metadata">metadata</a></li>
+<li><a href="#method-i-name">name</a></li>
+<li><a href="#attribute-i-options">options</a></li>
+<li><a href="#method-i-render">render</a></li>
+</ol>
+<h3>Protected Instance</h3>
+<ol>
+<li><a href="#attribute-i-default_encoding">default_encoding</a></li>
+<li><a href="#method-i-evaluate">evaluate</a></li>
+<li><a href="#method-i-precompiled">precompiled</a></li>
+<li><a href="#method-i-precompiled_postamble">precompiled_postamble</a></li>
+<li><a href="#method-i-precompiled_preamble">precompiled_preamble</a></li>
+<li><a href="#method-i-precompiled_template">precompiled_template</a></li>
+<li><a href="#method-i-prepare">prepare</a></li>
+<li><a href="#method-i-skip_compiled_encoding_detection-3F">skip_compiled_encoding_detection?</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>CLASS_METHOD</td>
+<td>=</td>
+<td class='context-item-value'>Kernel.instance_method(:class)</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>USE_BIND_CALL</td>
+<td>=</td>
+<td class='context-item-value'>RUBY_VERSION >= '3'</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-compiled_path'>compiled_path</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p>A path ending in .rb that the template code will be written to, then required, instead of being evaled.  This is useful for determining coverage of compiled template code, or to use static analysis tools on the compiled template code.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-data'>data</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p><a href="Template.html"><code>Template</code></a> source; loaded from a file or given directly.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-default_encoding'>default_encoding</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p>The encoding of the source data. Defaults to the default_encoding-option if present. You may override this method in your template class if you have a better hint of the data’s encoding.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-file'>file</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p>The name of the file where the template data was loaded from.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-line'>line</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p>The line number in <a href="Template.html#attribute-i-file"><code>file</code></a> where template data was loaded from.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-options'>options</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'>
+<p>A Hash of template engine specific options. This is passed directly to the underlying engine and is not used by the generic template interface.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-default_mime_type'>
+<a name='method-c-default_mime_type'></a>
+<div class='synopsis'>
+<span class='name'>default_mime_type</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Use <code>.metadata[:mime_type]</code> instead.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-default_mime_type-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-default_mime_type-source'>   <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">45</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">default_mime_type</span>
+<span class="line-num">46</span>   <span class="ruby-identifier">metadata</span>[<span class="ruby-value">:mime_type</span>]
+<span class="line-num">47</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-default_mime_type-3D'>
+<a name='method-c-default_mime_type-3D'></a>
+<div class='synopsis'>
+<span class='name'>default_mime_type=</span><span class='arguments'>(value)</span>
+
+</div>
+<div class='description'>
+
+<p>Use <code>.metadata[:mime_type] = val</code> instead.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-default_mime_type-3D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-default_mime_type-3D-source'>   <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">50</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">default_mime_type=</span>(<span class="ruby-identifier">value</span>)
+<span class="line-num">51</span>   <span class="ruby-identifier">metadata</span>[<span class="ruby-value">:mime_type</span>] = <span class="ruby-identifier">value</span>
+<span class="line-num">52</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-metadata'>
+<a name='method-c-metadata'></a>
+<div class='synopsis'>
+<span class='name'>metadata</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>An empty Hash that the template engine can populate with various metadata.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-metadata-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-metadata-source'>   <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">40</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">metadata</span>
+<span class="line-num">41</span>   <span class="ruby-ivar">@metadata</span> <span class="ruby-operator">||=</span> {}
+<span class="line-num">42</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(file=nil, line=nil, options=nil)</span>
+
+</div>
+<div class='description'>
+
+<p>Create a new template with the file, line, and options specified. By default, template data is read from the file. When a block is given, it should read template data and return as a String. When file is nil, a block is required.</p>
+
+<p>All arguments are optional. The following options are respected and are used by <a href="Template.html"><code>Tilt::Template</code></a> itself and not the underlying template libraries:</p>
+<table class="rdoc-list note-list"><tbody><tr><td class='label'>:default_encoding </td><td>
+<p>Force the encoding of the template to the given encoding.</p>
+</td></tr><tr><td class='label'>:skip_compiled_encoding_detection </td><td>
+<p>Do not scan template code for an encoding magic comment.</p>
+</td></tr><tr><td class='label'>:fixed_locals </td><td>
+<p>Force a specific method parameter signature, and call the method with a splat of locals, instead of passing the locals hash as a positional argument, and extracting locals from that. Should be a string containing the parameters for the compiled method, surrounded by parentheses.  Can be set to false to disable the scan for embedded fixed locals.</p>
+</td></tr><tr><td class='label'>:extract_fixed_locals </td><td>
+<p>Whether embedded fixed locals should be scanned for and extracted from the template code.</p>
+</td></tr><tr><td class='label'>:default_fixed_locals </td><td>
+<p>Similar to fixed_locals, but lowest priority, only used if :fixed_locals is not provided and no embedded locals are found (or scanned for).</p>
+</td></tr><tr><td class='label'>:scope_class </td><td>
+<p>Force the scope class used for the method.  By default, uses the class of the scope provided to render.</p>
+</td></tr></tbody></table>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num"> 82</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">file</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">line</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num"> 83</span>   <span class="ruby-ivar">@file</span>, <span class="ruby-ivar">@line</span>, <span class="ruby-ivar">@options</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-value">1</span>, <span class="ruby-keyword">nil</span>
+<span class="line-num"> 84</span> 
+<span class="line-num"> 85</span>   <span class="ruby-identifier">process_arg</span>(<span class="ruby-identifier">options</span>)
+<span class="line-num"> 86</span>   <span class="ruby-identifier">process_arg</span>(<span class="ruby-identifier">line</span>)
+<span class="line-num"> 87</span>   <span class="ruby-identifier">process_arg</span>(<span class="ruby-identifier">file</span>)
+<span class="line-num"> 88</span> 
+<span class="line-num"> 89</span>   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;file or block required&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@file</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">block_given?</span>
+<span class="line-num"> 90</span> 
+<span class="line-num"> 91</span>   <span class="ruby-ivar">@options</span> <span class="ruby-operator">||=</span> {}
+<span class="line-num"> 92</span> 
+<span class="line-num"> 93</span>   <span class="ruby-comment"># Force a specific scope class, instead of using the class of the provided</span>
+<span class="line-num"> 94</span>   <span class="ruby-comment"># scope as the scope class.</span>
+<span class="line-num"> 95</span>   <span class="ruby-ivar">@scope_class</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">delete</span> <span class="ruby-value">:scope_class</span>
+<span class="line-num"> 96</span> 
+<span class="line-num"> 97</span>   <span class="ruby-comment"># Force the encoding of the input data</span>
+<span class="line-num"> 98</span>   <span class="ruby-ivar">@default_encoding</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">delete</span> <span class="ruby-value">:default_encoding</span>
+<span class="line-num"> 99</span> 
+<span class="line-num">100</span>   <span class="ruby-comment"># Skip encoding detection from magic comments and forcing that encoding</span>
+<span class="line-num">101</span>   <span class="ruby-comment"># for compiled templates</span>
+<span class="line-num">102</span>   <span class="ruby-ivar">@skip_compiled_encoding_detection</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">delete</span> <span class="ruby-value">:skip_compiled_encoding_detection</span>
+<span class="line-num">103</span> 
+<span class="line-num">104</span>   <span class="ruby-comment"># Compiled path to use.  This must be specified as an option if</span>
+<span class="line-num">105</span>   <span class="ruby-comment"># providing the :scope_class option and using fixed locals,</span>
+<span class="line-num">106</span>   <span class="ruby-comment"># since template compilation occurs during initialization in that case.</span>
+<span class="line-num">107</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">compiled_path</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:compiled_path</span>)
+<span class="line-num">108</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">compiled_path</span> = <span class="ruby-identifier">compiled_path</span>
+<span class="line-num">109</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">110</span> 
+<span class="line-num">111</span>   <span class="ruby-comment"># load template data and prepare (uses binread to avoid encoding issues)</span>
+<span class="line-num">112</span>   <span class="ruby-ivar">@data</span> = <span class="ruby-identifier">block_given?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">yield</span>(<span class="ruby-keyword">self</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">read_template_file</span>
+<span class="line-num">113</span> 
+<span class="line-num">114</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:force_encoding</span>)
+<span class="line-num">115</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">default_encoding</span>
+<span class="line-num">116</span>       <span class="ruby-ivar">@data</span> = <span class="ruby-identifier">_dup_string_if_frozen</span>(<span class="ruby-ivar">@data</span>)
+<span class="line-num">117</span>       <span class="ruby-ivar">@data</span>.<span class="ruby-identifier">force_encoding</span>(<span class="ruby-identifier">default_encoding</span>)
+<span class="line-num">118</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">119</span> 
+<span class="line-num">120</span>     <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@data</span>.<span class="ruby-identifier">valid_encoding?</span>
+<span class="line-num">121</span>       <span class="ruby-identifier">raise</span> <span class="ruby-constant">Encoding</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidByteSequenceError</span>, <span class="ruby-node">&quot;#{eval_file} is not valid #{@data.encoding}&quot;</span>
+<span class="line-num">122</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">123</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">124</span> 
+<span class="line-num">125</span>   <span class="ruby-identifier">set_fixed_locals</span>
+<span class="line-num">126</span>   <span class="ruby-identifier">prepare</span>
+<span class="line-num">127</span>   <span class="ruby-identifier">set_compiled_method_cache</span>
+<span class="line-num">128</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-basename'>
+<a name='method-i-basename'></a>
+<div class='synopsis'>
+<span class='name'>basename</span><span class='arguments'>(suffix='')</span>
+
+</div>
+<div class='description'>
+
+<p>The basename of the template file.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-basename-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-basename-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">138</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">basename</span>(<span class="ruby-identifier">suffix</span>=<span class="ruby-string">&#39;&#39;</span>)
+<span class="line-num">139</span>   <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-ivar">@file</span>, <span class="ruby-identifier">suffix</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@file</span>
+<span class="line-num">140</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-compiled_method'>
+<a name='method-i-compiled_method'></a>
+<div class='synopsis'>
+<span class='name'>compiled_method</span><span class='arguments'>(locals_keys, scope_class=nil)</span>
+
+</div>
+<div class='description'>
+
+<p>The compiled method for the locals keys and scope_class provided. Returns an UnboundMethod, which can be used to define methods directly on the scope class, which are much faster to call than Tilt’s normal rendering.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-compiled_method-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-compiled_method-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">191</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">compiled_method</span>(<span class="ruby-identifier">locals_keys</span>, <span class="ruby-identifier">scope_class</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">192</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@fixed_locals</span>
+<span class="line-num">193</span>     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@scope_class</span>
+<span class="line-num">194</span>       <span class="ruby-keyword">return</span> <span class="ruby-ivar">@compiled_method</span>
+<span class="line-num">195</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">196</span>       <span class="ruby-identifier">key</span> = <span class="ruby-identifier">scope_class</span>
+<span class="line-num">197</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">198</span>   <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@scope_class</span>
+<span class="line-num">199</span>     <span class="ruby-identifier">key</span> = <span class="ruby-identifier">locals_keys</span>.<span class="ruby-identifier">dup</span>.<span class="ruby-identifier">freeze</span>
+<span class="line-num">200</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">201</span>     <span class="ruby-identifier">key</span> = [<span class="ruby-identifier">scope_class</span>, <span class="ruby-identifier">locals_keys</span>].<span class="ruby-identifier">freeze</span>
+<span class="line-num">202</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">203</span> 
+<span class="line-num">204</span>   <span class="ruby-constant">LOCK</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+<span class="line-num">205</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">meth</span> = <span class="ruby-ivar">@compiled_method</span>[<span class="ruby-identifier">key</span>]
+<span class="line-num">206</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">meth</span>
+<span class="line-num">207</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">208</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">209</span>   <span class="ruby-identifier">meth</span> = <span class="ruby-identifier">compile_template_method</span>(<span class="ruby-identifier">locals_keys</span>, <span class="ruby-identifier">scope_class</span>)
+<span class="line-num">210</span>   <span class="ruby-constant">LOCK</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+<span class="line-num">211</span>     <span class="ruby-ivar">@compiled_method</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">meth</span>
+<span class="line-num">212</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">213</span>   <span class="ruby-identifier">meth</span>
+<span class="line-num">214</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-compiled_path-3D'>
+<a name='method-i-compiled_path-3D'></a>
+<div class='synopsis'>
+<span class='name'>compiled_path=</span><span class='arguments'>(path)</span>
+
+</div>
+<div class='description'>
+
+<p>Set the prefix to use for compiled paths, similar to using the :compiled_path template option. Note that this only has affect for future template compilations.  When using the :scope_class template option, and using fixed_locals, calling this after the template is created has no effect, since the template is compiled during initialization in that case. It is recommended to use the :compiled_path template option instead of this method in new code.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-compiled_path-3D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-compiled_path-3D-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">177</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">compiled_path=</span>(<span class="ruby-identifier">path</span>)
+<span class="line-num">178</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">path</span>
+<span class="line-num">179</span>     <span class="ruby-comment"># Use expanded paths when loading, since that is helpful</span>
+<span class="line-num">180</span>     <span class="ruby-comment"># for coverage.  Remove any .rb suffix, since that will</span>
+<span class="line-num">181</span>     <span class="ruby-comment"># be added back later.</span>
+<span class="line-num">182</span>     <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">path</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp">/\.rb\z/i</span>, <span class="ruby-string">&#39;&#39;</span>))
+<span class="line-num">183</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">184</span>   <span class="ruby-ivar">@compiled_path</span> = <span class="ruby-identifier">path</span>
+<span class="line-num">185</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-eval_file'>
+<a name='method-i-eval_file'></a>
+<div class='synopsis'>
+<span class='name'>eval_file</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>The filename used in backtraces to describe the template.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-eval_file-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-eval_file-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">150</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eval_file</span>
+<span class="line-num">151</span>   <span class="ruby-ivar">@file</span> <span class="ruby-operator">||</span> <span class="ruby-string">&#39;(__TEMPLATE__)&#39;</span>
+<span class="line-num">152</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-fixed_locals-3F'>
+<a name='method-i-fixed_locals-3F'></a>
+<div class='synopsis'>
+<span class='name'>fixed_locals?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Whether the template uses fixed locals.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-fixed_locals-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-fixed_locals-3F-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">155</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fixed_locals?</span>
+<span class="line-num">156</span>   <span class="ruby-ivar">@fixed_locals</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="line-num">157</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-metadata'>
+<a name='method-i-metadata'></a>
+<div class='synopsis'>
+<span class='name'>metadata</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>An empty Hash that the template engine can populate with various metadata.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-metadata-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-metadata-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">161</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">metadata</span>
+<span class="line-num">162</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:allows_script?</span>)
+<span class="line-num">163</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">metadata</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:allows_script</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">allows_script?</span>)
+<span class="line-num">164</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">165</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">metadata</span>
+<span class="line-num">166</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">167</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-name'>
+<a name='method-i-name'></a>
+<div class='synopsis'>
+<span class='name'>name</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>The template file’s basename with all extensions chomped off.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-name-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-name-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">143</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">name</span>
+<span class="line-num">144</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">bname</span> = <span class="ruby-identifier">basename</span>
+<span class="line-num">145</span>     <span class="ruby-identifier">bname</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;.&#39;</span>, <span class="ruby-value">2</span>).<span class="ruby-identifier">first</span>
+<span class="line-num">146</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">147</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-render'>
+<a name='method-i-render'></a>
+<div class='synopsis'>
+<span class='name'>render</span><span class='arguments'>(scope=nil, locals=nil, &block)</span>
+
+</div>
+<div class='description'>
+
+<p>Render the template in the given scope with the locals specified. If a block is given, it is typically available within the template via <code>yield</code>.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-render-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-render-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">133</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">render</span>(<span class="ruby-identifier">scope</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">locals</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">134</span>   <span class="ruby-identifier">evaluate</span>(<span class="ruby-identifier">scope</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>, <span class="ruby-identifier">locals</span> <span class="ruby-operator">||</span> <span class="ruby-constant">EMPTY_HASH</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">135</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Protected Instance methods</h2>
+<div class='method protected-instance' id='method-method-i-evaluate'>
+<a name='method-i-evaluate'></a>
+<div class='synopsis'>
+<span class='name'>evaluate</span><span class='arguments'>(scope, locals, &block)</span>
+
+</div>
+<div class='description'>
+
+<p>Execute the compiled template and return the result string. <a href="Template.html"><code>Template</code></a> evaluation is guaranteed to be performed in the scope object with the locals specified and with support for yielding to the block.</p>
+
+<p>This method is only used by source generating templates. Subclasses that override render() may not support all features.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-evaluate-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-evaluate-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">247</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">evaluate</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">locals</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">248</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@fixed_locals</span>
+<span class="line-num">249</span>     <span class="ruby-identifier">locals_keys</span> = <span class="ruby-constant">EMPTY_ARRAY</span>
+<span class="line-num">250</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">251</span>     <span class="ruby-identifier">locals_keys</span> = <span class="ruby-identifier">locals</span>.<span class="ruby-identifier">keys</span>
+<span class="line-num">252</span>     <span class="ruby-identifier">locals_keys</span>.<span class="ruby-identifier">sort!</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">y</span>.<span class="ruby-identifier">to_s</span>}
+<span class="line-num">253</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">254</span> 
+<span class="line-num">255</span>   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scope_class</span> = <span class="ruby-ivar">@scope_class</span>
+<span class="line-num">256</span>     <span class="ruby-identifier">scope_class</span> = <span class="ruby-keyword">case</span> <span class="ruby-identifier">scope</span>
+<span class="line-num">257</span>     <span class="ruby-keyword">when</span> <span class="ruby-constant">Object</span>
+<span class="line-num">258</span>       <span class="ruby-constant">Module</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">scope</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">scope</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">scope</span>.<span class="ruby-identifier">class</span>
+<span class="line-num">259</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">260</span>       <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">261</span>       <span class="ruby-constant">USE_BIND_CALL</span> <span class="ruby-operator">?</span> <span class="ruby-constant">CLASS_METHOD</span>.<span class="ruby-identifier">bind_call</span>(<span class="ruby-identifier">scope</span>) <span class="ruby-operator">:</span> <span class="ruby-constant">CLASS_METHOD</span>.<span class="ruby-identifier">bind</span>(<span class="ruby-identifier">scope</span>).<span class="ruby-identifier">call</span>
+<span class="line-num">262</span>       <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">263</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">264</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">265</span> 
+<span class="line-num">266</span>   <span class="ruby-identifier">evaluate_method</span>(<span class="ruby-identifier">compiled_method</span>(<span class="ruby-identifier">locals_keys</span>, <span class="ruby-identifier">scope_class</span>), <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">locals</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">267</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-precompiled'>
+<a name='method-i-precompiled'></a>
+<div class='synopsis'>
+<span class='name'>precompiled</span><span class='arguments'>(local_keys)</span>
+
+</div>
+<div class='description'>
+
+<p>Generates all template source by combining the preamble, template, and postamble and returns a two-tuple of the form: [source, offset], where source is the string containing (Ruby) source code for the template and offset is the integer line offset where line reporting should begin.</p>
+
+<p><a href="Template.html"><code>Template</code></a> subclasses may override this method when they need complete control over source generation or want to adjust the default line offset. In most cases, overriding the <a href="Template.html#method-i-precompiled_template"><code>precompiled_template</code></a> method is easier and more appropriate.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">278</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">279</span>   <span class="ruby-identifier">preamble</span> = <span class="ruby-identifier">precompiled_preamble</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">280</span>   <span class="ruby-identifier">template</span> = <span class="ruby-identifier">precompiled_template</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">281</span>   <span class="ruby-identifier">postamble</span> = <span class="ruby-identifier">precompiled_postamble</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">282</span>   <span class="ruby-identifier">source</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>
+<span class="line-num">283</span> 
+<span class="line-num">284</span>   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">skip_compiled_encoding_detection?</span>
+<span class="line-num">285</span>     <span class="ruby-comment"># Ensure that our generated source code has the same encoding as the</span>
+<span class="line-num">286</span>     <span class="ruby-comment"># the source code generated by the template engine.</span>
+<span class="line-num">287</span>     <span class="ruby-identifier">template_encoding</span> = <span class="ruby-identifier">extract_encoding</span>(<span class="ruby-identifier">template</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">template</span> = <span class="ruby-identifier">t</span>}
+<span class="line-num">288</span> 
+<span class="line-num">289</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">template</span>.<span class="ruby-identifier">encoding</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">template_encoding</span>
+<span class="line-num">290</span>       <span class="ruby-comment"># template should never be frozen here. If it was frozen originally,</span>
+<span class="line-num">291</span>       <span class="ruby-comment"># then extract_encoding should yield a dup.</span>
+<span class="line-num">292</span>       <span class="ruby-identifier">template</span>.<span class="ruby-identifier">force_encoding</span>(<span class="ruby-identifier">template_encoding</span>)
+<span class="line-num">293</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">294</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">295</span> 
+<span class="line-num">296</span>   <span class="ruby-identifier">source</span>.<span class="ruby-identifier">force_encoding</span>(<span class="ruby-identifier">template</span>.<span class="ruby-identifier">encoding</span>)
+<span class="line-num">297</span>   <span class="ruby-identifier">source</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">preamble</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">template</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">postamble</span>
+<span class="line-num">298</span> 
+<span class="line-num">299</span>   [<span class="ruby-identifier">source</span>, <span class="ruby-identifier">preamble</span>.<span class="ruby-identifier">count</span>(<span class="ruby-string">&quot;\n&quot;</span>)<span class="ruby-value">+1</span>]
+<span class="line-num">300</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-precompiled_postamble'>
+<a name='method-i-precompiled_postamble'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_postamble</span><span class='arguments'>(local_keys)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_postamble-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_postamble-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">316</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_postamble</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">317</span>   <span class="ruby-string">&#39;&#39;</span>
+<span class="line-num">318</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-precompiled_preamble'>
+<a name='method-i-precompiled_preamble'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_preamble</span><span class='arguments'>(local_keys)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_preamble-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_preamble-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">312</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_preamble</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">313</span>   <span class="ruby-string">&#39;&#39;</span>
+<span class="line-num">314</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-precompiled_template'>
+<a name='method-i-precompiled_template'></a>
+<div class='synopsis'>
+<span class='name'>precompiled_template</span><span class='arguments'>(local_keys)</span>
+
+</div>
+<div class='description'>
+
+<p>A string containing the (Ruby) source code for the template. The default <a href="Template.html#method-i-evaluate"><code>Template#evaluate</code></a> implementation requires either this method or the <a href="Template.html#method-i-precompiled"><code>precompiled</code></a> method be overridden. When defined, the base <a href="Template.html"><code>Template</code></a> guarantees correct file/line handling, locals support, custom scopes, proper encoding, and support for template compilation.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-precompiled_template-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-precompiled_template-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">308</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precompiled_template</span>(<span class="ruby-identifier">local_keys</span>)
+<span class="line-num">309</span>   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>
+<span class="line-num">310</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-prepare'>
+<a name='method-i-prepare'></a>
+<div class='synopsis'>
+<span class='name'>prepare</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Do whatever preparation is necessary to setup the underlying template engine. Called immediately after template data is loaded. Instance variables set in this method are available when <a href="Template.html#method-i-evaluate"><code>evaluate</code></a> is called.</p>
+
+<p>Empty by default as some subclasses do not need separate preparation.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-prepare-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-prepare-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">235</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepare</span>
+<span class="line-num">236</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method protected-instance' id='method-method-i-skip_compiled_encoding_detection-3F'>
+<a name='method-i-skip_compiled_encoding_detection-3F'></a>
+<div class='synopsis'>
+<span class='name'>skip_compiled_encoding_detection?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-skip_compiled_encoding_detection-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-skip_compiled_encoding_detection-3F-source'>    <span class="ruby-comment"># File lib/tilt/template.rb</span>
+<span class="line-num">226</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">skip_compiled_encoding_detection?</span>
+<span class="line-num">227</span>   <span class="ruby-ivar">@skip_compiled_encoding_detection</span>
+<span class="line-num">228</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

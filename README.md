@@ -29,7 +29,6 @@ Support for these template engines is included with Tilt:
 | {CoffeeScript}[rdoc-ref:lib/tilt/coffee.rb]         | .coffee                 | coffee-script (+ javascript)   |
 | {CoffeeScriptLiterate}[rdoc-ref:lib/tilt/coffee.rb] | .litcoffee              | coffee-script (+ javascript)   |
 | {CommonMarker}[rdoc-ref:lib/tilt/commonmarker.rb]   | .markdown, .mkd, .md    | commonmarker                   |
-| {Creole}[rdoc-ref:lib/tilt/creole.rb]               | .wiki, .creole          | creole                         |
 | {CSV}[rdoc-ref:lib/tilt/csv.rb]                     | .rcsv                   | csv (ruby stdlib)              |
 | {ERB}[rdoc-ref:lib/tilt/erb.rb]                     | .erb, .rhtml            | erb (ruby stdlib)              |
 | {Erubi}[rdoc-ref:lib/tilt/erubi.rb]                 | .erb, .rhtml, .erubi    | erubi                          |

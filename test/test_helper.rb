@@ -14,8 +14,6 @@ if $VERBOSE
     require 'warning'
   rescue LoadError
   else
-    Warning.ignore(%r{lib/creole/parser.rb}) # Remove when creole support is removed
-
     # Ignore spurious frozen string literal errors.  Both of these check
     # that the string is frozen, and duplicate it.  This results in a
     # spurious warning on Ruby 3.4, which defaults to chilled strings

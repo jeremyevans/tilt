@@ -1,5 +1,6 @@
 ## master
 
+* Remove deprecated creole template (jeremyevans)
 * Make the rendering of Prawn templates idempotent (rickenharp) (#20)
 
 ## 2.6.1 (2025-07-07)

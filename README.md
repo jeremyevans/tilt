@@ -213,12 +213,6 @@ In ERB templates, you can use the following comment format:
 <%# locals: () %>
 ```
 
-In slim templates, the comment format looks like this:
-
-```
-//# locals: ()
-```
-
 In string templates, it is a little ackward, but still possible (note that the
 closing `}` goes on a separate line:
 

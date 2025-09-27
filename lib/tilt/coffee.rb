@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# CoffeeScript template implementation.
+# CoffeeScript / Literate CoffeeScript template implementation.
 #
 # CoffeeScript templates do not support object scopes, locals, or yield.
 #
@@ -8,9 +8,10 @@
 #
 # * http://coffeescript.org
 #
-# === Related module
+# === Related modules
 #
 # * Tilt::CoffeeScriptTemplate
+# * Tilt::CoffeeScriptLiteralTemplate
 
 require_relative 'template'
 require 'coffee_script'

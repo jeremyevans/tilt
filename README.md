@@ -11,7 +11,7 @@ feature is relevant to the engine):
 
  * Custom template evaluation scopes / bindings
  * Ability to pass locals to template evaluation
- * Support for passing a block to template evaluation for "yield"
+ * Support for passing a block to template evaluation for `yield`
  * Backtraces with correct filenames and line numbers
  * Template file caching and reloading
  * Fast, method-based template source compilation
@@ -21,43 +21,40 @@ template engines included in the distribution.
 
 Support for these template engines is included with Tilt:
 
-| Engine                                            | File Extensions         | Required Libraries             |
-| ------------------------------------------------- | ----------------------- | ------------------------------ |
-| {Asciidoctor}[rdoc-ref:lib/tilt/asciidoc.rb]      | .ad, .adoc, .asciidoc   | asciidoctor                    |
-| {Babel}[rdoc-ref:lib/tilt/babel.rb]               | .es6, .babel, .jsx      | babel-transpiler               |
-| {Builder}[rdoc-ref:lib/tilt/builder.rb]           | .builder                | builder                        |
-| {CoffeeScript}[rdoc-ref:lib/tilt/coffee.rb]       | .coffee                 | coffee-script (+ javascript)   |
-| CoffeeScriptLiterate                              | .litcoffee              | coffee-script (+ javascript)   |
-| {CommonMarker}[rdoc-ref:lib/tilt/commonmarker.rb] | .markdown, .mkd, .md    | commonmarker                   |
-| {Creole}[rdoc-ref:lib/tilt/creole.rb]             | .wiki, .creole          | creole                         |
-| {CSV}[rdoc-ref:lib/tilt/csv.rb]                   | .rcsv                   | csv (ruby stdlib)              |
-| {ERB}[rdoc-ref:lib/tilt/erb.rb]                   | .erb, .rhtml            | erb (ruby stdlib)              |
-| {Erubi}[rdoc-ref:lib/tilt/erubi.rb]               | .erb, .rhtml, .erubi    | erubi                          |
-| {Etanni}[rdoc-ref:lib/tilt/etanni.rb]             | .ern, .etanni           | none                           |
-| {Haml}[rdoc-ref:lib/tilt/haml.rb]                 | .haml                   | haml                           |
-| {Kramdown}[rdoc-ref:lib/tilt/kramdown.rb]         | .markdown, .mkd, .md    | kramdown                       |
-| {Liquid}[rdoc-ref:lib/tilt/liquid.rb]             | .liquid                 | liquid                         |
-| {LiveScript}[rdoc-ref:lib/tilt/livescript.rb]     | .ls                     | livescript (+ javascript)      |
-| {Markaby}[rdoc-ref:lib/tilt/markaby.rb]           | .mab                    | markaby                        |
-| {Nokogiri}[rdoc-ref:lib/tilt/nokogiri.rb]         | .nokogiri               | nokogiri                       |
-| {Pandoc}[rdoc-ref:lib/tilt/pandoc.rb]             | .markdown, .mkd, .md    | pandoc                         |
-| {Plain}[rdoc-ref:lib/tilt/plain.rb]               | .html                   | none                           |
-| {Prawn}[rdoc-ref:lib/tilt/prawn.rb]               | .prawn                  | prawn                          |
-| {Radius}[rdoc-ref:lib/tilt/radius.rb]             | .radius                 | radius                         |
-| {RDiscount}[rdoc-ref:lib/tilt/rdiscount.rb]       | .markdown, .mkd, .md    | rdiscount                      |
-| {RDoc}[rdoc-ref:lib/tilt/rdoc.rb]                 | .rdoc                   | rdoc                           |
-| {Redcarpet}[rdoc-ref:lib/tilt/redcarpet.rb]       | .markdown, .mkd, .md    | redcarpet                      |
-| {RedCloth}[rdoc-ref:lib/tilt/redcloth.rb]         | .textile                | redcloth                       |
-| {RstPandoc}[rdoc-ref:lib/tilt/rst-pandoc.rb]      | .rst                    | pandoc                         |
-| {Slim}[rdoc-ref:lib/tilt/slim.rb]                 | .slim                   | slim                           |
-| {Sass}[rdoc-ref:lib/tilt/sass.rb]                 | .sass                   | sass-embedded, sassc, or sass  |
-| Scss                                              | .scss                   | sass-embedded, sassc, or sass  |
-| {String}[rdoc-ref:lib/tilt/string.rb]             | .str                    | none                           |
-| {TypeScript}[rdoc-ref:lib/tilt/typescript.rb]     | .ts                     | typescript (+ javascript)      |
-| {Yajl}[rdoc-ref:lib/tilt/yajl.rb]                 | .yajl                   | yajl-ruby                      |
-
-See the linked files under `./lib/tilt/*.rb` for detailed information on template engine
-options and supported features.
+| Engine                                              | File Extensions         | Required Libraries             |
+| --------------------------------------------------- | ----------------------- | ------------------------------ |
+| {Asciidoctor}[rdoc-ref:lib/tilt/asciidoc.rb]        | .ad, .adoc, .asciidoc   | asciidoctor                    |
+| {Babel}[rdoc-ref:lib/tilt/babel.rb]                 | .es6, .babel, .jsx      | babel-transpiler               |
+| {Builder}[rdoc-ref:lib/tilt/builder.rb]             | .builder                | builder                        |
+| {CoffeeScript}[rdoc-ref:lib/tilt/coffee.rb]         | .coffee                 | coffee-script (+ javascript)   |
+| {CoffeeScriptLiterate}[rdoc-ref:lib/tilt/coffee.rb] | .litcoffee              | coffee-script (+ javascript)   |
+| {CommonMarker}[rdoc-ref:lib/tilt/commonmarker.rb]   | .markdown, .mkd, .md    | commonmarker                   |
+| {Creole}[rdoc-ref:lib/tilt/creole.rb]               | .wiki, .creole          | creole                         |
+| {CSV}[rdoc-ref:lib/tilt/csv.rb]                     | .rcsv                   | csv (ruby stdlib)              |
+| {ERB}[rdoc-ref:lib/tilt/erb.rb]                     | .erb, .rhtml            | erb (ruby stdlib)              |
+| {Erubi}[rdoc-ref:lib/tilt/erubi.rb]                 | .erb, .rhtml, .erubi    | erubi                          |
+| {Etanni}[rdoc-ref:lib/tilt/etanni.rb]               | .ern, .etanni           | none                           |
+| {Haml}[rdoc-ref:lib/tilt/haml.rb]                   | .haml                   | haml                           |
+| {Kramdown}[rdoc-ref:lib/tilt/kramdown.rb]           | .markdown, .mkd, .md    | kramdown                       |
+| {Liquid}[rdoc-ref:lib/tilt/liquid.rb]               | .liquid                 | liquid                         |
+| {LiveScript}[rdoc-ref:lib/tilt/livescript.rb]       | .ls                     | livescript (+ javascript)      |
+| {Markaby}[rdoc-ref:lib/tilt/markaby.rb]             | .mab                    | markaby                        |
+| {Nokogiri}[rdoc-ref:lib/tilt/nokogiri.rb]           | .nokogiri               | nokogiri                       |
+| {Pandoc}[rdoc-ref:lib/tilt/pandoc.rb]               | .markdown, .mkd, .md    | pandoc                         |
+| {Plain}[rdoc-ref:lib/tilt/plain.rb]                 | .html                   | none                           |
+| {Prawn}[rdoc-ref:lib/tilt/prawn.rb]                 | .prawn                  | prawn                          |
+| {Radius}[rdoc-ref:lib/tilt/radius.rb]               | .radius                 | radius                         |
+| {RDiscount}[rdoc-ref:lib/tilt/rdiscount.rb]         | .markdown, .mkd, .md    | rdiscount                      |
+| {RDoc}[rdoc-ref:lib/tilt/rdoc.rb]                   | .rdoc                   | rdoc                           |
+| {Redcarpet}[rdoc-ref:lib/tilt/redcarpet.rb]         | .markdown, .mkd, .md    | redcarpet                      |
+| {RedCloth}[rdoc-ref:lib/tilt/redcloth.rb]           | .textile                | redcloth                       |
+| {RstPandoc}[rdoc-ref:lib/tilt/rst-pandoc.rb]        | .rst                    | pandoc                         |
+| {Slim}[rdoc-ref:lib/tilt/slim.rb]                   | .slim                   | slim                           |
+| {Sass}[rdoc-ref:lib/tilt/sass.rb]                   | .sass                   | sass-embedded, sassc, or sass  |
+| {Scss}[rdoc-ref:lib/tilt/sass.rb]                   | .scss                   | sass-embedded, sassc, or sass  |
+| {String}[rdoc-ref:lib/tilt/string.rb]               | .str                    | none                           |
+| {TypeScript}[rdoc-ref:lib/tilt/typescript.rb]       | .ts                     | typescript (+ javascript)      |
+| {Yajl}[rdoc-ref:lib/tilt/yajl.rb]                   | .yajl                   | yajl-ruby                      |
 
 Basic Usage
 -----------

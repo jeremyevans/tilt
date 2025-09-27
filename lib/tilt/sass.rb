@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# = Sass
+# = Sass / Scss
 #
-# Sass template implementation for generating CSS.
+# Sass/Scss template implementation for generating CSS.
 #
 # Sass templates do not support object scopes, locals, or yield.
 #
@@ -10,9 +10,10 @@
 #
 # * https://sass-lang.com/
 #
-# === Related module
+# === Related modules
 #
 # * Tilt::SassTemplate
+# * Tilt::ScssTemplate
 
 require_relative 'template'
 

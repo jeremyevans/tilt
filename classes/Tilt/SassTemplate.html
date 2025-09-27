@@ -92,9 +92,9 @@ compact rescue nil</td>
 [show source]
 </a>
 <pre id='method-i-_prepare_output-source'>   <span class="ruby-comment"># File lib/tilt/sass.rb</span>
-<span class="line-num">37</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_prepare_output</span>
-<span class="line-num">38</span>   <span class="ruby-operator">::</span><span class="ruby-constant">Sass</span>.<span class="ruby-identifier">compile_string</span>(<span class="ruby-ivar">@data</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">sass_options</span>).<span class="ruby-identifier">css</span>
-<span class="line-num">39</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">38</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_prepare_output</span>
+<span class="line-num">39</span>   <span class="ruby-operator">::</span><span class="ruby-constant">Sass</span>.<span class="ruby-identifier">compile_string</span>(<span class="ruby-ivar">@data</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">sass_options</span>).<span class="ruby-identifier">css</span>
+<span class="line-num">40</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-sass_options'>
@@ -111,15 +111,15 @@ compact rescue nil</td>
 [show source]
 </a>
 <pre id='method-i-sass_options-source'>   <span class="ruby-comment"># File lib/tilt/sass.rb</span>
-<span class="line-num">41</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sass_options</span>
-<span class="line-num">42</span>   <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">absolute_path</span>(<span class="ruby-identifier">eval_file</span>)
-<span class="line-num">43</span>   <span class="ruby-identifier">path</span> = <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>)
-<span class="line-num">44</span>   <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">dup</span>
-<span class="line-num">45</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:url</span>] = <span class="ruby-operator">::</span><span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">build</span>([<span class="ruby-keyword">nil</span>, <span class="ruby-operator">::</span><span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_PARSER</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">path</span>)]).<span class="ruby-identifier">to_s</span>
-<span class="line-num">46</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:syntax</span>] = <span class="ruby-value">:indented</span>
-<span class="line-num">47</span>   <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-constant">ALLOWED_KEYS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)} <span class="ruby-keyword">if</span> <span class="ruby-constant">ALLOWED_KEYS</span>
-<span class="line-num">48</span>   <span class="ruby-identifier">opts</span>
-<span class="line-num">49</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">42</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sass_options</span>
+<span class="line-num">43</span>   <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">absolute_path</span>(<span class="ruby-identifier">eval_file</span>)
+<span class="line-num">44</span>   <span class="ruby-identifier">path</span> = <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>)
+<span class="line-num">45</span>   <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">dup</span>
+<span class="line-num">46</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:url</span>] = <span class="ruby-operator">::</span><span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">build</span>([<span class="ruby-keyword">nil</span>, <span class="ruby-operator">::</span><span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_PARSER</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">path</span>)]).<span class="ruby-identifier">to_s</span>
+<span class="line-num">47</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:syntax</span>] = <span class="ruby-value">:indented</span>
+<span class="line-num">48</span>   <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-constant">ALLOWED_KEYS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)} <span class="ruby-keyword">if</span> <span class="ruby-constant">ALLOWED_KEYS</span>
+<span class="line-num">49</span>   <span class="ruby-identifier">opts</span>
+<span class="line-num">50</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

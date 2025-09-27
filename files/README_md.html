@@ -43,7 +43,7 @@ README.md
 </li><li>
 <p>Ability to pass locals to template evaluation</p>
 </li><li>
-<p>Support for passing a block to template evaluation for “yield”</p>
+<p>Support for passing a block to template evaluation for <code>yield</code></p>
 </li><li>
 <p>Backtraces with correct filenames and line numbers</p>
 </li><li>
@@ -86,7 +86,7 @@ README.md
 <td>coffee-script (+ javascript)</td>
 </tr>
 <tr>
-<td>CoffeeScriptLiterate</td>
+<td><a href="lib/tilt/coffee_rb.html">CoffeeScriptLiterate</a></td>
 <td>.litcoffee</td>
 <td>coffee-script (+ javascript)</td>
 </tr>
@@ -94,11 +94,6 @@ README.md
 <td><a href="lib/tilt/commonmarker_rb.html">CommonMarker</a></td>
 <td>.markdown, .mkd, .md</td>
 <td>commonmarker</td>
-</tr>
-<tr>
-<td><a href="lib/tilt/creole_rb.html">Creole</a></td>
-<td>.wiki, .creole</td>
-<td>creole</td>
 </tr>
 <tr>
 <td><a href="lib/tilt/csv_rb.html">CSV</a></td>
@@ -206,7 +201,7 @@ README.md
 <td>sass-embedded, sassc, or sass</td>
 </tr>
 <tr>
-<td>Scss</td>
+<td><a href="lib/tilt/sass_rb.html">Scss</a></td>
 <td>.scss</td>
 <td>sass-embedded, sassc, or sass</td>
 </tr>
@@ -228,7 +223,7 @@ README.md
 </tbody>
 </table>
 
-<p>See the linked files under <code>./lib/tilt/*.rb</code> for detailed information on template engine options and supported features.</p>
+<p>See <a target="_top" href="https://tilt.jeremyevans.net">tilt.jeremyevans.net</a> for formatted documentation for <a href="../classes/Tilt.html"><code>Tilt</code></a>.</p>
 
 <h2 id="label-Basic+Usage">Basic Usage<span><a href="#label-Basic+Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
@@ -242,9 +237,9 @@ README.md
 <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;Hello world!&quot;</span>
 </pre>
 
-<p>It’s recommended that calling programs explicitly require the <a href="../classes/Tilt.html"><code>Tilt</code></a> template engine libraries (like ‘tilt/erb’ above) at load time. <a href="../classes/Tilt.html"><code>Tilt</code></a> attempts to lazy require the template engine library the first time a template is created, but this is prone to error in threaded environments.</p>
+<p>It’s recommended that calling programs explicitly require the <a href="../classes/Tilt.html"><code>Tilt</code></a> template engine libraries (like ‘tilt/erb’ above) at load time, or finalize the mapping (see section below). <a href="../classes/Tilt.html"><code>Tilt</code></a> attempts to lazy require the template engine library the first time a template is created, but this is prone to error in threaded environments.</p>
 
-<p>The <a href="../classes/Tilt.html"><code>Tilt</code></a> module contains generic implementation classes for all supported template engines. Each template class adheres to the same interface for creation and rendering. In the instant gratification example, we let <a href="../classes/Tilt.html"><code>Tilt</code></a> determine the template implementation class based on the filename, but <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a> implementations can also be used directly:</p>
+<p>The <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a> class is an abstract base class that used by all supported template engines. Each template class adheres to the same interface for creation and rendering. In the instant gratification example, we let <a href="../classes/Tilt.html"><code>Tilt</code></a> determine the template implementation class based on the filename, but <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a> implementations can also be used directly:</p>
 
 <pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;tilt/haml&#39;</span>
 <span class="ruby-identifier">template</span> = <span class="ruby-constant">Tilt</span><span class="ruby-operator">::</span><span class="ruby-constant">HamlTemplate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;templates/foo.haml&#39;</span>)
@@ -278,6 +273,8 @@ README.md
 <span class="ruby-identifier">template</span>.<span class="ruby-identifier">render</span> { <span class="ruby-string">&#39;Joe&#39;</span> }
 <span class="ruby-comment"># =&gt; &quot;Hey Joe!&quot;</span>
 </pre>
+
+<p>For template engines that always result in the same output for the same template and do not accept local variables, scope class, or yield, the <a href="../classes/Tilt/StaticTemplate.html"><code>Tilt::StaticTemplate</code></a> class should be used instead of <a href="../classes/Tilt/Template.html"><code>Tilt::Template</code></a>.</p>
 
 <h2 id="label-Fixed+Locals">Fixed Locals<span><a href="#label-Fixed+Locals">&para;</a> <a href="#top">&uarr;</a></span></h2>
 

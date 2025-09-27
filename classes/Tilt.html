@@ -50,9 +50,6 @@ Tilt
 <a href="../files/lib/tilt/commonmarker_rb.html">lib/tilt/commonmarker.rb</a>
 </li>
 <li class='other'>
-<a href="../files/lib/tilt/creole_rb.html">lib/tilt/creole.rb</a>
-</li>
-<li class='other'>
 <a href="../files/lib/tilt/csv_rb.html">lib/tilt/csv.rb</a>
 </li>
 <li class='other'>
@@ -227,19 +224,6 @@ render_options = @options.select { |key, _| render_opts.include?(key.downcase) }
 extensions = @options.select { |key, _| exts.include?(key) }.transform_keys(&:downcase)
 
 Commonmarker.to_html(@data, options: { parse: parse_options, render: render_options, extension: extensions })
-end</td>
-<td>&nbsp;</td>
-<td class='context-item-desc'></td>
-</tr>
-<tr class='top-aligned-row context-row'>
-<td class='context-item-name'>CreoleTemplate</td>
-<td>=</td>
-<td class='context-item-value'>Tilt::StaticTemplate.subclass do
-opts = {}
-allowed_opts.each do |k|
-opts[k] = @options[k] if @options[k]
-end
-Creole::Parser.new(@data, opts).to_html
 end</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'></td>

@@ -5,7 +5,7 @@
 # ERB is a simple but powerful template languge for Ruby. In Tilt it's
 # backed by {Erubi}[rdoc-ref:lib/tilt/erubi.rb] (if installed on your system] or by
 # {erb.rb}[rdoc-ref:lib/tilt/erb.rb] (which is included in Ruby's standard library]. This
-# documentation applies to all three implementations.
+# documentation applies to both implementations.
 #
 # === Example
 #

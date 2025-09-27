@@ -78,7 +78,7 @@ mapping (see section below). Tilt attempts to lazy require the template engine
 library the first time a template is created, but this is prone to error in
 threaded environments.
 
-The Tilt module contains generic implementation classes for all supported
+The Tilt::Template class is an abstract base class that used by all supported
 template engines. Each template class adheres to the same interface for
 creation and rendering. In the instant gratification example, we let Tilt
 determine the template implementation class based on the filename, but
@@ -128,6 +128,10 @@ template = Tilt::ERBTemplate.new('foo.erb')
 template.render { 'Joe' }
 # => "Hey Joe!"
 ```
+
+For template engines that always result in the same output for the same
+template and do not accept local variables, scope class, or yield,
+the Tilt::StaticTemplate class should be used instead of Tilt::Template.
 
 Fixed Locals
 ------------

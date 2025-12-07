@@ -1,5 +1,10 @@
 require_relative 'test_helper'
 
+# Work around test issue on Ruby 4.0 where tests would fail because asciidoctor
+# sets a autoload for URI and haml requires rails if available, and activesupport
+# does a require of uri/generic.
+require 'uri'
+
 checked_describe 'tilt/haml' do
   data = (<<'END').freeze
 %html

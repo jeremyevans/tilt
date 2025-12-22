@@ -94,29 +94,27 @@ describe 'Tilt::Mapping' do
     end
 
     it "basic lookup" do
-      req = proc do |file|
-        assert_equal 'my_template', file
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.assert_equal 'my_template', file
         class ::MyTemplate; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "doesn't require when template class is present" do
       class ::MyTemplate; end
 
-      req = proc do |file|
-        flunk "#require shouldn't be called"
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk "#require shouldn't be called"
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "doesn't require when the template class is autoloaded, and then defined" do
@@ -129,25 +127,22 @@ describe 'Tilt::Mapping' do
       end
       assert did_load, "mytemplate wasn't freshly required"
 
-      req = proc do |file|
-        flunk "#require shouldn't be called"
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk "#require shouldn't be called"
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "raises NameError when the class name is defined" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         # do nothing
       end
 
-      @mapping.stub :require, req do
-        assert_raises(NameError) do
-          @mapping['hello.mt']
-        end
+      assert_raises(NameError) do
+        @mapping['hello.mt']
       end
     end
   end
@@ -168,56 +163,50 @@ describe 'Tilt::Mapping' do
     end
 
     it "only attempt to load the last template" do
-      req = proc do |file|
-        assert_equal 'my_template2', file
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.assert_equal 'my_template2', file
         class ::MyTemplate2; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate2, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate2, klass
     end
 
     it "uses the first template if it's present" do
       class ::MyTemplate1; end
 
-      req = proc do |file|
-        flunk
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate1, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate1, klass
     end
 
     it "falls back when LoadError is thrown" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         raise LoadError unless file == 'my_template1'
         class ::MyTemplate1; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate1, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate1, klass
     end
 
     it "raises the first LoadError when everything fails" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         raise LoadError, file
       end
 
-      @mapping.stub :require, req do
-        err = assert_raises(LoadError) do
-          @mapping['hello.mt']
-        end
-
-        assert_equal 'my_template2', err.message
+      err = assert_raises(LoadError) do
+        @mapping['hello.mt']
       end
+
+      assert_equal 'my_template2', err.message
     end
 
     it "handles autoloaded constants" do
@@ -231,14 +220,12 @@ describe 'Tilt::Mapping' do
   it "raises NameError on invalid class name" do
     @mapping.register_lazy '#foo', 'my_template', 'mt'
 
-    req = proc do |file|
+    @mapping.define_singleton_method(:require) do |file|
       # do nothing
     end
 
-    @mapping.stub :require, req do
-      assert_raises(NameError) do
-        @mapping['hello.mt']
-      end
+    assert_raises(NameError) do
+      @mapping['hello.mt']
     end
   end
 

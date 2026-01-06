@@ -237,7 +237,7 @@ module Tilt
     #                             :templates=>['erb', 'scss'])
     def register_pipeline(ext, options=EMPTY_HASH)
       templates = options[:templates] || ext.split('.').reverse
-      templates = templates.map{|t| [self[t], options[t] || EMPTY_HASH]}
+      templates = templates.map{|t| [self[t], t, options[t] || EMPTY_HASH]}
 
       klass = Class.new(Pipeline)
       klass.send(:const_set, :TEMPLATES, templates)

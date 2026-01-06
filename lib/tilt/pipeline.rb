@@ -6,9 +6,9 @@ module Tilt
   # Superclass used for pipeline templates.  Should not be used directly.
   class Pipeline < Template
     def prepare
-      @pipeline = self.class::TEMPLATES.inject(proc{|*| data}) do |data, (klass, options)|
+      @pipeline = self.class::TEMPLATES.inject(proc{|*| data}) do |data, (klass, ext, options)|
         proc do |s,l,&sb|
-          klass.new(file, line, options, &proc{|*| data.call(s, l, &sb)}).render(s, l, &sb)
+          klass.new(file, line, options.merge(@options[ext] || {}), &proc{|*| data.call(s, l, &sb)}).render(s, l, &sb)
         end
       end
     end

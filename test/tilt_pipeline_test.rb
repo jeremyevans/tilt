@@ -67,6 +67,15 @@ describe 'tilt/pipeline (options)' do
     template = pipeline.new { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' }
     assert_equal "11", template.render
   end
+  
+  it "merges additional options" do
+    pipeline = @mapping.register_pipeline('str.erb', 'erb'=>{:outvar=>'@foo'})
+    template = pipeline.new { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' }
+    assert_equal "11", template.render
+    template = pipeline.new(nil, nil, 'erb'=>{:outvar=>'@bar'}) { |t| '#<% @bar << \'{a = 1}\' %><%= \'#{a}\' %>' }
+    assert_equal "11", template.render
+  end
+  
 end
 
 describe 'Tilt.register_pipeline' do

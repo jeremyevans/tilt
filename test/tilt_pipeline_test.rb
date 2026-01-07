@@ -74,8 +74,14 @@ describe 'tilt/pipeline (options)' do
     assert_equal "11", template.render
     template = pipeline.new(nil, nil, 'erb'=>{:outvar=>'@bar'}) { |t| '#<% @bar << \'{a = 1}\' %><%= \'#{a}\' %>' }
     assert_equal "11", template.render
+
+    if Tilt['erb'].name == 'Tilt::ErubiTemplate'
+      template = pipeline.new('erb'=>{:trim=>true}) { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' + " <% 1.times do %> \n<% end %>\n" }
+      assert_equal "11  \n", template.render
+      template = pipeline.new('erb'=>{:trim=>false}) { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' + " <% 1.times do %> \n<% end %>\n" }
+      assert_equal "11  \n\n", template.render
+    end
   end
-  
 end
 
 describe 'Tilt.register_pipeline' do

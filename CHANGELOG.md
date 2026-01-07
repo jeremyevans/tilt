@@ -1,5 +1,6 @@
 ## master
 
+* Support passing template-specific options to Tilt::Pipeline.new (LevitatingBusinessMan) (#24)
 * Remove deprecated creole template (jeremyevans)
 * Make the rendering of Prawn templates idempotent (rickenharp) (#20)
 

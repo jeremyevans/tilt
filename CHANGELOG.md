@@ -1,4 +1,4 @@
-## master
+## 2.7.0 (2026-01-09)
 
 * Support passing template-specific options to Tilt::Pipeline.new (LevitatingBusinessMan) (#24)
 * Remove deprecated creole template (jeremyevans)

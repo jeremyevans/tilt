@@ -50,14 +50,24 @@ if defined?(::Commonmarker)
   parse_opts = [
     :smart,
     :default_info_string,
+    :relaxed_tasklist_matching,
+    :relaxed_autolinks,
+    :leave_footnote_definitions,
+    :ignore_setext,
   ].freeze
   render_opts = [
     :hardbreaks,
     :github_pre_lang,
+    :full_info_string,
     :width,
     :unsafe,
     :escape,
     :sourcepos,
+    :escaped_char_spans,
+    :ignore_empty_links,
+    :gfm_quirks,
+    :prefer_fenced,
+    :tasklist_classes,
   ].freeze
   exts = [
     :strikethrough,
@@ -68,9 +78,23 @@ if defined?(::Commonmarker)
     :superscript,
     :header_ids,
     :footnotes,
+    :inline_footnotes,
     :description_lists,
     :front_matter_delimiter,
+    :multiline_block_quotes,
+    :math_dollars,
+    :math_code,
     :shortcodes,
+    :wikilinks_title_before_pipe,
+    :wikilinks_title_after_pipe,
+    :underline,
+    :spoiler,
+    :greentext,
+    :subscript,
+    :subtext,
+    :alerts,
+    :cjk_friendly_emphasis,
+    :highlight,
   ].freeze
 
   Tilt::CommonMarkerTemplate = Tilt::StaticTemplate.subclass do

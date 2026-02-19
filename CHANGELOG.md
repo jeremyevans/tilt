@@ -1,3 +1,7 @@
+## master
+
+* Support options added in recent Commonmarker versions in the Commonmarker template (halo) (#26)
+
 ## 2.7.0 (2026-01-09)
 
 * Support passing template-specific options to Tilt::Pipeline.new (LevitatingBusinessMan) (#24)

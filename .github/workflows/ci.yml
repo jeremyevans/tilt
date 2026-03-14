@@ -25,7 +25,7 @@ jobs:
       BUNDLE_GEMFILE: .ci.gemfile
       COFFEE_SCRIPT: use
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     # Pandoc needs Pandoc
     - run: sudo apt-get install -y pandoc
     - uses: ruby/setup-ruby@v1

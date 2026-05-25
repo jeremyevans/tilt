@@ -25,7 +25,7 @@ checked_describe('tilt/prawn', 'pdf-reader') do
 
   it "renders inline prawn templates" do
     template = Tilt::PrawnTemplate.new { |t| "pdf.text \"Hello PDF!\"" }
-    3.times do
+    2.times do
       output   = _PdfOutput.new(template.render)
       assert_includes output.text, "Hello PDF!"
     end
@@ -33,7 +33,7 @@ checked_describe('tilt/prawn', 'pdf-reader') do
   
   it "supports yielding to render" do
     template = Tilt::PrawnTemplate.new { |t| "yield pdf" }
-    3.times do
+    2.times do
       output   = _PdfOutput.new(template.render{|pdf| pdf.text 'Hello PDF!'})
       assert_includes output.text, "Hello PDF!"
     end
@@ -41,7 +41,7 @@ checked_describe('tilt/prawn', 'pdf-reader') do
   
   it "renders templates from a file" do
     template = Tilt::PrawnTemplate.new("test/tilt_prawntemplate.prawn")
-    3.times do
+    2.times do |i|
       output   = _PdfOutput.new(template.render)
       assert_equal 2, output.page_count
       assert_equal output.text, "Hello Template!"

@@ -55,6 +55,7 @@ end
 
 if RUBY_ENGINE == 'jruby'
   gem 'jar-dependencies', '0.4.1'
+  gem 'rdoc', '< 8'
 end
 
 if RUBY_ENGINE == 'jruby'

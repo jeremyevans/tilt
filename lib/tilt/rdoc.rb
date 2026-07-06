@@ -28,6 +28,14 @@ require 'rdoc/markup'
 require 'rdoc/markup/to_html'
 require 'rdoc/options'
 
-Tilt::RDocTemplate = Tilt::StaticTemplate.subclass do
-  RDoc::Markup::ToHtml.new(RDoc::Options.new, nil).convert(@data).to_s
+Tilt::RDocTemplate = if defined?(RDoc::VERSION) && RDoc::VERSION >= "8"
+  Tilt::StaticTemplate.subclass do
+    RDoc::Markup::ToHtml.new.convert(@data).to_s
+  end
+# :nocov:
+else
+  Tilt::StaticTemplate.subclass do
+    RDoc::Markup::ToHtml.new(RDoc::Options.new, nil).convert(@data).to_s
+  end
 end
+# :nocov:

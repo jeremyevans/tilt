@@ -1,5 +1,6 @@
 ## master
 
+* Support rdoc 8 in the rdoc template (jeremyevans)
 * Support options added in recent Commonmarker versions in the Commonmarker template (halo) (#26)
 
 ## 2.7.0 (2026-01-09)

@@ -28,6 +28,8 @@ end
 
 if RUBY_VERSION < '2.7'
   gem 'rdoc', '< 6.4'
+elsif RUBY_ENGINE == 'jruby'
+  gem 'rdoc', '< 8'
 else
   gem 'rdoc'
 end
@@ -55,7 +57,6 @@ end
 
 if RUBY_ENGINE == 'jruby'
   gem 'jar-dependencies', '0.4.1'
-  gem 'rdoc', '< 8'
 end
 
 if RUBY_ENGINE == 'jruby'

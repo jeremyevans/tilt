@@ -1,62 +1,39 @@
-require 'rake/testtask'
 task :default => [:test]
 
-# SPECS =====================================================================
-
-desc 'Run tests (default)'
-Rake::TestTask.new(:test) do |t|
-  t.test_files = FileList['test/*_test.rb']
-  t.warning = false
+desc "Run tests"
+task :test do
+  sh "#{FileUtils::RUBY} #{"-w" if RUBY_VERSION >= '3'} #{'-W:strict_unused_block' if RUBY_VERSION >= '3.4'} test/all.rb"
 end
 
-# DOCUMENTATION =============================================================
+desc "Generate rdoc"
+task :rdoc do
+  rdoc_dir = "rdoc"
+  rdoc_opts = ["--line-numbers", '--title', 'Tilt']
 
-begin
-  require 'yard'
-  YARD::Rake::YardocTask.new do |t|
-    t.files = [
-      'lib/tilt.rb', 'lib/tilt/mapping.rb', 'lib/tilt/template.rb',
-      '-',
-      '*.md', 'docs/*.md',
-    ]
-
-    t.options <<
-      '--no-private' <<
-      '--protected' <<
-      '-m' << 'markdown' <<
-      '--asset' << 'docs/common.css:css/common.css'
+  begin
+    gem 'hanna'
+    rdoc_opts.concat(['-f', 'hanna'])
+  rescue Gem::LoadError
   end
-rescue LoadError
+
+  rdoc_opts.concat(['--main', 'README.md', "-o", rdoc_dir] +
+    %w"README.md CHANGELOG.md COPYING" +
+    Dir["lib/**/*.rb"]
+  )
+
+  FileUtils.rm_rf(rdoc_dir)
+
+  require "rdoc"
+  RDoc::RDoc.new.document(rdoc_opts)
 end
 
-task :man do
-  require 'ronn'
-  ENV['RONN_MANUAL'] = "Tilt Manual"
-  ENV['RONN_ORGANIZATION'] = "Tilt #{SPEC.version}"
-  sh "ronn -w -s toc -r5 --markdown man/*.ronn"
+desc "Run tests with coverage"
+task :test_cov do
+  ENV['COVERAGE'] = '1'
+  sh "#{FileUtils::RUBY} test/all.rb"
 end
 
-# PACKAGING =================================================================
-
-if defined?(Gem)
-  SPEC = eval(File.read('tilt.gemspec'))
-
-  def package(ext='')
-    "pkg/tilt-#{SPEC.version}" + ext
-  end
-
-  desc 'Build packages'
-  task :package => package('.gem')
-
-  desc 'Build and install as local gem'
-  task :install => package('.gem') do
-    sh "gem install #{package('.gem')}"
-  end
-
-  directory 'pkg/'
-
-  file package('.gem') => %w[pkg/ tilt.gemspec] + SPEC.files do |f|
-    sh "gem build tilt.gemspec"
-    mv File.basename(f.name), f.name
-  end
+desc 'Build packages'
+task :package do
+  sh "gem build tilt.gemspec"
 end

@@ -1,6 +1,7 @@
 require_relative 'test_helper'
+require 'tilt/string'
 
-describe 'tilt/mapping' do
+describe 'Tilt::Mapping' do
   _Stub = Class.new
   _Stub2 = Class.new
 
@@ -55,6 +56,19 @@ describe 'tilt/mapping' do
     assert_equal _Stub, @mapping['foo']
   end
 
+  it "#new raises if no template engine found" do
+    assert_raises(RuntimeError) do
+      @mapping.new('foo.nonexistant')
+    end
+  end
+
+  it "#[] raises if template engine recognized but cannot be loaded" do
+    @mapping.register_lazy :NonExistantTemplate,    'tilt/nonexistant_template',    'test-nonexist'
+    assert_raises(LoadError) do
+      @mapping['foo.test-nonexist']
+    end
+  end
+
   describe "lazy with one template class" do
     before do
       @mapping.register_lazy('MyTemplate', 'my_template', 'mt')
@@ -80,29 +94,27 @@ describe 'tilt/mapping' do
     end
 
     it "basic lookup" do
-      req = proc do |file|
-        assert_equal 'my_template', file
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.assert_equal 'my_template', file
         class ::MyTemplate; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "doesn't require when template class is present" do
       class ::MyTemplate; end
 
-      req = proc do |file|
-        flunk "#require shouldn't be called"
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk "#require shouldn't be called"
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "doesn't require when the template class is autoloaded, and then defined" do
@@ -115,25 +127,22 @@ describe 'tilt/mapping' do
       end
       assert did_load, "mytemplate wasn't freshly required"
 
-      req = proc do |file|
-        flunk "#require shouldn't be called"
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk "#require shouldn't be called"
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate, klass
     end
 
     it "raises NameError when the class name is defined" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         # do nothing
       end
 
-      @mapping.stub :require, req do
-        assert_raises(NameError) do
-          @mapping['hello.mt']
-        end
+      assert_raises(NameError) do
+        @mapping['hello.mt']
       end
     end
   end
@@ -154,56 +163,50 @@ describe 'tilt/mapping' do
     end
 
     it "only attempt to load the last template" do
-      req = proc do |file|
-        assert_equal 'my_template2', file
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.assert_equal 'my_template2', file
         class ::MyTemplate2; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate2, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate2, klass
     end
 
     it "uses the first template if it's present" do
       class ::MyTemplate1; end
 
-      req = proc do |file|
-        flunk
+      spec = self
+      @mapping.define_singleton_method(:require) do |file|
+        spec.flunk
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate1, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate1, klass
     end
 
     it "falls back when LoadError is thrown" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         raise LoadError unless file == 'my_template1'
         class ::MyTemplate1; end
         true
       end
 
-      @mapping.stub :require, req do
-        klass = @mapping['hello.mt']
-        assert_equal ::MyTemplate1, klass
-      end
+      klass = @mapping['hello.mt']
+      assert_equal ::MyTemplate1, klass
     end
 
     it "raises the first LoadError when everything fails" do
-      req = proc do |file|
+      @mapping.define_singleton_method(:require) do |file|
         raise LoadError, file
       end
 
-      @mapping.stub :require, req do
-        err = assert_raises(LoadError) do
-          @mapping['hello.mt']
-        end
-
-        assert_equal 'my_template2', err.message
+      err = assert_raises(LoadError) do
+        @mapping['hello.mt']
       end
+
+      assert_equal 'my_template2', err.message
     end
 
     it "handles autoloaded constants" do
@@ -217,14 +220,12 @@ describe 'tilt/mapping' do
   it "raises NameError on invalid class name" do
     @mapping.register_lazy '#foo', 'my_template', 'mt'
 
-    req = proc do |file|
+    @mapping.define_singleton_method(:require) do |file|
       # do nothing
     end
 
-    @mapping.stub :require, req do
-      assert_raises(NameError) do
-        @mapping['hello.mt']
-      end
+    assert_raises(NameError) do
+      @mapping['hello.mt']
     end
   end
 
@@ -237,5 +238,76 @@ describe 'tilt/mapping' do
     it "handles multiple engines" do
       assert_equal [_Stub2, _Stub], @mapping.templates_for('hello/world.a.b')
     end
+  end
+end
+
+describe 'Tilt::FinalizedMapping' do
+  next if defined?(JRUBY_VERSION) && JRUBY_VERSION < '9.3'
+
+  _Stub = Class.new
+  _Stub2 = Class.new
+
+  before do
+    mapping = Tilt::Mapping.new
+    mapping.register(_Stub, 'foo', 'bar')
+    mapping.register(_Stub2, 'foo', 'baz')
+    mapping.register_lazy(:NonExistant, 'tilt/nonexistant', 'str')
+    mapping.register_lazy(:StringTemplate, 'tilt/string', 'string')
+    @mapping = mapping.finalized
+  end
+
+  it "does not allow modification" do
+    refute @mapping.respond_to?(:register)
+    refute @mapping.respond_to?(:register_lazy)
+    refute @mapping.respond_to?(:unregister)
+    refute @mapping.respond_to?(:register_pipeline)
+    assert @mapping.frozen?
+  end
+
+  it "#registered?" do
+    assert @mapping.registered?('foo')
+    assert @mapping.registered?('bar')
+    assert @mapping.registered?('baz')
+    assert @mapping.registered?('string')
+    refute @mapping.registered?('str')
+  end
+
+  it "#[]" do
+    assert_equal _Stub2, @mapping['x.foo']
+    assert_equal _Stub, @mapping['x.bar']
+    assert_equal _Stub2, @mapping['x.baz']
+    assert_nil @mapping['x.str']
+    assert_equal Tilt::StringTemplate, @mapping['x.string']
+  end
+
+  it "#templates_for" do
+    assert_equal [_Stub, _Stub2], @mapping.templates_for('x.foo.bar')
+    assert_equal [_Stub], @mapping.templates_for('x.bar')
+    assert_equal [_Stub2], @mapping.templates_for('x.baz')
+    assert_equal [], @mapping.templates_for('x.str')
+    assert_equal [Tilt::StringTemplate], @mapping.templates_for('x.string')
+  end
+
+  it "#extensions_for" do
+    assert_equal ['bar'], @mapping.extensions_for(_Stub)
+    assert_equal ['foo', 'baz'], @mapping.extensions_for(_Stub2)
+    assert_equal ['string'], @mapping.extensions_for(Tilt::StringTemplate)
+    assert_equal [], @mapping.extensions_for(Object)
+  end
+
+  it "#clone" do
+    m = @mapping.clone
+    assert m.frozen?
+    assert_equal _Stub2, m['x.foo']
+    assert_equal Tilt::StringTemplate, m['x.string']
+    assert_nil m['x.str']
+  end
+
+  it "#dup" do
+    m = @mapping.dup
+    assert m.frozen?
+    assert_equal _Stub2, m['x.foo']
+    assert_equal Tilt::StringTemplate, m['x.string']
+    assert_nil m['x.str']
   end
 end

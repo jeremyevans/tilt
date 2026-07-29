@@ -1,9 +1,9 @@
 /dist
 *.swp
-/Gemfile.lock
 /vendor
 /.bundle
 /.yardoc
-/doc
+/rdoc
 .sass-cache
-/man
+/tilt-*.gem
+/coverage

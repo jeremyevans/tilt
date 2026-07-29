@@ -1,27 +1,31 @@
-require 'tilt/template'
+# frozen_string_literal: true
+
+# = Builder
+#
+
+require_relative 'template'
 require 'builder'
 
 module Tilt
-  # Builder template implementation. See:
-  # http://builder.rubyforge.org/
+  # Builder template implementation.
   class BuilderTemplate < Template
     self.default_mime_type = 'text/xml'
 
     def prepare
-      options[:indent] ||= 2
+      @options[:indent] ||= 2
     end
 
     def evaluate(scope, locals, &block)
-      xml = (locals[:xml] || ::Builder::XmlMarkup.new(options))
-
-      if data.respond_to?(:to_str)
-        if !locals[:xml]
-          locals = locals.merge(:xml => xml)
+      if @data.respond_to?(:to_str)
+        unless locals[:xml]
+          locals = Hash[locals]
+          locals[:xml] = xml_builder
         end
-        return super(scope, locals, &block)
+        return super
       end
 
-      data.call(xml)
+      xml = locals[:xml] || xml_builder
+      @data.call(xml)
       xml.target!
     end
 
@@ -30,8 +34,13 @@ module Tilt
     end
 
     def precompiled_template(locals)
-      data.to_str
+      @data.to_str
+    end
+
+    private
+
+    def xml_builder
+      ::Builder::XmlMarkup.new(options)
     end
   end
 end
-

@@ -1,23 +1,18 @@
-require 'tilt/template'
+# frozen_string_literal: true
+
+# = LiveScript
+#
+# LiveScript template implementation.
+#
+# LiveScript templates do not support object scopes, locals, or yield.
+#
+# === See also
+#
+# * http://livescript.net
+
+require_relative 'template'
 require 'livescript'
 
-module Tilt
-  # LiveScript template implementation. See:
-  # http://livescript.net/
-  #
-  # LiveScript templates do not support object scopes, locals, or yield.
-  class LiveScriptTemplate < Template
-    self.default_mime_type = 'application/javascript'
-
-    def prepare
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= LiveScript.compile(data, options)
-    end
-
-    def allows_script?
-      false
-    end
-  end
+Tilt::LiveScriptTemplate = Tilt::StaticTemplate.subclass(mime_type: 'application/javascript') do
+  LiveScript.compile(@data, @options)
 end

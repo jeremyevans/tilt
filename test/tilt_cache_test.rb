@@ -1,7 +1,14 @@
 require_relative 'test_helper'
 
 describe 'Tilt::Cache' do
-  before { @cache = Tilt::Cache.new }
+  before do
+    begin
+      verbose, $VERBOSE = $VERBOSE, nil
+      @cache = Tilt::Cache.new
+    ensure
+      $VERBOSE = verbose
+    end
+  end
 
   it "caching with single simple argument to #fetch" do
     template = nil

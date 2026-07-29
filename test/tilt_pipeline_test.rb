@@ -67,4 +67,32 @@ describe 'tilt/pipeline (options)' do
     template = pipeline.new { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' }
     assert_equal "11", template.render
   end
+  
+  it "merges additional options" do
+    pipeline = @mapping.register_pipeline('str.erb', 'erb'=>{:outvar=>'@foo'})
+    template = pipeline.new { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' }
+    assert_equal "11", template.render
+    template = pipeline.new(nil, nil, 'erb'=>{:outvar=>'@bar'}) { |t| '#<% @bar << \'{a = 1}\' %><%= \'#{a}\' %>' }
+    assert_equal "11", template.render
+
+    if Tilt['erb'].name == 'Tilt::ErubiTemplate'
+      template = pipeline.new('erb'=>{:trim=>true}) { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' + " <% 1.times do %> \n<% end %>\n" }
+      assert_equal "11  \n", template.render
+      template = pipeline.new('erb'=>{:trim=>false}) { |t| '#<% @foo << \'{a = 1}\' %><%= \'#{a}\' %>' + " <% 1.times do %> \n<% end %>\n" }
+      assert_equal "11  \n\n", template.render
+    end
+  end
+end
+
+describe 'Tilt.register_pipeline' do
+  before do
+    @pipeline_class = Tilt.register_pipeline('str.erb')
+  end
+  after do
+    Tilt.default_mapping.unregister('str.erb')
+  end
+
+  it "registers itself for the given extension" do
+    assert_equal @pipeline_class, Tilt['test.str.erb']
+  end
 end

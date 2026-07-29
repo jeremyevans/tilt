@@ -1,3 +1,89 @@
+## Unreleased
+
+* Add Herb template, registered for .herb and .html.erb (marcoroth)
+
+## 2.8.0 (2026-07-06)
+
+* Support rdoc 8 in the rdoc template (jeremyevans)
+* Support options added in recent Commonmarker versions in the Commonmarker template (halo) (#26)
+
+## 2.7.0 (2026-01-09)
+
+* Support passing template-specific options to Tilt::Pipeline.new (LevitatingBusinessMan) (#24)
+* Remove deprecated creole template (jeremyevans)
+* Make the rendering of Prawn templates idempotent (rickenharp) (#20)
+
+## 2.6.1 (2025-07-07)
+
+* Fix race condition during parallel coverage testing using Template compiled_path option/method (jeremyevans)
+
+## 2.6.0 (2025-01-13)
+
+* Support :compiled_path option, needed for compiled paths when using :scope_class and fixed locals (jeremyevans)
+* Support :scope_class option to force a specific scope class, instead of using the class of the provided scope (jeremyevans)
+* Support fallback fixed locals for templates without extracted locals via :default_fixed_locals option (jeremyevans)
+* Add Tilt.extract_fixed_locals accessor for enabling :extract_fixed_locals globally (jeremyevans)
+* Support embedded fixed locals for templates via magic comments via :extract_fixed_locals option (jeremyevans)
+* Support fixed locals for templates via :fixed_locals option (jeremyevans)
+
+## 2.5.0 (2024-12-20)
+
+* Deprecate creole templates as they require modifying frozen string literals (jeremyevans)
+* Remove deprecated erubis, wikicloth, and maruku templates (jeremyevans)
+* Avoid spurious frozen string literal warnings for chilled strings when using Ruby 3.4 (jeremyevans)
+
+## 2.4.0 (2024-06-27)
+
+* Support commonmarker 1.0+ API (unasuke) (#10)
+* Make etanni template work with frozen string literals (jeremyevans)
+* Deprecate erubis, wikicloth, and maruku templates as they require modifying frozen string literals (jeremyevans)
+* Make SassTemplate ignore unsupported options when using sass-embedded (jeremyevans)
+
+## 2.3.0 (2023-09-14)
+
+* Remove deprecated support for non-string template code in PrawnTemplate (jeremyevans)
+* Remove deprecated support for {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
+* Remove deprecated support for CoffeeScriptTemplate.default_no_wrap{,=} (jeremyevans)
+* Remove deprecated support for RedCarpet 1.x (jeremyevans)
+* Remove deprecated support for Tilt.current_template (jeremyevans)
+* Make Template#freeze_string_literals? work correctly with Template#compiled_path (jeremyevans)
+* Support :freeze option for StringTemplate to support frozen string literals (jeremyevans)
+* Make Tilt.finalize! a no-op if it has already been called (jeremyevans)
+
+## 2.2.0 (2023-06-05)
+
+* Remove deprecated BlueCloth, Less, and Sigil support (jeremyevans)
+* Drop support for RDoc < 4 (jeremyevans)
+* Deprecate Tilt::Cache (jeremyevans)
+* Deprecate Tilt.current_template (jeremyevans)
+* Deprecate support for RedCarpet 1.x (jeremyevans)
+* Deprecate CoffeeScriptTemplate.default_no_wrap{,=} aliases of default_bare{,=} (jeremyevans)
+* Deprecate {ERB,Erubis}Template#default_output_variable{,=} (jeremyevans)
+* Deprecate non-string template code in PrawnTemplate (jeremyevans)
+* Deprecate default lazy loading of handlebars/org/emacs_org/jbuilder external template engines (jeremyevans)
+* Handle `locals` as a local variable in templates (timriley) (#3) 
+* Do not cache output in PrawnTemplate#evaluate (jeremyevans)
+* Do not mark PrawnTemplate as not allowing script, since it can be used to execute arbitrary Ruby code (jeremyevans)
+* Remove Redcarpet1Template and Redcarpet2Template from the RedCarpet support (jeremyevans)
+* Separate CoffeeScriptTemplate.default_bare and CoffeeScriptLiterateTemplate.default_bare (jeremyevans)
+* Fix possible issue in KramdownTemplate under concurrent use (jeremyevans)
+* Do not define yield tag for RadiusTemplate if no block is given to render (jeremyevans)
+* Avoid holding mutex while compiling template methods (jeremyevans)
+* Template#prepare no longer needs to be overridden if no preparation work is needed (jeremyevans)
+* Fix potential concurrency issues in Mapping (jeremyevans)
+* Stop modifying given locals hash in tilt/prawn (jeremyevans)
+* Change visibility of Template#compiled_method to public (jeremyevans)
+* Add Tilt::StaticTemplate for templates that return the same output for every render (jeremyevans)
+* Add Tilt::Mapping#finalized and Tilt.finalize! for finalized mappings that do not require mutex synchronization (jeremyevans)
+* Add frozen_string_literal magic comment to all source files (jeremyevans)
+* Support templates with frozen compiled source code (jeremyevans)
+* Support :skip_compiled_encoding_detection template option to not scan compiled source code for encoding lines (jeremyevans)
+* Ship slim template support with tilt (minad) (#4)
+* Template#extract_{encoding,magic_comment} private methods now require a block (jeremyevans)
+
+The repository switched to https://github.com/jeremyevans/tilt, so issue references above are for that
+repository, and issue references below are for the previous repository (https://github.com/rtomayko/tilt).
+
 ## 2.1.0 (2023-02-17)
 
 * Use UnboundMethod#bind_call on Ruby 2.7+ for better performance (#380, jeremyevans)

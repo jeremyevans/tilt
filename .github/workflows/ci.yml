@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        ruby: [ "2.0.0", 2.1, 2.3, 2.4, 2.5, 2.6, 2.7, "3.0", 3.1, 3.2, 3.3, 3.4, "4.0", jruby-10.0, jruby-10.1 ]
+        include:
+          - { os: ubuntu-22.04, ruby: jruby-9.2 }
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.ruby }}
+    env:
+      BUNDLE_GEMFILE: .ci.gemfile
+      COFFEE_SCRIPT: use
+    steps:
+    - uses: actions/checkout@v6
+    # Pandoc needs Pandoc
+    - run: sudo apt-get install -y pandoc
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+        cache-version: 1
+    - run: bundle exec rake

@@ -5,9 +5,6 @@ describe 'tilt metadata' do
     metadata[:global] = 1
     self.default_mime_type = 'text/html'
 
-    def prepare
-    end
-
     def allows_script?
       true
     end

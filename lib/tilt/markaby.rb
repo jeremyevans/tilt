@@ -1,9 +1,19 @@
-require 'tilt/template'
+# frozen_string_literal: true
+
+# = Markaby
+#
+# === See also
+#
+# * http://github.com/markaby/markaby
+#
+# === Related module
+#
+# * Tilt::MarkabyTemplate
+
+require_relative 'template'
 require 'markaby'
 
 module Tilt
-  # Markaby
-  # http://github.com/markaby/markaby
   class MarkabyTemplate < Template
     def self.builder_class
       @builder_class ||= Class.new(Markaby::Builder) do
@@ -15,19 +25,16 @@ module Tilt
       end
     end
 
-    def prepare
-    end
-
     def evaluate(scope, locals, &block)
       builder = self.class.builder_class.new({}, scope)
       builder.locals = locals
 
-      if data.kind_of? Proc
-        (class << builder; self end).send(:define_method, :__run_markaby_tilt__, &data)
+      if @data.kind_of? Proc
+        (class << builder; self end).send(:define_method, :__run_markaby_tilt__, &@data)
       else
         builder.instance_eval <<-CODE, __FILE__, __LINE__
           def __run_markaby_tilt__
-            #{data}
+            #{@data}
           end
         CODE
       end

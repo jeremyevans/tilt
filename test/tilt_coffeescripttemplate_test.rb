@@ -1,8 +1,6 @@
 require_relative 'test_helper'
 
-begin
-  require 'tilt/coffee'
-
+checked_require 'tilt/coffee' do
   _CoffeeScriptTests = proc do
     it "bare is disabled by default" do
       assert_equal false, @renderer.default_bare
@@ -88,6 +86,10 @@ begin
         assert_match "puts(\"Hello, \" + name);", template.render
         assert_match "(function() {", template.render
       end
+
+      it "sets allows_script metadata set to false" do
+        assert_equal false, @renderer.new{ |t| @code_with_variables }.metadata[:allows_script]
+      end
     end
   end
 
@@ -130,7 +132,4 @@ EOLIT
       assert_equal @renderer, Tilt['test.litcoffee']
     end
   end
-
-rescue LoadError
-  warn "Tilt::CoffeeScriptTemplate (disabled)"
 end

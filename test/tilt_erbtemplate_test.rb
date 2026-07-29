@@ -2,6 +2,17 @@ require_relative 'test_helper'
 require 'tilt/erb'
 require 'tempfile'
 
+data = (<<END).freeze
+<html>
+<body>
+  <h1>Hey <%= name %>!</h1>
+
+
+  <p><% fail %></p>
+</body>
+</html>
+END
+
 describe 'tilt/erb' do
   it "registered for '.erb' files" do
     assert_includes Tilt.lazy_map['erb'], ['Tilt::ERBTemplate', 'tilt/erb']
@@ -38,19 +49,11 @@ describe 'tilt/erb' do
   end
 
   it "exposing the buffer to the template by default" do
-    verbose = $VERBOSE
-    begin
-      $VERBOSE = nil
-      Tilt::ERBTemplate.default_output_variable = '@_out_buf'
-      template = Tilt::ERBTemplate.new { '<% self.exposed_buffer = @_out_buf %>hey' }
-      scope = _MockOutputVariableScope.new
-      template.render(scope)
-      refute_nil scope.exposed_buffer
-      assert_equal scope.exposed_buffer, 'hey'
-    ensure
-      Tilt::ERBTemplate.default_output_variable = '_erbout'
-      $VERBOSE = verbose
-    end
+    template = Tilt::ERBTemplate.new(:outvar=>'@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
+    scope = _MockOutputVariableScope.new
+    template.render(scope)
+    refute_nil scope.exposed_buffer
+    assert_equal scope.exposed_buffer, 'hey'
   end
 
   it "passing a block for yield" do
@@ -59,15 +62,13 @@ describe 'tilt/erb' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__, :encoding=>'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 11) { data }
     begin
       template.render
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.erb:/).first
+      line = boom.backtrace.grep(/\Atest\.erb:/).first
       assert line, "Backtrace didn't contain test.erb"
       _file, line, _meth = line.split(":")
       assert_equal '13', line
@@ -75,8 +76,6 @@ describe 'tilt/erb' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__, :encoding=>'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 1) { data }
     begin
       template.render(nil, :name => 'Joe', :foo => 'bar')
@@ -160,15 +159,13 @@ describe 'tilt/erb (compiled)' do
   end
 
   it "backtrace file and line reporting without locals" do
-    data = File.read(__FILE__, encoding: 'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb', 11) { data }
     begin
       template.render(_Scope.new)
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
-      line = boom.backtrace.grep(/^test\.erb:/).first
+      line = boom.backtrace.grep(/\Atest\.erb:/).first
       assert line, "Backtrace didn't contain test.erb"
       _file, line, _meth = line.split(":")
       assert_equal '13', line
@@ -176,8 +173,6 @@ describe 'tilt/erb (compiled)' do
   end
 
   it "backtrace file and line reporting with locals" do
-    data = File.read(__FILE__, encoding: 'UTF-8').split("\n__END__\n").last
-    fail unless data[0] == ?<
     template = Tilt::ERBTemplate.new('test.erb') { data }
     begin
       template.render(_Scope.new, :name => 'Joe', :foo => 'bar')
@@ -226,20 +221,10 @@ describe 'tilt/erb (compiled)' do
     f.delete
   end
 
-  if RUBY_VERSION >= '2.3'
+  if RUBY_VERSION >= '2.4'
     it "uses frozen literal strings if :freeze option is used" do
       template = Tilt::ERBTemplate.new(nil, :freeze => true) { |t| %(<%= "".frozen? %>) }
       assert_equal "true", template.render
     end
   end
 end
-
-__END__
-<html>
-<body>
-  <h1>Hey <%= name %>!</h1>
-
-
-  <p><% fail %></p>
-</body>
-</html>

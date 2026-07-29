@@ -3,14 +3,17 @@ require 'tempfile'
 require 'tmpdir'
 require 'pathname'
 
-_MockTemplate = Class.new(Tilt::Template) do
-  def prepare
-  end
-end
+_MockTemplate = Class.new(Tilt::Template)
 
 describe "tilt/template" do
   it "needs a file or block" do
     assert_raises(ArgumentError) { Tilt::Template.new }
+  end
+
+  it "handles frozen strings with :default_encoding" do
+    inst = _MockTemplate.new('foo.erb', default_encoding: 'US-ASCII') {''.freeze}
+    assert_equal false, inst.data.frozen?
+    assert_equal Encoding::US_ASCII, inst.data.encoding
   end
 
   it "initializing with a file" do
@@ -30,6 +33,18 @@ describe "tilt/template" do
     assert_equal File.basename(tempfile.path), inst.basename
   end
 
+  it "initializing with an object responding to to_path" do
+    o = Object.new
+    def o.to_path; 'foo.erb' end
+    assert_equal 'foo.erb', _MockTemplate.new(o){}.file
+  end
+
+  it "initializing with an object not responding to any expected convertor" do
+    assert_raises(TypeError) do
+      _MockTemplate.new(Object.new)
+    end
+  end
+
   it "initializing with a pathname" do
     tempfile = Tempfile.new('tilt_template_test')
     pathname = Pathname.new(tempfile.path)
@@ -37,10 +52,10 @@ describe "tilt/template" do
     assert_equal File.basename(tempfile.path), inst.basename
   end
 
-  it "initialize with hash that implements #path" do
+  it "initialize with hash that implements #path and #to_path" do
     _SillyHash = Class.new(Hash) do
-      def path(arg)
-      end
+      def path; end
+      def to_path; end
     end
 
     options = _SillyHash[:key => :value]
@@ -69,6 +84,16 @@ describe "tilt/template" do
     assert_equal 'foo', inst.name
   end
 
+  it "handles #basename and #name without file" do
+    inst = _MockTemplate.new {}
+    assert_nil inst.basename
+    assert_nil inst.name
+  end
+
+  it "#metadata returns class metdata" do
+    assert_equal({}, _MockTemplate.new{}.metadata)
+  end
+
   it "initializing with a data loading block" do
     _MockTemplate.new { |template| "Hello World!" }
   end
@@ -79,10 +104,6 @@ describe "tilt/template" do
       @prepared = true
     end
     def prepared? ; @prepared ; end
-  end
-
-  it "raises NotImplementedError when #prepare not defined" do
-    assert_raises(NotImplementedError) { Tilt::Template.new { |template| "Hello World!" } }
   end
 
   it "raises NotImplementedError when #evaluate or #template_source not defined" do
@@ -112,9 +133,20 @@ describe "tilt/template" do
     assert inst.prepared?
   end
 
+  it "#fixed_locals? returns whether the template uses fixed locals" do
+    assert_equal false, _MockTemplate.new{}.fixed_locals?
+    assert_equal true, _MockTemplate.new(fixed_locals: "()"){}.fixed_locals?
+  end
+
   _SourceGeneratingMockTemplate = Class.new(_PreparingMockTemplate) do
     def precompiled_template(locals)
       "foo = [] ; foo << %Q{#{data}} ; foo.join"
+    end
+  end
+
+  _FrozenSourceGeneratingMockTemplate = Class.new(_SourceGeneratingMockTemplate) do
+    def freeze_string_literals?
+      true
     end
   end
 
@@ -143,72 +175,172 @@ describe "tilt/template" do
     assert_equal "1 + 2 = 3", inst.render(Object.new, '_answer' => 3)
   end
 
+  it "#compiled_method should return UnboundMethod for given local keys and scope class" do
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
+    m = inst.compiled_method([], Object)
+    assert_kind_of UnboundMethod, m
+    o = Object.new
+    o.define_singleton_method(:x, m)
+    assert_equal 'Hey', o.x({})
+    assert_same m, inst.compiled_method([], Object)
+    m1 = inst.compiled_method([:a], Object)
+    m2 = inst.compiled_method([], Array)
+    refute_same m, m1
+    refute_same m, m2
+    o.define_singleton_method(:y, m1)
+    assert_equal 'Hey', o.y(a: 1)
+    ary = []
+    ary.define_singleton_method(:z, m2)
+    assert_equal 'Hey', ary.z({})
+  end
+
   it "template_source with nil locals" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
     assert_equal 'Hey', inst.render(Object.new, nil)
     assert inst.prepared?
   end
 
-  it "template with compiled_path" do
-    Dir.mktmpdir('tilt') do |dir|
-      base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base
+  it "template_source with locals including 'locals'" do
+    # Skip in CI on JRuby 9.1/9.2, as CI fails even though tests pass locally with these
+    # JRuby versions.
+    skip if defined?(JRUBY_VERSION) && JRUBY_VERSION < '9.3' && ENV['COFFEE_SCRIPT'] == 'use'
 
-      tempfile = "#{base}.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass Object/, File.read(tempfile))
+    # Ensure that a locals hash value named `locals` doesn't clobber the ability to assign other
+    # locals that follow it in sorted order
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{name}!' }
+    assert_equal "Hey Jane!", inst.render(Object.new, :locals => [], :name => 'Jane')
+    assert inst.prepared?
+  end
 
-      tempfile = "#{base}-1.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render("")
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass String/, File.read(tempfile))
+  {:method=>"compiled_path= method", :option=>":compiled_path option"}.each do |check_type, desc|
+    if check_type == :option
+      with_compiled_path = lambda do |path, &block|
+        _SourceGeneratingMockTemplate.new(compiled_path: path, &block)
+      end
+    else
+      with_compiled_path = lambda do |path, &block|
+        inst = _SourceGeneratingMockTemplate.new(&block)
+        inst.compiled_path = path
+        inst
+      end
+    end
 
-      tempfile = "#{base}-2.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Tilt::Mapping.new)
-      assert_equal true, File.file?(tempfile)
-      assert_match(/\Aclass Tilt::Mapping/, File.read(tempfile))
+    it "template without #{desc} " do
+      inst = with_compiled_path.(nil) { |t| 'Hey' }
+      assert_nil inst.compiled_path
+    end
+
+    it "template with #{desc}" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base) { |t| 'Hey' }
+
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass Object/, File.read(tempfile))
+
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render("")
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass String/, File.read(tempfile))
+
+        tempfile = "#{base}-2.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render(Tilt::Mapping.new)
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\Aclass Tilt::Mapping/, File.read(tempfile))
+      end
+    end
+
+    it "template with #{desc} and with anonymous scope_class" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base) { |t| 'Hey' }
+
+        message = nil
+        inst.define_singleton_method(:warn) { |msg| message = msg }
+        scope_class = Class.new
+        assert_equal 'Hey', inst.render(scope_class.new)
+        assert_equal "compiled_path (#{base.inspect}) ignored on template with anonymous scope_class (#{scope_class.inspect})", message
+        assert_equal [], Dir["#{dir}/*"]
+      end
+    end
+
+    it "template with #{desc} and with locals" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        inst = with_compiled_path.(base + '.rb') { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
+
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey local-variable ', inst.render(Object.new, 'a' => 1)
+        content = File.read(tempfile)
+        assert_match(/\Aclass Object/, content)
+        assert_includes(content, "\na = locals[\"a\"]\n")
+
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey local-variable local-variable', inst.render(Object.new, 'b' => 1, 'a' => 1)
+        content = File.read(tempfile)
+        assert_match(/\Aclass Object/, content)
+        assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
+      end
+    end
+
+    it "template with compiled_path and freezing string literals option" do
+      Dir.mktmpdir('tilt') do |dir|
+        base = File.join(dir, 'template')
+        if check_type == :option
+          inst = _FrozenSourceGeneratingMockTemplate.new(compiled_path: base) { |t| 'Hey' }
+        else
+          inst = _FrozenSourceGeneratingMockTemplate.new { |t| 'Hey' }
+          inst.compiled_path = base
+        end
+
+        tempfile = "#{base}.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass Object/, File.read(tempfile))
+
+        tempfile = "#{base}-1.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render("")
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass String/, File.read(tempfile))
+
+        tempfile = "#{base}-2.rb"
+        assert_equal false, File.file?(tempfile)
+        assert_equal 'Hey', inst.render(Tilt::Mapping.new)
+        assert_equal true, File.file?(tempfile)
+        assert_match(/\A# frozen-string-literal: true\nclass Tilt::Mapping/, File.read(tempfile))
+      end
     end
   end
 
-  it "template with compiled_path and with anonymous scope_class" do
+  it "template with :compiled_path option and with :scope_class and fixed locals" do
     Dir.mktmpdir('tilt') do |dir|
       base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base
-
-      message = nil
-      inst.define_singleton_method(:warn) { |msg| message = msg }
-      scope_class = Class.new
-      assert_equal 'Hey', inst.render(scope_class.new)
-      assert_equal "compiled_path (#{base.inspect}) ignored on template with anonymous scope_class (#{scope_class.inspect})", message
-      assert_equal [], Dir.new(dir).children
-    end
-  end
-
-  it "template with compiled_path with locals" do
-    Dir.mktmpdir('tilt') do |dir|
-      base = File.join(dir, 'template')
-      inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
-      inst.compiled_path = base + '.rb'
-
       tempfile = "#{base}.rb"
       assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Object.new, 'a' => 1)
-      content = File.read(tempfile)
-      assert_match(/\Aclass Object/, content)
-      assert_includes(content, "\na = locals[\"a\"]\n")
+      inst =  _SourceGeneratingMockTemplate.new(compiled_path: base + '.rb', scope_class: Array, fixed_locals: '(a: nil, b: nil)') { |t| 'Hey #{defined?(a)} #{defined?(b)}' }
 
-      tempfile = "#{base}-1.rb"
-      assert_equal false, File.file?(tempfile)
-      assert_equal 'Hey', inst.render(Object.new, 'b' => 1, 'a' => 1)
+      assert_equal true, File.file?(tempfile)
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new)
       content = File.read(tempfile)
-      assert_match(/\Aclass Object/, content)
-      assert_includes(content, "\na = locals[\"a\"]\nb = locals[\"b\"]\n")
+      assert_match(/\Aclass Array/, content)
+      assert_includes(content, "(a: nil, b: nil)")
+
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, :a => 1)
+      assert_equal content, File.read(tempfile)
+
+      assert_equal 'Hey local-variable local-variable', inst.render(Object.new, :b => 1, :a => 1)
+      assert_equal content, File.read(tempfile)
+
+      assert_equal false, File.file?("#{base}-1.rb")
     end
   end
 
@@ -260,6 +392,16 @@ describe "tilt/template" do
     assert_equal "Hey Bob!", inst.render(_Person.new("Joe"))
   end
 
+  it "supports :scope_class option" do
+    inst = _SourceGeneratingMockTemplate.new(scope_class: _Person) { |t| 'Hey #{CONSTANT}!' }
+    assert_equal "Hey Bob!", inst.render
+  end
+
+  it "supports :scope_class and fixed_locals options provided together" do
+    inst = _SourceGeneratingMockTemplate.new(scope_class: _Person, fixed_locals: "()") { |t| 'Hey #{CONSTANT}!' }
+    assert_equal "Hey Bob!", inst.render
+  end
+
   it "template which accesses a constant using scope class" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{CONSTANT}!' }
     assert_equal "Hey Bob!", inst.render(_Person)
@@ -293,23 +435,6 @@ describe "tilt/template" do
   it "template which accesses a constant using BasicObject scope class" do
     inst = _SourceGeneratingMockTemplate.new { |t| 'Hey #{CONSTANT}!' }
     assert_equal "Hey Bob!", inst.render(_BasicPerson)
-  end
-
-  it "populates Tilt.current_template during rendering" do
-    inst = _SourceGeneratingMockTemplate.new { '#{$inst = Tilt.current_template}' }
-    inst.render
-    assert_equal inst, $inst
-    assert_nil Tilt.current_template
-  end
-
-  it "populates Tilt.current_template in nested rendering" do
-    inst1 = _SourceGeneratingMockTemplate.new { '#{$inst.render; $inst1 = Tilt.current_template}' }
-    inst2 = _SourceGeneratingMockTemplate.new { '#{$inst2 = Tilt.current_template}' }
-    $inst = inst2
-    inst1.render
-    assert_equal inst1, $inst1
-    assert_equal inst2, $inst2
-    assert_nil Tilt.current_template
   end
 
   if RUBY_VERSION >= '2.3'
@@ -373,19 +498,19 @@ describe "tilt/template (encoding)" do
 
   it "reading from file with default_internal set does no transcoding" do
     begin
-      Encoding.default_internal = 'utf-8'
+      silence{Encoding.default_internal = 'utf-8'}
       with_default_encoding('Big5') do
         inst = _MockTemplate.new(@template)
         assert_equal 'Big5', inst.data.encoding.to_s
       end
     ensure
-      Encoding.default_internal = nil
+      silence{Encoding.default_internal = nil}
     end
   end
 
   it "using provided template data verbatim when given as string" do
     with_default_encoding('Big5') do
-      inst = _MockTemplate.new(@template) { "blah".force_encoding('GBK') }
+      inst = _MockTemplate.new(@template) { "blah".dup.force_encoding('GBK') }
       assert_equal 'GBK', inst.data.encoding.to_s
     end
   end
@@ -394,6 +519,21 @@ describe "tilt/template (encoding)" do
     with_utf8_default_encoding do
       tmpl = "ふが"
       code = tmpl.inspect.encode('Shift_JIS')
+      inst = _DynamicMockTemplate.new(:code => code) { '' }
+      res = inst.render
+      assert_equal 'Shift_JIS', res.encoding.to_s
+      assert_equal tmpl, res.encode(tmpl.encoding)
+    end
+  end
+
+  it "uses the magic comment from the generated source code when generated source code is frozen" do
+    with_utf8_default_encoding do
+      tmpl = "ふが"
+      code = ("# coding: Shift_JIS\n" + tmpl.inspect).encode('Shift_JIS')
+      # Set it to an incorrect encoding
+      code.force_encoding('UTF-8')
+      code.freeze
+
       inst = _DynamicMockTemplate.new(:code => code) { '' }
       res = inst.render
       assert_equal 'Shift_JIS', res.encoding.to_s
@@ -415,6 +555,20 @@ describe "tilt/template (encoding)" do
     end
   end
 
+  it "uses compiled template encoding if :skip_compiled_encoding_detection is true" do
+    with_utf8_default_encoding do
+      tmpl = 'x'
+      code = ("# coding: UTF-8\n" + tmpl.inspect).encode('UTF-8')
+      # Set it to an incorrect encoding
+      code.force_encoding('US-ASCII')
+
+      inst = _DynamicMockTemplate.new(:code => code, :skip_compiled_encoding_detection=>true) { '' }
+      res = inst.render
+      assert_equal 'US-ASCII', res.encoding.to_s
+      assert_equal tmpl, res.encode(tmpl.encoding)
+    end
+  end
+
   it "uses #default_encoding instead of default_external" do
     with_default_encoding('Big5') do
       inst = _UTF8Template.new(@template)
@@ -423,7 +577,7 @@ describe "tilt/template (encoding)" do
   end
 
   it "uses #default_encoding instead of current encoding" do
-    tmpl = "".force_encoding('Big5')
+    tmpl = "".dup.force_encoding('Big5')
     inst = _UTF8Template.new(@template) { tmpl }
     assert_equal 'UTF-8', inst.data.encoding.to_s
   end
@@ -431,6 +585,14 @@ describe "tilt/template (encoding)" do
   it "raises error if the encoding is not valid" do
     assert_raises(Encoding::InvalidByteSequenceError) do
       _UTF8Template.new(@template) { "\xe4" }
+    end
+  end
+
+  it "StaticTemplate#compiled_method raise NotImplementedError" do
+    c = Tilt::StaticTemplate.subclass{data}
+    t = c.new{''}
+    assert_raises(NotImplementedError) do
+      t.compiled_method([], Object)
     end
   end
 end

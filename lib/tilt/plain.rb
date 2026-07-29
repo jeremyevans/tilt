@@ -1,16 +1,9 @@
-require 'tilt/template'
+# frozen_string_literal: true
 
+# = Plain
+#
+# Raw text (no template functionality).
 
-module Tilt
-  # Raw text (no template functionality).
-  class PlainTemplate < Template
-    self.default_mime_type = 'text/html'
+require_relative 'template'
 
-    def prepare
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= data
-    end
-  end
-end
+Tilt::PlainTemplate = Tilt::StaticTemplate.subclass{@data}

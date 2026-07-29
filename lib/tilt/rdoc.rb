@@ -1,40 +1,41 @@
-require 'tilt/template'
+# frozen_string_literal: true
+
+# = RDoc (<tt>rdoc</tt>)
+#
+# {RDoc}[http://rdoc.rubyforge.org] is the simple text markup system that comes with Ruby's standard
+# library.
+#
+# === Example
+#
+#     = Hello RDoc Templates
+#
+#     Hello World. This is a paragraph.
+#
+# === Usage
+#
+# __NOTE:__ It's suggested that your program <tt>require 'rdoc'</tt>,
+# <tt>require 'rdoc/markup'</tt>, and <tt>require 'rdoc/markup/to_html'</tt> at load time
+# when using this template engine in a threaded environment.
+#
+# === See also
+#
+# * {RDoc}[http://rdoc.rubyforge.org]
+# * {RDoc Github}[https://github.com/ruby/rdoc]
+
+require_relative 'template'
 require 'rdoc'
 require 'rdoc/markup'
 require 'rdoc/markup/to_html'
+require 'rdoc/options'
 
-module Tilt
-  # RDoc template. See:
-  # http://rdoc.rubyforge.org/
-  #
-  # It's suggested that your program `require 'rdoc/markup'` and
-  # `require 'rdoc/markup/to_html'` at load time when using this template
-  # engine in a threaded environment.
-  class RDocTemplate < Template
-    self.default_mime_type = 'text/html'
-
-    def markup
-      begin
-        # RDoc 4.0
-        require 'rdoc/options'
-        RDoc::Markup::ToHtml.new(RDoc::Options.new, nil)
-      rescue ArgumentError
-        # RDoc < 4.0
-        RDoc::Markup::ToHtml.new
-      end
-    end
-
-    def prepare
-      @engine = markup.convert(data)
-      @output = nil
-    end
-
-    def evaluate(scope, locals, &block)
-      @output ||= @engine.to_s
-    end
-
-    def allows_script?
-      false
-    end
+Tilt::RDocTemplate = if defined?(RDoc::VERSION) && RDoc::VERSION >= "8"
+  Tilt::StaticTemplate.subclass do
+    RDoc::Markup::ToHtml.new.convert(@data).to_s
+  end
+# :nocov:
+else
+  Tilt::StaticTemplate.subclass do
+    RDoc::Markup::ToHtml.new(RDoc::Options.new, nil).convert(@data).to_s
   end
 end
+# :nocov:

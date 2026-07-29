@@ -37,7 +37,7 @@ END
 
   it "passing locals" do
     template = Tilt::HerbTemplate.new { 'Hey <%= name %>!' }
-    assert_equal "Hey Joe!", template.render(Object.new, :name => 'Joe')
+    assert_equal "Hey Joe!", template.render(Object.new, name: 'Joe')
   end
 
   it "evaluating in an object scope" do
@@ -48,7 +48,8 @@ END
   end
 
   it "exposing the buffer to the template by default" do
-    template = Tilt::HerbTemplate.new(nil, :bufvar=>'@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
+    template = Tilt::HerbTemplate.new(nil, bufvar: '@_out_buf') { '<% self.exposed_buffer = @_out_buf %>hey' }
+
     scope = Class.new do
       attr_accessor :exposed_buffer
     end.new
@@ -65,13 +66,16 @@ END
 
   it "backtrace file and line reporting without locals" do
     template = Tilt::HerbTemplate.new('test.herb', 11) { data }
+
     begin
       template.render
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of NameError, boom
+
       line = boom.backtrace.grep(/\Atest\.herb:/).first
       assert line, "Backtrace didn't contain test.herb"
+
       _file, line, _meth = line.split(":")
       assert_equal '13', line
     end
@@ -80,12 +84,14 @@ END
   it "backtrace file and line reporting with locals" do
     template = Tilt::HerbTemplate.new('test.herb', 1) { data }
     begin
-      template.render(nil, :name => 'Joe', :foo => 'bar')
+      template.render(nil, name: 'Joe', foo: 'bar')
       fail 'should have raised an exception'
     rescue => boom
       assert_kind_of RuntimeError, boom
+
       line = boom.backtrace.first
       file, line, _meth = line.split(":")
+
       assert_equal 'test.herb', file
       assert_equal '6', line
     end
@@ -97,7 +103,7 @@ END
 1
 DATA
     assert_equal "1", template.render(nil).strip
-    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+    assert_raises(ArgumentError) { template.render(nil, something: true) }
   end
 
   it "respects embedded fixed locals with optional keyword argument" do
@@ -106,7 +112,7 @@ DATA
 <%= name %>
 DATA
     assert_equal "foo", template.render(nil).strip
-    assert_equal "bar", template.render(nil, :name => "bar").strip
+    assert_equal "bar", template.render(nil, name: "bar").strip
   end
 
   it "respects embedded fixed locals with required keyword argument" do
@@ -115,13 +121,13 @@ DATA
 <%= name %>
 DATA
     assert_raises(ArgumentError) { template.render(nil) }
-    assert_equal "bar", template.render(nil, :name => "bar").strip
+    assert_equal "bar", template.render(nil, name: "bar").strip
   end
 
   it "respects :fixed_locals option" do
     template = Tilt::HerbTemplate.new(fixed_locals: '(name: "foo")') { "<%= name %>" }
     assert_equal "foo", template.render(nil).strip
-    assert_equal "bar", template.render(nil, :name => "bar").strip
+    assert_equal "bar", template.render(nil, name: "bar").strip
   end
 
   without_extract_fixed_locals "ignores embedded fixed locals when Tilt.extract_fixed_locals is false" do
@@ -130,7 +136,7 @@ DATA
 1
 DATA
     assert_equal "1", template.render(nil).strip
-    assert_equal "1", template.render(nil, :something=>true).strip
+    assert_equal "1", template.render(nil, something: true).strip
   end
 
   it "handles eager compiling when embedded fixed locals and :scope_class are present" do
@@ -139,11 +145,11 @@ DATA
 1
 DATA
     assert_equal "1", template.render(nil).strip
-    assert_raises(ArgumentError) { template.render(nil, :something => true) }
+    assert_raises(ArgumentError) { template.render(nil, something: true) }
   end
 
   it "herb template options" do
-    template = Tilt::HerbTemplate.new(nil, :escapefunc=> 'h') { 'Hey <%== @name %>!' }
+    template = Tilt::HerbTemplate.new(nil, escapefunc: 'h') { 'Hey <%== @name %>!' }
     scope = Object.new
     def scope.h(s) s * 2 end
     scope.instance_variable_set :@name, 'Joe'
@@ -151,7 +157,7 @@ DATA
   end
 
   it "using an instance variable as the outvar" do
-    template = Tilt::HerbTemplate.new(nil, :outvar => '@buf') { "<%= 1 + 1 %>" }
+    template = Tilt::HerbTemplate.new(nil, outvar: '@buf') { "<%= 1 + 1 %>" }
     scope = Object.new
     scope.instance_variable_set(:@buf, 'original value')
     assert_equal '2', template.render(scope)
@@ -160,22 +166,22 @@ DATA
 
   it "using a custom engine class via the :engine_class option" do
     engine_class = Class.new(Herb::Engine)
-    template = Tilt::HerbTemplate.new(nil, :engine_class => engine_class) { "Hello World!" }
+    template = Tilt::HerbTemplate.new(nil, engine_class: engine_class) { "Hello World!" }
     assert_equal "Hello World!", template.render
   end
 
-  it "using :escape => true option" do
-    template = Tilt::HerbTemplate.new(nil, :escape => true) { |t| %(<%= "<p>Hello World!</p>" %>) }
+  it "using escape: true option" do
+    template = Tilt::HerbTemplate.new(nil, escape: true) { |t| %(<%= "<p>Hello World!</p>" %>) }
     assert_equal "&lt;p&gt;Hello World!&lt;/p&gt;", template.render
   end
 
-  it "using :escape_html => true option" do
-    template = Tilt::HerbTemplate.new(nil, :escape_html => true) { |t| %(<%= "<p>Hello World!</p>" %>) }
+  it "using escape_html: true option" do
+    template = Tilt::HerbTemplate.new(nil, escape_html: true) { |t| %(<%= "<p>Hello World!</p>" %>) }
     assert_equal "&lt;p&gt;Hello World!&lt;/p&gt;", template.render
   end
 
-  it "using :escape_html => false option" do
-    template = Tilt::HerbTemplate.new(nil, :escape_html => false) { |t| %(<%= "<p>Hello World!</p>" %>) }
+  it "using escape_html: false option" do
+    template = Tilt::HerbTemplate.new(nil, escape_html: false) { |t| %(<%= "<p>Hello World!</p>" %>) }
     assert_equal "<p>Hello World!</p>", template.render
   end
 
@@ -185,13 +191,13 @@ DATA
   end
 
   it "does not modify options argument" do
-    options_hash = {:escape_html => true}
+    options_hash = {escape_html: true}
     Tilt::HerbTemplate.new(nil, options_hash) { |t| "Hello World!" }
-    assert_equal({:escape_html => true}, options_hash)
+    assert_equal({escape_html: true}, options_hash)
   end
 
   it "uses frozen literal strings if :freeze option is used" do
-    template = Tilt::HerbTemplate.new(nil, :freeze => true) { |t| %(<%= "".frozen? %>) }
+    template = Tilt::HerbTemplate.new(nil, freeze: true) { |t| %(<%= "".frozen? %>) }
     assert_equal "true", template.render
   end
 
@@ -202,18 +208,18 @@ DATA
 
   it "rendering html attributes from locals" do
     template = Tilt::HerbTemplate.new { '<div class="container" id="<%= element_id %>">Content</div>' }
-    assert_equal '<div class="container" id="main">Content</div>', template.render(Object.new, :element_id => 'main')
+    assert_equal '<div class="container" id="main">Content</div>', template.render(Object.new, element_id: 'main')
   end
 
   it "escaping attribute values when :escape is used" do
-    template = Tilt::HerbTemplate.new(nil, :escape => true) { '<div id="<%= id %>"></div>' }
-    assert_equal '<div id="a&quot;b"></div>', template.render(Object.new, :id => 'a"b')
+    template = Tilt::HerbTemplate.new(nil, escape: true) { '<div id="<%= id %>"></div>' }
+    assert_equal '<div id="a&quot;b"></div>', template.render(Object.new, id: 'a"b')
   end
 
   it "handling void elements" do
     template = Tilt::HerbTemplate.new { '<img src="<%= src %>" alt="Photo"><br><input type="text">' }
     assert_equal '<img src="photo.jpg" alt="Photo"><br><input type="text">',
-      template.render(Object.new, :src => 'photo.jpg')
+      template.render(Object.new, src: 'photo.jpg')
   end
 
   it "handling erb comments" do
@@ -231,14 +237,14 @@ DATA
       '<% if logged_in %><span>Welcome!</span><% else %><span>Please login</span><% end %>'
     end
 
-    assert_equal "<span>Welcome!</span>", template.render(Object.new, :logged_in => true)
-    assert_equal "<span>Please login</span>", template.render(Object.new, :logged_in => false)
+    assert_equal "<span>Welcome!</span>", template.render(Object.new, logged_in: true)
+    assert_equal "<span>Please login</span>", template.render(Object.new, logged_in: false)
   end
 
   it "handles loops" do
     template = Tilt::HerbTemplate.new { '<ul><% items.each do |item| %><li><%= item %></li><% end %></ul>' }
     assert_equal "<ul><li>apple</li><li>banana</li></ul>",
-      template.render(Object.new, :items => ['apple', 'banana'])
+      template.render(Object.new, items: ['apple', 'banana'])
   end
 
   it "raises for unclosed html tags" do
@@ -265,13 +271,11 @@ DATA
     assert_match(/expected an `end` to close the conditional/, error.message)
   end
 
-  it "does not raise for invalid html when :validation_mode => :none is used" do
-    template = Tilt::HerbTemplate.new(nil, :validation_mode => :none) { '<div><span>Content</div>' }
-    assert_equal '', template.render
-  end
+  it "raises for invalid ruby" do
+    error = assert_raises(Herb::Engine::CompilationError) do
+      Tilt::HerbTemplate.new { '<div><%= "unterminated %></div>' }
+    end
 
-  it "still renders valid templates when :validation_mode => :none is used" do
-    template = Tilt::HerbTemplate.new(nil, :validation_mode => :none) { '<div><%= 1 + 1 %></div>' }
-    assert_equal '<div>2</div>', template.render
+    assert_match(/unterminated string/, error.message)
   end
 end

@@ -86,10 +86,11 @@ platform :ruby do
   gem 'commonmarker'
   gem 'yajl-ruby'
 
-  # herb has a C extension and requires Ruby 3.2+
-  gem 'herb' if RUBY_VERSION >= '3.2'
-
   gem 'rdiscount', '>= 2.1.6'
+
+  if RUBY_VERSION >= '3.2'
+    gem 'herb'
+  end
 
   if RUBY_VERSION < '2.1'
     gem 'redcarpet', '< 3.6.1'

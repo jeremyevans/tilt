@@ -65,7 +65,7 @@ module Tilt
       attr_accessor :tilt_scope
 
       def tag_missing(name, attributes)
-        tilt_scope.__send__(name)
+        tilt_scope.public_send(name)
       end
 
       def dup

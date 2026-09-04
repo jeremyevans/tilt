@@ -18,6 +18,10 @@ checked_describe 'tilt/radius' do
   _ExampleRadiusScope = Class.new do
     def beer; 'wet'; end
     def whisky; 'wetter'; end
+
+    private
+
+    def secret; 'hidden'; end
   end
 
   it "combining scope and locals when scope responds" do
@@ -26,6 +30,11 @@ checked_describe 'tilt/radius' do
     }
     scope = _ExampleRadiusScope.new
     assert_equal "Beer is wet but Whisky is wetter.", template.render(scope)
+  end
+
+  it "does not expose private scope methods" do
+    template = Tilt::RadiusTemplate.new { '<r:secret />' }
+    assert_raises(NoMethodError) { template.render(_ExampleRadiusScope.new) }
   end
 
   it "precedence when locals and scope define same variables" do

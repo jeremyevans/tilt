@@ -221,7 +221,7 @@ describe "tilt/template" do
   it "template_source with locals including 'locals'" do
     # Skip in CI on JRuby 9.1/9.2, as CI fails even though tests pass locally with these
     # JRuby versions.
-    skip if defined?(JRUBY_VERSION) && JRUBY_VERSION.to_r < 9.3r && ENV['COFFEE_SCRIPT'] == 'use'
+    skip if defined?(JRUBY_VERSION) && JRUBY_VERSION.to_r < Rational("9.3") && ENV['COFFEE_SCRIPT'] == 'use'
 
     # Ensure that a locals hash value named `locals` doesn't clobber the ability to assign other
     # locals that follow it in sorted order

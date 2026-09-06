@@ -340,9 +340,9 @@ module Tilt
       choices.each do |class_name, file|
         begin
           require file
-          # It's safe to eval() here because constant_defined? will
-          # raise NameError on invalid constant names
-          template_class = eval(class_name)
+          unless template_class = constant_defined?(class_name)
+            raise NameError, "constant not defined: #{class_name.inspect}"
+          end
         rescue LoadError => ex
           first_failure ||= ex
         else
@@ -369,7 +369,9 @@ module Tilt
     def constant_defined?(name)
       name.split('::').inject(Object) do |scope, n|
         return false if scope.autoload?(n) || !scope.const_defined?(n)
-        scope.const_get(n)
+        v = scope.const_get(n)
+        raise TypeError, "expected template constant to be a module" unless Module === v
+        v
       end
     end
   end

@@ -205,11 +205,20 @@ module Tilt
       if meth = LOCK.synchronize{@compiled_method[key]}
         return meth
       end
-      meth = compile_template_method(locals_keys, scope_class)
       unless @fixed_locals
-        keys = locals_keys.map {|k| k.is_a?(String) ? k.dup.freeze : k}.freeze
+        keys = locals_keys.map do |k|
+          case k
+          when String
+            "#{k}".freeze
+          when Symbol
+            k
+          else
+            raise TypeError, "invalid local key given: #{k.inspect}"
+          end
+        end.freeze
         key = @scope_class ? keys : [scope_class, keys].freeze
       end
+      meth = compile_template_method(locals_keys, scope_class)
       LOCK.synchronize do
         @compiled_method[key] = meth
       end

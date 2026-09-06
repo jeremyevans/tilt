@@ -213,6 +213,11 @@ describe "tilt/template" do
     assert inst.prepared?
   end
 
+  it "#compiled_method should raise for invalid locals keys" do
+    inst = _SourceGeneratingMockTemplate.new { |t| 'Hey' }
+    assert_raises(TypeError){inst.compiled_method([Object.new], Object)}
+  end
+
   it "template_source with locals including 'locals'" do
     # Skip in CI on JRuby 9.1/9.2, as CI fails even though tests pass locally with these
     # JRuby versions.

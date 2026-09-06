@@ -1,5 +1,6 @@
 ## master
 
+* Do not allow a locals_keys entry that is not a string or a symbol (jeremyevans)
 * Do not allow RadiusTemplate to call private methods through tags (OskarEichler) (#45)
 * Do not remove trailing \r in StringTemplate (OskarEichler, jeremyevans) (#44)
 * Fix SassTemplate to handle filenames with characters that need URL escaping when using sass-embedded (OskarEichler) (#42)

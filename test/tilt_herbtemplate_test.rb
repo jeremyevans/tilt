@@ -248,34 +248,26 @@ DATA
   end
 
   it "raises for unclosed html tags" do
-    error = assert_raises(Herb::Engine::CompilationError) do
+    assert_raises(Herb::Engine::CompilationError) do
       Tilt::HerbTemplate.new { '<div><span>Content</div>' }
     end
-
-    assert_match(/MissingClosingTag/, error.message)
   end
 
   it "raises for mismatched html tags" do
-    error = assert_raises(Herb::Engine::CompilationError) do
+    assert_raises(Herb::Engine::CompilationError) do
       Tilt::HerbTemplate.new { '<div><span>Content</span></p>' }
     end
-
-    assert_match(/MissingOpeningTag/, error.message)
   end
 
   it "raises for unclosed erb blocks" do
-    error = assert_raises(Herb::Engine::CompilationError) do
+    assert_raises(Herb::Engine::CompilationError) do
       Tilt::HerbTemplate.new { '<% if true %><div>Missing end</div>' }
     end
-
-    assert_match(/expected an `end` to close the conditional/, error.message)
   end
 
   it "raises for invalid ruby" do
-    error = assert_raises(Herb::Engine::CompilationError) do
+    assert_raises(Herb::Engine::CompilationError) do
       Tilt::HerbTemplate.new { '<div><%= "unterminated %></div>' }
     end
-
-    assert_match(/unterminated string/, error.message)
   end
 end

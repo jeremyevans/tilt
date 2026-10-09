@@ -548,21 +548,11 @@ module Tilt
         yield script
       end
 
-      binary(script) do
-        script[/\A[ \t]*\#.*coding\s*[=:]\s*([[:alnum:]\-_]+).*$/n, 1]
-      end
+      script.b[/\A[ \t]*\#.*coding\s*[=:]\s*([[:alnum:]\-_]+).*$/n, 1]
     end
 
     def freeze_string_literals?
       false
-    end
-
-    def binary(string)
-      original_encoding = string.encoding
-      string.force_encoding(Encoding::BINARY)
-      yield
-    ensure
-      string.force_encoding(original_encoding)
     end
   end
 

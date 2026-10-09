@@ -590,6 +590,21 @@ describe "tilt/template (encoding)" do
     end
   end
 
+  it "does not change the encoding of the generated source code while checking for a magic comment" do
+    with_utf8_default_encoding do
+      code = "\"ふが\"".dup
+      encodings = []
+      code.define_singleton_method(:force_encoding) do |enc|
+        encodings << enc
+        super(enc)
+      end
+
+      inst = _DynamicMockTemplate.new(:code => code) { '' }
+      assert_equal "ふが", inst.render
+      assert_equal [], encodings
+    end
+  end
+
   it "uses compiled template encoding if :skip_compiled_encoding_detection is true" do
     with_utf8_default_encoding do
       tmpl = 'x'

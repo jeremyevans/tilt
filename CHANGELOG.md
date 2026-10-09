@@ -1,5 +1,6 @@
 ## master
 
+* Do not change the encoding of the generated source code while checking it for a magic comment, fixing a race on first render in multithreaded code (UweKubosch)
 * Remove eval usage from Mapping#lazy_load (jeremyevans)
 * Do not allow a locals_keys entry that is not a string or a symbol (jeremyevans)
 * Do not allow RadiusTemplate to call private methods through tags (OskarEichler) (#45)
